@@ -30,6 +30,12 @@ return array(
       'collation' => 'utf8_unicode_ci',
       'prefix'    => '',
     ),
+    'mmex' => array(
+      'driver'   => 'sqlite',
+      'database' => '/home/mark/www/.mmex/finances.mmb',
+      'prefix'   => '',
+    ),
+
 	),
 
 );

@@ -15,3 +15,17 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+Route::group(['prefix' =>  'api/v1/mmex'], function() {
+  $NAMESPACE = 'MMEX\\';
+
+  Route::get('accounts',          $NAMESPACE.'MmexController@accounts');
+  Route::get('categories',        $NAMESPACE.'MmexController@categories');
+  Route::get('payees',            $NAMESPACE.'MmexController@payees');
+  Route::get('standing_orders',   $NAMESPACE.'MmexController@standing_orders');
+  Route::get('sub_categories',    $NAMESPACE.'MmexController@sub_categories');
+  Route::get('transactions',      $NAMESPACE.'MmexController@transactions');
+
+
+
+});

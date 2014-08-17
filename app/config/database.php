@@ -46,9 +46,9 @@ return array(
 
 	'connections' => array(
 
-		'sqlite' => array(
+		'mmex' => array(
 			'driver'   => 'sqlite',
-			'database' => __DIR__.'/../database/production.sqlite',
+			'database' => '/home/mark/www/.mmex/mmexini.db3',
 			'prefix'   => '',
 		),
 

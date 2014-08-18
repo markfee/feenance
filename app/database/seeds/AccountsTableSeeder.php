@@ -10,24 +10,6 @@ class AccountsTableSeeder extends Seeder {
 
     foreach($records as $record)
     {
-/*
-ACCOUNTID: "1",
-ACCOUNTNAME: "Smile Joint",
-ACCOUNTTYPE: "Checking",
-ACCOUNTNUM: "01266869",
-STATUS: "Closed",
-NOTES: "",
-HELDAT: "Smile",
-WEBSITE: "www.smile.co.uk",
-CONTACTINFO: "",
-ACCESSINFO: "",
-INITIALBAL: "0",
-FAVORITEACCT: "TRUE",
-CURRENCYID: "6"
-},
-*/
-
-
       Account::create([
         "id"              => $record->ACCOUNTID,
         "title"           => $record->ACCOUNTNAME,

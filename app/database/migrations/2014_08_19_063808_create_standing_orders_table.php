@@ -12,14 +12,26 @@ class CreateStandingOrdersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('standing_orders', function(Blueprint $table)
+    Schema::create('increments', function(Blueprint $table) {
+      $table->char('id', 1);
+      $table->string('amount'); // eg day, month, year
+      $table->primary('id');
+
+    });
+
+    Schema::create('standing_orders', function(Blueprint $table)
 		{
       $table->increments('id');
-      $table->datetime('date');
-      $table->integer('amount')->unsigned();  // always positive - the debit or credit account determines the sign.
+      $table->datetime('previous_date');
+      $table->datetime('next_date');
+      $table->datetime('finish_date')->nullable();
+      $table->smallInteger('increment')->unsigned();
+      $table->char('increment_id');
+      $table->string('exceptions')->nullable();   // eg month:february;month:march
+      $table->integer('amount')->unsigned();      // always positive - the debit or credit account determines the sign.
+      $table->boolean('next_bank_day')->default(true);      // skip to the next valid bank day
       $table->integer('credit_account_id')->unsigned()->nullable();
       $table->integer('debit_account_id')->unsigned()->nullable();
-      $table->boolean('reconciled');
       $table->integer('payee_id')->unsigned()->nullable();
       $table->integer('category_id')->unsigned()->nullable();
       $table->string('notes')->nullable();
@@ -30,6 +42,7 @@ class CreateStandingOrdersTable extends Migration {
       $table->foreign('debit_account_id')->references('id')->on('accounts');
       $table->foreign('payee_id')->references('id')->on('payees');
       $table->foreign('category_id')->references('id')->on('categories');
+      $table->foreign('increment_id')->references('id')->on('increments');
 		});
 	}
 
@@ -41,7 +54,8 @@ class CreateStandingOrdersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('standing_orders');
+    Schema::drop('standing_orders');
+    Schema::drop('increments');
 	}
 
 }

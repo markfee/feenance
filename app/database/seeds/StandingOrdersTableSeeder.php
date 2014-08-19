@@ -6,36 +6,20 @@ class StandingOrdersTableSeeder extends Seeder {
 
 	public function run()
 	{
-    $records = mmexStandingOrder::all();
+    Increment::create(["id"=>"d", "amount"=>"Days"]);
+    Increment::create(["id"=>"w", "amount"=>"Weeks"]);
+    Increment::create(["id"=>"m", "amount"=>"Months"]);
+    Increment::create(["id"=>"y", "amount"=>"Years"]);
 
+    $records = mmexStandingOrder::all();
     foreach($records as $record)
     {
-/*
-BDID: "1",
-ACCOUNTID: "2",
-TOACCOUNTID: "-1",
-PAYEEID: "1",
-TRANSCODE: "Deposit",
-TRANSAMOUNT: "1800",
-STATUS: "",
-TRANSACTIONNUMBER: "",
-NOTES: "",
-CATEGID: "13",
-SUBCATEGID: "39",
-TRANSDATE: "2014-11-01",
-FOLLOWUPID: "-1",
-TOTRANSAMOUNT: "1800",
-REPEATS: "203",
-NEXTOCCURRENCEDATE: "2015-01-01",
-NUMOCCURRENCES: "-1"
-*/
+      $REPEATS = [];
+      $REPEATS["201"] = [1, "w"];
+      $REPEATS["203"] = [1, "m"];
+      $REPEATS["209"] = [4, "w"];
+      $REPEATS["207"] = [1, "y"];
 
-      $REPEATS = [
-        "201" =>"+1 WEEK",
-        "203" =>"+1 MONTH",
-        "209" =>"+4 WEEKS",
-        "207" =>"+1 YEAR",
-        ];
       $amount = $record->TRANSAMOUNT;
       $credit_account = null;
       $debit_account = null;
@@ -43,26 +27,51 @@ NUMOCCURRENCES: "-1"
         $credit_account = ($amount < 0 ? $record->ACCOUNTID : $record->TOACCOUNTID);
         $debit_account  = ($amount > 0 ? $record->ACCOUNTID : $record->TOACCOUNTID);
       } else {
-        $credit_account = ($record->TRANSCODE == "Deposit"    ?  $record->ACCOUNTID : null);
+        $credit_account = ($record->TRANSCODE == "Deposit"    ? $record->ACCOUNTID : null);
         $debit_account  = ($record->TRANSCODE == "Withdrawal" ? $record->ACCOUNTID : null);
       }
 
       $categoryId = $record->CATEGID;
-      if ($record->SUBCATEGID != -1) {
-        $category = Category::where("mmex_subcatid", "=", $record->SUBCATEGID)->firstOrFail();
-        $categoryId = $category->id;
+      try{
+        if ($record->SUBCATEGID != "-1") {
+          $category = Category::where("mmex_subcatid", "=", $record->SUBCATEGID)->firstOrFail();
+          $categoryId = $category->id;
+        }
+      } catch(Exception $ex) {
+        echo $record->SUBCATEGID;
       }
+      /*
+      BDID: "1",
+      ACCOUNTID: "2",
+      TOACCOUNTID: "-1",
+      PAYEEID: "1",
+      TRANSCODE: "Deposit",
+      TRANSAMOUNT: "1800",
+      STATUS: "",
+      TRANSACTIONNUMBER: "",
+      NOTES: "",
+      CATEGID: "13",
+      SUBCATEGID: "39",
+      TRANSDATE: "2014-11-01",
+      FOLLOWUPID: "-1",
+      TOTRANSAMOUNT: "1800",
+      REPEATS: "203",
+      NEXTOCCURRENCEDATE: "2015-01-01",
+      NUMOCCURRENCES: "-1"
+      */
 
 
-			Transaction::create([
-        "id"                => $record->TRANSID,
-        "date"              => $record->TRANSDATE,
+			StandingOrder::create([
+        "id"                => $record->BDID,
+        "previous_date"     => $record->TRANSDATE,
+        "next_date"         => $record->NEXTOCCURRENCEDATE,
+        "increment"         => $REPEATS[$record->REPEATS][0],
+        "increment_id"      => $REPEATS[$record->REPEATS][1],
         "amount"            => $record->TRANSAMOUNT,
         "credit_account_id" => $credit_account,
         "debit_account_id"  => $debit_account,
-        "reconciled"        => ($record->STATUS == "R"),
         "payee_id"          => $record->PAYEEID == "-1" ? null : $record->PAYEEID,
-        "category_id"       => $categoryId == "-1" ? null : $categoryId,
+        "category_id"       => $categoryId == "-1"      ? null : $categoryId,
         "notes"             => $record->NOTES,
 			]);
 		}

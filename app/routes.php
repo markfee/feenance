@@ -16,6 +16,11 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+Route::group(['prefix' =>  'api/v1/'], function() {
+  $NAMESPACE = 'api\\';
+  Route::resource('transactions', $NAMESPACE.'TransactionsController');
+});
+
 Route::group(['prefix' =>  'api/v1/mmex'], function() {
   $NAMESPACE = 'MMEX\\';
 
@@ -25,7 +30,4 @@ Route::group(['prefix' =>  'api/v1/mmex'], function() {
   Route::get('standing_orders',   $NAMESPACE.'MmexController@standing_orders');
   Route::get('sub_categories',    $NAMESPACE.'MmexController@sub_categories');
   Route::get('transactions',      $NAMESPACE.'MmexController@transactions');
-
-
-
 });

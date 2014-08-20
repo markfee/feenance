@@ -11,38 +11,38 @@ class MmexController extends \BaseController {
 	 */
   public function accounts()
   {
-    $record = Accounts::all();
-    return \Response::json($record->all());
+    $records = Accounts::all();
+    return \Response::json($records->all());
   }
 
   public function categories()
   {
-    $record = Category::all();
-    return \Response::json($record->all());
+    $records = Category::all();
+    return \Response::json($records->all());
   }
 
   public function payees()
   {
-    $record = Payee::all();
-    return \Response::json($record->all());
+    $records = Payee::all();
+    return \Response::json($records->all());
   }
 
   public function standing_orders()
   {
-    $record = StandingOrder::all();
-    return \Response::json($record->all());
+    $records = StandingOrder::all();
+    return \Response::json($records->all());
   }
 
   public function sub_categories()
   {
-    $record = SubCategory::all();
-    return \Response::json($record->all());
+    $records = SubCategory::all();
+    return \Response::json($records->all());
   }
 
   public function transactions()
   {
-    $record = Transaction::all();
-    return \Response::json($record->all());
+    $records = Transaction::all();
+    return \Response::json($records->all());
   }
 
 

@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="072bf907-1941-46ad-827d-16f50521f0e6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/migrations/2014_08_19_063808_create_standing_orders_table.php" afterPath="$PROJECT_DIR$/app/database/migrations/2014_08_19_063808_create_standing_orders_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/seeds/DatabaseSeeder.php" afterPath="$PROJECT_DIR$/app/database/seeds/DatabaseSeeder.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/database/seeds/StandingOrdersTableSeeder.php" afterPath="$PROJECT_DIR$/app/database/seeds/StandingOrdersTableSeeder.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/controllers/.gitkeep" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/controllers/HomeController.php" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/api/mmex/MmexController.php" afterPath="$PROJECT_DIR$/app/controllers/api/mmex/MmexController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/routes.php" afterPath="$PROJECT_DIR$/app/routes.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="feenance.iws" />
@@ -67,16 +68,25 @@
       <file leaf-file-name="TransactionsTableSeeder.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/database/seeds/TransactionsTableSeeder.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="18" selection-start="255" selection-end="255" vertical-scroll-proportion="7.6296296" vertical-offset="476" max-vertical-offset="1188">
+            <state line="15" column="18" selection-start="255" selection-end="255" vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="1188">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StandingOrdersTableSeeder.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="StandingOrdersTableSeeder.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/database/seeds/StandingOrdersTableSeeder.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="6" selection-start="491" selection-end="491" vertical-scroll-proportion="0.4" vertical-offset="0" max-vertical-offset="1530">
+            <state line="20" column="33" selection-start="586" selection-end="586" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="1530">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExampleTest.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/tests/ExampleTest.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="414">
               <folding />
             </state>
           </provider>
@@ -85,7 +95,7 @@
       <file leaf-file-name="2014_08_19_063808_create_standing_orders_table.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_08_19_063808_create_standing_orders_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="0" selection-start="1828" selection-end="1828" vertical-scroll-proportion="-32.666668" vertical-offset="108" max-vertical-offset="1188">
+            <state line="56" column="0" selection-start="1828" selection-end="1828" vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="1206">
               <folding />
             </state>
           </provider>
@@ -94,16 +104,7 @@
       <file leaf-file-name="DatabaseSeeder.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/database/seeds/DatabaseSeeder.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="31" selection-start="350" selection-end="350" vertical-scroll-proportion="-11.333333" vertical-offset="0" max-vertical-offset="504">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="database.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/config/local/database.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="50" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="846">
+            <state line="17" column="31" selection-start="350" selection-end="350" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="504">
               <folding />
             </state>
           </provider>
@@ -112,88 +113,102 @@
       <file leaf-file-name="routes.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="34" selection-start="573" selection-end="573" vertical-scroll-proportion="0.0" vertical-offset="378" max-vertical-offset="648">
+            <state line="20" column="2" selection-start="535" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="684">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2014_08_17_162505_create_categories_table.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_08_17_162505_create_categories_table.php">
+      <file leaf-file-name="TransactionsController.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/api/TransactionsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="6" selection-start="474" selection-end="539" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="792">
+            <state line="14" column="4" selection-start="238" selection-end="238" vertical-scroll-proportion="-7.9259257" vertical-offset="38" max-vertical-offset="2088">
+              <folding>
+                <element signature="e#21#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Paginator.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Pagination/Paginator.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="374" column="33" selection-start="7184" selection-end="7184" vertical-scroll-proportion="0.30793157" vertical-offset="6426" max-vertical-offset="9792">
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readme.md" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/way/generators/readme.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="414" column="59" selection-start="11117" selection-end="11117" vertical-scroll-proportion="-3.7195122" vertical-offset="7147" max-vertical-offset="10746">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="MarkdownPreviewEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="controller.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/templates/scaffolding/controller.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="53" selection-start="265" selection-end="265" vertical-scroll-proportion="-10.384615" vertical-offset="0" max-vertical-offset="2070">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/config/config.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="846">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="controller.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/templates/scaffolding/controller.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="73" selection-start="250" selection-end="250" vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="2034">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="model.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/templates/scaffolding/model.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="controller.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/templates/controller.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1638">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+            <state />
           </provider>
         </entry>
       </file>
       <file leaf-file-name="MmexController.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/api/mmex/MmexController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="0" selection-start="294" selection-end="369" vertical-scroll-proportion="0.0" vertical-offset="378" max-vertical-offset="990">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BaseController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/BaseController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="21" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="432">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Accounts.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/mmex/Accounts.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="23" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="198">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Category.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/mmex/Category.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="14" selection-start="110" selection-end="118" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SubCategory.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/mmex/SubCategory.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="9" selection-start="113" selection-end="113" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Payee.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/mmex/Payee.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="0" selection-start="103" selection-end="103" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="360">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Transaction.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/mmex/Transaction.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="17" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="360">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StandingOrder.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/mmex/StandingOrder.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="6" selection-start="110" selection-end="110" vertical-scroll-proportion="-4.0" vertical-offset="0" max-vertical-offset="270">
+            <state line="15" column="3" selection-start="259" selection-end="259" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="990">
               <folding />
             </state>
           </provider>
@@ -202,7 +217,7 @@
       <file leaf-file-name="Increment.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/Increment.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="8" selection-start="78" selection-end="78" vertical-scroll-proportion="-2.6666667" vertical-offset="0" max-vertical-offset="198">
+            <state line="4" column="8" selection-start="78" selection-end="78" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="198">
               <folding />
             </state>
           </provider>
@@ -211,7 +226,7 @@
       <file leaf-file-name="StandingOrder.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/StandingOrder.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="180">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="180">
               <folding />
             </state>
           </provider>
@@ -282,8 +297,6 @@
         <option value="$PROJECT_DIR$/app/models/mmex/Transaction.php" />
         <option value="$PROJECT_DIR$/app/models/mmex/StandingOrder.php" />
         <option value="$PROJECT_DIR$/app/models/mmex/MMEX.php" />
-        <option value="$PROJECT_DIR$/app/controllers/api/mmex/MmexController.php" />
-        <option value="$PROJECT_DIR$/app/routes.php" />
         <option value="$PROJECT_DIR$/app/database/migrations/2014_08_17_115555_create_accounts_table.php" />
         <option value="$PROJECT_DIR$/app/database/migrations/2014_08_17_162505_create_categories_table.php" />
         <option value="$PROJECT_DIR$/app/database/seeds/CategoriesTableSeeder.php" />
@@ -297,6 +310,10 @@
         <option value="$PROJECT_DIR$/app/database/migrations/2014_08_19_063808_create_standing_orders_table.php" />
         <option value="$PROJECT_DIR$/app/models/Increment.php" />
         <option value="$PROJECT_DIR$/app/database/seeds/StandingOrdersTableSeeder.php" />
+        <option value="$PROJECT_DIR$/app/routes.php" />
+        <option value="$PROJECT_DIR$/app/controllers/api/mmex/MmexController.php" />
+        <option value="$PROJECT_DIR$/app/templates/scaffolding/controller.txt" />
+        <option value="$PROJECT_DIR$/app/controllers/api/TransactionsController.php" />
       </list>
     </option>
   </component>
@@ -332,7 +349,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -348,6 +364,224 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scaffolding" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Parsers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vendor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="way" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="generators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -393,7 +627,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="models" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -411,7 +645,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="database" />
+              <option name="myItemId" value="tests" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -429,11 +663,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="database" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="seeds" />
+              <option name="myItemId" value="templates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -451,11 +681,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="database" />
+              <option name="myItemId" value="templates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="migrations" />
+              <option name="myItemId" value="scaffolding" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -498,53 +728,36 @@
               <option name="myItemId" value="api" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="feenance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="mmex" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="feenance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="feenance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="feenance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="feenance" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="local" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -556,6 +769,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/database/seeds" />
       <recent name="$PROJECT_DIR$/app/models/mmex" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/controllers/api" />
     </key>
   </component>
   <component name="RunManager">
@@ -588,11 +804,11 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15591398" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15591398" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17383513" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2520908" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -626,142 +842,17 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/bootstrap/start.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="27" selection-start="930" selection-end="930" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="1404">
-          <folding />
-        </state>
+        <state line="28" column="27" selection-start="930" selection-end="930" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="1404" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/config/database.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="0" selection-start="1531" selection-end="1656" vertical-scroll-proportion="0.0" vertical-offset="954" max-vertical-offset="2340">
-          <folding />
-        </state>
+        <state line="63" column="6" selection-start="1664" selection-end="1935" vertical-scroll-proportion="0.0" vertical-offset="846" max-vertical-offset="2340" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/config/local/database.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="50" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="846">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="34" selection-start="573" selection-end="573" vertical-scroll-proportion="0.0" vertical-offset="378" max-vertical-offset="648">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_08_17_162505_create_categories_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="468" selection-end="540" vertical-scroll-proportion="0.0" vertical-offset="378" max-vertical-offset="792">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/api/mmex/MmexController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="294" selection-end="369" vertical-scroll-proportion="0.0" vertical-offset="50" max-vertical-offset="990">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/BaseController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="21" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="432">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/mmex/Accounts.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="23" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="198">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/mmex/Category.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="14" selection-start="110" selection-end="118" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/mmex/SubCategory.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="9" selection-start="113" selection-end="113" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/mmex/Payee.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="103" selection-end="103" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/mmex/Transaction.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="42" selection-start="207" selection-end="207" vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/mmex/StandingOrder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="35" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/mmex/MMEX.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="170" selection-end="170" vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="342">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="4" selection-start="230" selection-end="230" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="810">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/local/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="424" selection-end="424" vertical-scroll-proportion="0.0" vertical-offset="252" max-vertical-offset="432">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="0" selection-start="4400" selection-end="4400" vertical-scroll-proportion="0.0" vertical-offset="2232" max-vertical-offset="3600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bootstrap/start.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="27" selection-start="930" selection-end="930" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="1404">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/database.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="6" selection-start="1664" selection-end="1935" vertical-scroll-proportion="0.0" vertical-offset="846" max-vertical-offset="2340">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/local/database.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="0" selection-start="960" selection-end="960" vertical-scroll-proportion="0.0" vertical-offset="576" max-vertical-offset="738">
-          <folding />
-        </state>
+        <state line="32" column="0" selection-start="960" selection-end="960" vertical-scroll-proportion="0.0" vertical-offset="576" max-vertical-offset="738" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/config/local/app.php">
@@ -773,16 +864,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bootstrap/start.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="27" selection-start="930" selection-end="930" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="1404">
-          <folding />
-        </state>
+        <state line="28" column="27" selection-start="930" selection-end="930" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="1404" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/config/database.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="0" selection-start="1531" selection-end="1656" vertical-scroll-proportion="0.0" vertical-offset="954" max-vertical-offset="2340">
-          <folding />
-        </state>
+        <state line="53" column="0" selection-start="1531" selection-end="1656" vertical-scroll-proportion="0.0" vertical-offset="954" max-vertical-offset="2340" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
@@ -806,25 +893,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/BaseController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="21" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="432">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/config/local/database.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="50" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="846">
-          <folding />
-        </state>
+        <state line="34" column="50" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="846" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/mmex/Accounts.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="23" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="198">
-          <folding />
-        </state>
+        <state line="4" column="23" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="198" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/mmex/MMEX.php">
@@ -836,37 +912,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/mmex/Payee.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="103" selection-end="103" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="360">
-          <folding />
-        </state>
+        <state line="10" column="0" selection-start="103" selection-end="103" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="360" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/mmex/SubCategory.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="9" selection-start="113" selection-end="113" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="34" selection-start="573" selection-end="573" vertical-scroll-proportion="0.0" vertical-offset="378" max-vertical-offset="648">
-          <folding />
-        </state>
+        <state line="11" column="9" selection-start="113" selection-end="113" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/mmex/Category.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="14" selection-start="110" selection-end="118" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/api/mmex/MmexController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="294" selection-end="369" vertical-scroll-proportion="0.0" vertical-offset="50" max-vertical-offset="990">
-          <folding />
-        </state>
+        <state line="11" column="14" selection-start="110" selection-end="118" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/Category.php">
@@ -888,28 +944,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/mmex/Transaction.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="17" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="360">
-          <folding />
-        </state>
+        <state line="12" column="17" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="360" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_08_17_162505_create_categories_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="6" selection-start="474" selection-end="539" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="792">
-          <folding />
-        </state>
+        <state line="20" column="6" selection-start="474" selection-end="539" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="792" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/database/seeds/PayeesTableSeeder.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="0" selection-start="176" selection-end="393" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="558">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/database/seeds/CategoriesTableSeeder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="22" selection-start="627" selection-end="640" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="720">
           <folding />
         </state>
       </provider>
@@ -928,16 +973,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/database/seeds/TransactionsTableSeeder.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="18" selection-start="255" selection-end="255" vertical-scroll-proportion="7.6296296" vertical-offset="476" max-vertical-offset="1188">
+        <state line="15" column="18" selection-start="255" selection-end="255" vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="1188">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/mmex/StandingOrder.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="6" selection-start="110" selection-end="110" vertical-scroll-proportion="-4.0" vertical-offset="0" max-vertical-offset="270">
-          <folding />
-        </state>
+        <state line="11" column="6" selection-start="110" selection-end="110" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="360" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/StandingOrder.php">
@@ -947,30 +990,176 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/database/seeds/DatabaseSeeder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="31" selection-start="350" selection-end="350" vertical-scroll-proportion="-11.333333" vertical-offset="0" max-vertical-offset="504">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/Increment.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="8" selection-start="78" selection-end="78" vertical-scroll-proportion="-2.6666667" vertical-offset="0" max-vertical-offset="198">
+        <state line="4" column="8" selection-start="78" selection-end="78" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="198">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/database/migrations/2014_08_19_063808_create_standing_orders_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="0" selection-start="1828" selection-end="1828" vertical-scroll-proportion="-32.666668" vertical-offset="108" max-vertical-offset="1188">
+        <state line="56" column="0" selection-start="1828" selection-end="1828" vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="1206">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/database/seeds/StandingOrdersTableSeeder.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="6" selection-start="491" selection-end="491" vertical-scroll-proportion="0.4" vertical-offset="0" max-vertical-offset="1530">
+        <state line="20" column="33" selection-start="586" selection-end="586" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="1530">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/BaseController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="21" selection-start="28" selection-end="28" vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="432" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/tests/ExampleTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="670">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/transactions/create.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="670" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/transactions/show.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="25" selection-start="25" selection-end="25" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="108" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/transactions/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="670" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/transactions/edit.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="670" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/database/seeds/DatabaseSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="31" selection-start="350" selection-end="350" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="504">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/database/seeds/CategoriesTableSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="22" selection-start="627" selection-end="640" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="720">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/api/mmex/MmexController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="3" selection-start="259" selection-end="259" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="990">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="2" selection-start="535" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="684">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/config/config.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="846">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/templates/controller.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1638">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/templates/view.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="670" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/templates/seed.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="644" />
+      </provider>
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/templates/scaffolding/model.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="670">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/Parsers/MigrationFieldsParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1152" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/Parsers/MigrationNameParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.6874028" vertical-offset="1085" max-vertical-offset="1728" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/src/Way/Generators/templates/scaffolding/controller.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="73" selection-start="250" selection-end="250" vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="2034">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/way/generators/readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="414" column="59" selection-start="11117" selection-end="11117" vertical-scroll-proportion="-3.7195122" vertical-offset="7147" max-vertical-offset="10746">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/scaffolding/controller.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="53" selection-start="265" selection-end="265" vertical-scroll-proportion="-10.384615" vertical-offset="0" max-vertical-offset="2070">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/api/TransactionsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="4" selection-start="238" selection-end="238" vertical-scroll-proportion="-7.9259257" vertical-offset="38" max-vertical-offset="2088">
+          <folding>
+            <element signature="e#21#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Pagination/Paginator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="374" column="33" selection-start="7184" selection-end="7184" vertical-scroll-proportion="0.30793157" vertical-offset="6426" max-vertical-offset="9792">
           <folding />
         </state>
       </provider>

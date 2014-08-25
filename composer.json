@@ -3,9 +3,16 @@
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
-	"require": {
-		"laravel/framework": "4.2.*"
-	},
+  "repositories": {
+    "responder": {
+      "type": "vcs",
+      "url": "https://github.com/markfee/responder.git"
+    }
+  },
+  "require": {
+    "laravel/framework": "4.2.*",
+    "markfee/responder": "dev-master"
+  },
   "require-dev": {
     "way/generators": "2.*"
   },
@@ -18,7 +25,7 @@
 			"app/database/seeds",
 			"app/tests/TestCase.php"
 		]
-	},
+  },
 	"scripts": {
 		"post-install-cmd": [
 			"php artisan clear-compiled",

@@ -13,11 +13,12 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('home');
 });
 
 Route::group(['prefix' =>  'api/v1/'], function() {
   $NAMESPACE = 'api\\';
+  Route::resource('accounts', $NAMESPACE.'AccountsController');
   Route::resource('transactions', $NAMESPACE.'TransactionsController');
 });
 

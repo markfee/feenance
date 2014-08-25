@@ -1,10 +1,20 @@
 <?php
 namespace api;
+
 use \Transaction;
 use Illuminate\Pagination\Paginator;
 use Markfee\Responder\Respond;
+use Misc\Transformers\TransactionTransformer;
 
-class TransactionsController extends \BaseController {
+class TransactionsController extends BaseController {
+
+  /**
+   * @return Transformer
+   */
+  protected function getTransformer() {
+    return $this->transformer ?: new TransactionTransformer;
+  }
+
 
 	/**
 	 * Display a listing of transactions
@@ -13,20 +23,8 @@ class TransactionsController extends \BaseController {
 	 */
 	public function index()
 	{
-    $records = Transaction::paginate();
-    return Respond::Paginated($records, $records->all());
-//    return \Response::json($records->all());
-//		return View::make('transactions.index', compact('transactions'));
-	}
-
-	/**
-	 * Show the form for creating a new transaction
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('transactions.create');
+    $records = Transaction::orderBy('date', "DESC")->paginate();
+    return Respond::Paginated($records, $this->transformCollection($records->all()));
 	}
 
 	/**
@@ -102,10 +100,8 @@ class TransactionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id)	{
 		Transaction::destroy($id);
-
 		return Redirect::route('transactions.index');
 	}
 

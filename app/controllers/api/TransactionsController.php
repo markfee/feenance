@@ -2,6 +2,7 @@
 namespace api;
 use \Transaction;
 use Illuminate\Pagination\Paginator;
+use Markfee\Responder\Respond;
 
 class TransactionsController extends \BaseController {
 
@@ -13,7 +14,8 @@ class TransactionsController extends \BaseController {
 	public function index()
 	{
     $records = Transaction::paginate();
-    return \Response::json($records->all());
+    return Respond::Paginated($records, $records->all());
+//    return \Response::json($records->all());
 //		return View::make('transactions.index', compact('transactions'));
 	}
 

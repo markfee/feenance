@@ -21,9 +21,12 @@ class TransactionsController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($id = null)
 	{
-    $records = Transaction::orderBy('date', "DESC")->paginate();
+    if (!empty($id)) {
+      $records = Transaction::where("account_id", $id)->orderBy('date', "DESC")->paginate(100);
+    } else
+      $records = Transaction::orderBy('date', "DESC")->paginate(100);
     return Respond::Paginated($records, $this->transformCollection($records->all()));
 	}
 

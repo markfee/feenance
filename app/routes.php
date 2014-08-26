@@ -18,6 +18,7 @@ Route::get('/', function()
 
 Route::group(['prefix' =>  'api/v1/'], function() {
   $NAMESPACE = 'api\\';
+  Route::get('accounts/{id}/transactions/',          $NAMESPACE.'TransactionsController@index');
   Route::resource('accounts', $NAMESPACE.'AccountsController');
   Route::resource('transactions', $NAMESPACE.'TransactionsController');
 });

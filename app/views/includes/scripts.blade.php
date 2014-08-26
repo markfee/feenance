@@ -14,6 +14,8 @@
 {{ HTML::script('js/angular/angular-leaflet-directive.min.js') }}
 {{ HTML::script('js/angular/ui-bootstrap-tpls-0.11.0.js') }}
 {{ HTML::script('js/feenance.js') }}
+{{ HTML::script('js/api.js') }}
+{{ HTML::script('js/controller.js') }}
 
 <!--
   {{ HTML::script('js/apiService.js') }}

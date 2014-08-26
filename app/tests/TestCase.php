@@ -1,7 +1,8 @@
 <?php
+use Illuminate\Http\Response;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
-
+  protected $expected_status = Response::HTTP_OK;
 	/**
 	 * Creates the application.
 	 *
@@ -34,7 +35,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     $this->assertInternalType('integer', $jsonResponse->data[0]->id, "Data is expected to contain the inserted items id:\n{$str}");
   }
 
-  protected function assertValidSnodbertJsonError($response, $expectedResponse) {
+  protected function assertValidJsonError($response, $expectedResponse) {
     $this->assertEquals($expectedResponse, $response->getStatusCode(), "Expected response {$expectedResponse} got " . $response->getStatusCode());
 
     $this->assertEquals('application/json', $response->headers->get('Content-Type'));
@@ -60,7 +61,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
       return $jsonResponse;
     } catch(Exception $ex) {
       print_r($ex->getMessage());
-      dd($response);
+      print_r($jsonResponse);
     }
   }
 
@@ -83,14 +84,14 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
   protected function assertExpectedFields($record, $expectedFields) {
     if (!empty($expectedFields)) {
       foreach($expectedFields as $field) {
-        $this->assertEquals(false, empty($record->$field),  "Does the data have the field: '{$field}'?");
+        $this->assertEquals(true, array_key_exists($field, $record),  "Does the data have the field: '{$field}'?");
       }
     }
   }
   protected function assertUnExpectedFields($record, $unexpectedFields) {
     if (!empty($unexpectedFields)) {
       foreach($unexpectedFields as $field) {
-        $this->assertEquals(true, empty($record->$field),  "Does the data NOT have the field: '{$field}'?");
+        $this->assertEquals(false, array_key_exists($field, $record),  "Does the data NOT have the field: '{$field}'?");
       }
     }
   }

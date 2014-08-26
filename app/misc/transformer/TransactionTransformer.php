@@ -7,21 +7,20 @@
  */
 
 namespace Misc\Transformers;
-
+use \Carbon;
 
 class TransactionTransformer extends Transformer {
 
-  private function transformAmount($account, $amount) {
-    return $account ? ["acount_id" => $account, "amount" => $amount] : null;
+  private function transformAmount($account, $amount, $transfer) {
+    return $account ? ["account_id" => $account, "amount" => 0.01 * $amount, "transfer_id" => $transfer] : null;
   }
 
   public function transform($record) {
     return [
       "id"                => $record->id,
-      "date"              => $record->date,
-      "amount"            => $record->amount,
-      "credit"            => $this->transformAmount($record->credit_account_id, $record->amount),
-      "debit"             => $this->transformAmount($record->debit_account_id, $record->amount),
+      "date"              => $record->date->toISO8601String(),
+      "amount"            => 0.01 * $record->amount,
+      "account_id"        => $record->account_id,
       "reconciled"        => $record->reconciled,
       "payee_id"          => $record->payee_id,
       "category_id"       => $record->category_id,

@@ -29,12 +29,8 @@ TOTRANSAMOUNT: "40"
       $amount = $record->TRANSAMOUNT;
       $credit_account = null;
       $debit_account = null;
-      if ($record->TOACCOUNTID != "-1") { // transfer
-        $credit_account = ($amount < 0 ? $record->ACCOUNTID : $record->TOACCOUNTID);
-        $debit_account  = ($amount > 0 ? $record->ACCOUNTID : $record->TOACCOUNTID);
-      } else {
-        $credit_account = ($record->TRANSCODE == "Deposit"    ?  $record->ACCOUNTID : null);
-        $debit_account  = ($record->TRANSCODE == "Withdrawal" ? $record->ACCOUNTID : null);
+      if ($record->TRANSCODE == "Withdrawal" || ($record->TOACCOUNTID != "-1") ) {
+        $amount *= -1;
       }
 
       $categoryId = $record->CATEGID;
@@ -43,18 +39,31 @@ TOTRANSAMOUNT: "40"
         $categoryId = $category->id;
       }
 
-
-			Transaction::create([
-        "id"                => $record->TRANSID,
+      Transaction::create([
+//        "id"                => $record->TRANSID,
         "date"              => $record->TRANSDATE,
-        "amount"            => $record->TRANSAMOUNT,
-        "credit_account_id" => $credit_account,
-        "debit_account_id"  => $debit_account,
+        "amount"            => $amount * 100,
+        "account_id"        => $record->ACCOUNTID,
         "reconciled"        => ($record->STATUS == "R"),
         "payee_id"          => $record->PAYEEID == "-1" ? null : $record->PAYEEID,
-        "category_id"       => $categoryId == "-1" ? null : $categoryId,
+        "category_id"       => $categoryId == "-1"      ? null : $categoryId,
         "notes"             => $record->NOTES,
-			]);
+      ]);
+      if ($record->TOACCOUNTID != "-1") { // transfer
+        Transaction::create([
+//          "id"                => $record->TRANSID,
+          "date"              => $record->TRANSDATE,
+          "amount"            => $amount * -100,
+          "account_id"        => $record->TOACCOUNTID,
+          "reconciled"        => ($record->STATUS == "R"),
+          "payee_id"          => $record->PAYEEID == "-1" ? null : $record->PAYEEID,
+          "category_id"       => $categoryId == "-1"      ? null : $categoryId,
+          "notes"             => $record->NOTES,
+        ]);
+
+      }
+
+
 		}
 	}
 

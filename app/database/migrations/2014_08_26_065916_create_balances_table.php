@@ -18,7 +18,7 @@ class CreateBalancesTable extends Migration {
 			$table->integer('balance');
 			$table->timestamps();
       $table->primary('transaction_id');
-      $table->foreign('transaction_id')->references('id')->on('transactions');
+      $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
 		});
 
     DB::unprepared('

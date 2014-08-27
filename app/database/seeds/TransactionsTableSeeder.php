@@ -8,6 +8,7 @@ class TransactionsTableSeeder extends Seeder {
 	{
     $records = mmexTransaction::all();
 
+    DB::unprepared('SET @disable_transaction_triggers = 1;');
     foreach($records as $record)
     {
       $amount = $record->TRANSAMOUNT;
@@ -44,6 +45,7 @@ class TransactionsTableSeeder extends Seeder {
         ]);
       }
 		}
+    DB::unprepared('SET @disable_transaction_triggers = NULL;');
     DB::unprepared('call refresh_balances();');
 	}
 

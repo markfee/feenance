@@ -17,7 +17,7 @@ class AccountsTableSeeder extends Seeder {
         'notes'           => $record->NOTES ?:null,
         'open'            => ($record->STATUS != "Closed"),
         'bank'            => $record->HELDAT ?:null,
-        'opening_balance' => $record->INITIALBAL
+        'opening_balance' => $record->INITIALBAL * 100
       ]);
     }
 	}

@@ -18,7 +18,6 @@ class CreateTransactionsTable extends Migration {
       $table->datetime('date');
       $table->integer('amount');      // in pence, signed.
       $table->integer('account_id')->unsigned();
-//      $table->integer('debit_account_id')->unsigned()->nullable();
       $table->boolean('reconciled');
       $table->integer('payee_id')->unsigned()->nullable();
       $table->integer('category_id')->unsigned()->nullable();

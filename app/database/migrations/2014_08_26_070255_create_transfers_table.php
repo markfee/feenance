@@ -14,11 +14,15 @@ class CreateTransfersTable extends Migration {
 	{
 		Schema::create('transfers', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->integer('source_account_id')->unsigned();
-			$table->integer('dest_account_id')->unsigned();
-			$table->timestamps();
-		});
+			$table->integer('source')->unsigned();
+			$table->integer('destination')->unsigned();
+      $table->foreign('source')->references('id')->on('transactions')->onDelete('cascade')->unique();
+      $table->foreign('destination')->references('id')->on('transactions')->onDelete('cascade')->unique();
+      $table->primary(['source', 'destination']);
+//      $table->index('source')->unique();
+//      $table->index('dest')->unique();
+
+    });
 	}
 
 

@@ -41,22 +41,45 @@ feenance.controller('TransactionsController', function($scope, AccountsApi, Curr
   });
 });
 
-
 feenance.directive('account', function(AccountsApi) {
-    return {
-      restrict: 'E',
-      scope: {
-        accountid: "="
-      },
-      templateUrl: 'account.html'
-      , link: function (scope, element, attrs) {
-        if (scope.accountid)
-        {
-          var $account = AccountsApi.get({id:scope.accountid}, function() {
-            scope.account = $account;
-            scope.direction = attrs.direction
-          });
-        }
+  return {
+    restrict: 'E',
+    scope: {
+      accountid: "="
+    },
+    templateUrl: 'account.html'
+    , link: function (scope, element, attrs) {
+      if (scope.accountid)
+      {
+        var $account = AccountsApi.get({id:scope.accountid}, function() {
+          scope.account = $account;
+          scope.direction = attrs.direction
+        });
       }
-    };
-  });
+    }
+  };
+});
+
+feenance.directive('transaction', function(TransactionsApi, AccountsApi) {
+  return {
+    restrict: 'E',
+    scope: {
+        source: "="
+      , destination: "="
+    },
+    templateUrl: 'transaction.html'
+    , link: function (scope) {
+      if (scope.source || scope.destination) {
+        var $id = (scope.source == undefined ? scope.destination : scope.source);
+        var $direction = (scope.source == undefined ? "to" : "from");
+        var $transaction = TransactionsApi.get({id:$id}, function() {
+          scope.transaction = $transaction;
+          var $account = AccountsApi.get({id:$transaction.account_id}, function() {
+            scope.account = $account;
+            scope.direction = $direction;
+          });
+        });
+      }
+    }
+  };
+});

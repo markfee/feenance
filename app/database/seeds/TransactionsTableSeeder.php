@@ -24,7 +24,7 @@ class TransactionsTableSeeder extends Seeder {
         $categoryId = $category->id;
       }
 
-      Transaction::create([
+      $src = Transaction::create([
         "date"              => $record->TRANSDATE,
         "amount"            => $amount * 100,
         "account_id"        => $record->ACCOUNTID,
@@ -34,7 +34,7 @@ class TransactionsTableSeeder extends Seeder {
         "notes"             => $record->NOTES,
       ]);
       if ($record->TOACCOUNTID != "-1") { // transfer
-        Transaction::create([
+        $destination = Transaction::create([
           "date"              => $record->TRANSDATE,
           "amount"            => $amount * -100,
           "account_id"        => $record->TOACCOUNTID,
@@ -42,6 +42,10 @@ class TransactionsTableSeeder extends Seeder {
           "payee_id"          => $record->PAYEEID == "-1" ? null : $record->PAYEEID,
           "category_id"       => $categoryId == "-1"      ? null : $categoryId,
           "notes"             => $record->NOTES,
+        ]);
+        Transfer::create([
+          'source'      => $src->id,
+          'destination' => $destination->id
         ]);
       }
 		}

@@ -26,6 +26,8 @@ class TransactionTransformer extends Transformer {
       "payee_id"          => $record->payee_id,
       "category_id"       => $record->category_id,
       "notes"             => $record->notes?:null ,
+      "source"            => $record->source?$record->source->source:null ,
+      "destination"       => $record->destination?$record->destination->destination:null ,
       ];
   }
 }

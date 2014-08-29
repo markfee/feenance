@@ -33,7 +33,8 @@ class BaseController extends \Controller {
    * @return mixed
    */
   protected function transform($record) {
-    return $transform = $this->getTransformer() ? $transform->transform($record) : $record;
+    $transform = $this->getTransformer();
+    return $transform ? $transform->transform($record) : $record;
   }
 
   /**

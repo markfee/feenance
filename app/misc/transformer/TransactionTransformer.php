@@ -21,6 +21,7 @@ class TransactionTransformer extends Transformer {
       "date"              => $record->date->toISO8601String(),
       "amount"            => 0.01 * $record->amount,
       "account_id"        => $record->account_id,
+      "balance"           => 0.01 * $record->balance->balance,
       "reconciled"        => $record->reconciled,
       "payee_id"          => $record->payee_id,
       "category_id"       => $record->category_id,

@@ -48,7 +48,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
   protected function assertValidJsonResponse($response, Array $expectedFields = null, Array $unexpectedFields = null) {
 //    dd($response);
-    try {
+//    try {
       $jsonResponse = $response->getData();
       $this->assertNoErrors($jsonResponse);
       $this->assertEquals($this->expected_status, $response->getStatusCode(), "Expected response {$this->expected_status} got " . $response->getStatusCode());
@@ -59,10 +59,10 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
       $this->assertExpectedFields($jsonResponse->data[0], $expectedFields);
       $this->assertUnExpectedFields($jsonResponse->data[0], $unexpectedFields);
       return $jsonResponse;
-    } catch(Exception $ex) {
-      print_r($ex->getMessage());
-      print_r($jsonResponse);
-    }
+//    } catch(Exception $ex) {
+//      print_r($jsonResponse);
+//      $this->assertEquals(true, false, $ex->getMessage());
+//    }
   }
 
   protected function assertCallback($jsonResponse, $callback) {

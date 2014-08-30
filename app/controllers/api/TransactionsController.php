@@ -2,15 +2,15 @@
 namespace api;
 
 use \Transaction;
-use Illuminate\Pagination\Paginator;
 use Markfee\Responder\Respond;
 use Misc\Transformers\TransactionTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TransactionsController extends BaseController {
 
   /**
    * @return Transformer
-   */
+  */
   protected function getTransformer() {
     return $this->transformer ?: new TransactionTransformer;
   }
@@ -30,6 +30,23 @@ class TransactionsController extends BaseController {
     return Respond::Paginated($records, $this->transformCollection($records->all()));
 	}
 
+  /**
+   * Display the specified transaction.
+   *
+   * @param  int  $id
+   * @return Response
+   */
+  public function show($id)
+  {
+    try {
+      $transaction = Transaction::findOrFail($id);
+    } catch(ModelNotFoundException $ex) {
+      return Respond::NotFound("Transaction not found");
+    }
+    return Respond::Raw($this->transform($transaction));
+  }
+
+
 	/**
 	 * Store a newly created transaction in storage.
 	 *
@@ -47,18 +64,6 @@ class TransactionsController extends BaseController {
 		Transaction::create($data);
 
 		return Redirect::route('transactions.index');
-	}
-
-	/**
-	 * Display the specified transaction.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-    $transaction = Transaction::findOrFail($id);
-    return Respond::Raw($this->transform($transaction));
 	}
 
 	/**

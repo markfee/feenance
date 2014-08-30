@@ -17,14 +17,12 @@ class AccountsTransformer extends Transformer {
 
   public function transform($record) {
     return [
-      "id"                => $record->id,
-      "date"              => $record->date,
-      "amount"            => $record->amount,
-      "credit"            => $this->transformAmount($record->credit_account_id, $record->amount),
-      "debit"             => $this->transformAmount($record->debit_account_id, $record->amount),
-      "reconciled"        => $record->reconciled,
-      "payee_id"          => $record->payee_id,
-      "category_id"       => $record->category_id,
+      "id"                => (int)$record->id,
+      "name"              => $record->title,
+      "bank"              => $record->bank,
+      "sort_code"         => $record->acc_number,
+      "acc_number"         => $record->acc_number,
+      "opening_balance"   => 0.01 * $record->opening_balance,
       "notes"             => $record->notes?:null ,
       ];
   }

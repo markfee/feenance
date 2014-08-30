@@ -22,17 +22,18 @@ feenance.controller('AccountController', function($scope, AccountsApi) {
   }
 });
 
-feenance.directive('Account', function() {
+/*feenance.directive('Account', function() {
   return {
       templateUrl: "Account.html"
   };
-});
+});*/
 
 
 
 feenance.controller('TransactionsController', function($scope, AccountsApi, CurrentAccount) {
   CurrentAccount.onChange(function($newAccount) {
     if ($newAccount.id) {
+      $scope.account = $newAccount;
       var records = AccountsApi.transactions( {id:$newAccount.id  },function () {
         $scope.items = records.data;
         $scope.accountId = $newAccount.id;
@@ -49,8 +50,7 @@ feenance.directive('account', function(AccountsApi) {
     },
     templateUrl: 'account.html'
     , link: function (scope, element, attrs) {
-      if (scope.accountid)
-      {
+      if (scope.accountid) {
         var $account = AccountsApi.get({id:scope.accountid}, function() {
           scope.account = $account;
           scope.direction = attrs.direction
@@ -59,6 +59,24 @@ feenance.directive('account', function(AccountsApi) {
     }
   };
 });
+
+feenance.directive('payee', function(PayeesApi) {
+  return {
+    restrict: 'E',
+    scope: {
+      payeeid: "="
+    },
+    templateUrl: 'payee.html'
+    , link: function (scope) {
+      if (scope.payeeid) {
+        var $payee = PayeesApi.get({id:scope.payeeid}, function() {
+          scope.payee= $payee;
+        });
+      }
+    }
+  };
+});
+
 
 feenance.directive('transaction', function(TransactionsApi, AccountsApi) {
   return {

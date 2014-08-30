@@ -11,7 +11,8 @@
   },
   "require": {
     "laravel/framework": "4.2.*",
-    "markfee/responder": "dev-master"
+    "markfee/responder": "dev-master",
+		"barryvdh/laravel-ide-helper": "1.*"
   },
   "require-dev": {
     "way/generators": "2.*"

@@ -2,29 +2,42 @@
 
 namespace api;
 use \$MODEL$;
+use Markfee\Responder\Respond;
+use Misc\Transformers\$MODEL$Transformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class $NAME$ extends \BaseController {
 
-	/**
-	 * Display a listing of $COLLECTION$
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$$COLLECTION$ = $MODEL$::all();
-        return \Response::json($$COLLECTION$->all());
-	}
+  /* @return Transformer */
+  protected function getTransformer() {    return $this->transformer ?: new $MODEL$Transformer;    }
 
-	/**
-	 * Show the form for creating a new $RESOURCE$
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('$COLLECTION$.create');
-	}
+  /**
+   * Display a listing of $COLLECTION$
+   *
+   * @return Response
+   */
+  public function index()
+  {
+      $$COLLECTION$ = $MODEL$::paginate();
+      return Respond::Paginated($$COLLECTION$, $this->transformCollection($$COLLECTION$->all()));
+  }
+
+  /**
+   * Display the specified $RESOURCE$.
+   *
+   * @param  int  $id
+   * @return Response
+   */
+  public function show($id)
+  {
+    try {
+      $$RESOURCE$ = $MODEL$::findOrFail($id);
+      return Respond::Raw($this->transform($$RESOURCE$));
+    } catch (ModelNotFoundException $e) {
+      return Respond::NotFound($e->getMessage());
+    }
+  }
+
 
 	/**
 	 * Store a newly created $RESOURCE$ in storage.
@@ -43,19 +56,6 @@ class $NAME$ extends \BaseController {
 		$MODEL$::create($data);
 
 		return Redirect::route('$COLLECTION$.index');
-	}
-
-	/**
-	 * Display the specified $RESOURCE$.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$$RESOURCE$ = $MODEL$::findOrFail($id);
-
-		return View::make('$COLLECTION$.show', compact('$RESOURCE$'));
 	}
 
 	/**

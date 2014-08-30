@@ -1,6 +1,6 @@
 <?php
 
-class Transaction extends \Eloquent {
+class Transaction extends Eloquent {
   protected $fillable = [];
   protected $dates = ["date"];
 

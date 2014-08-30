@@ -123,6 +123,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
     'Way\Generators\GeneratorsServiceProvider',
     'Markfee\Responder\ResponderServiceProvider',
+    'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 	),
 
 	/*

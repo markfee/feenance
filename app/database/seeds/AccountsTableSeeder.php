@@ -12,7 +12,7 @@ class AccountsTableSeeder extends Seeder {
     {
       Account::create([
         "id"              => $record->ACCOUNTID,
-        "title"           => $record->ACCOUNTNAME,
+        "name"           => $record->ACCOUNTNAME,
         'acc_number'      => $record->ACCOUNTNUM ?:null,
         'notes'           => $record->NOTES ?:null,
         'open'            => ($record->STATUS != "Closed"),

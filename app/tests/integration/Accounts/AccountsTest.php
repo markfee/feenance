@@ -13,7 +13,7 @@ class AccountsTest extends TestCase {
 
   public function test_index_returns_some_records() {
     $response = $this->call('GET', $this->API_ROOT );
-    $this->assertValidJsonResponse($response, ['title', 'acc_number', 'sort_code', 'notes', 'open', 'bank', 'opening_balance']);
+    $this->assertValidJsonResponse($response, ['name', 'acc_number', 'sort_code', 'notes', 'open', 'bank', 'opening_balance']);
   }
 
 

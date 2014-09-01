@@ -18,8 +18,8 @@ class PayeesController extends BaseController {
    */
   public function index()
   {
-      $payees = Payee::paginate();
-      return Respond::Paginated($payees, $this->transformCollection($payees->all()));
+    $payees = Payee::orderBy("name")->paginate();
+    return Respond::Paginated($payees, $this->transformCollection($payees->all()));
   }
 
   /**
@@ -30,6 +30,9 @@ class PayeesController extends BaseController {
    */
   public function show($id)
   {
+    if (!is_numeric($id)) {
+      return $this->search($id);
+    }
     try {
       $payee = Payee::findOrFail($id);
       return Respond::Raw($this->transform($payee));
@@ -37,6 +40,13 @@ class PayeesController extends BaseController {
       return Respond::NotFound($e->getMessage());
     }
   }
+
+  public function search($name)
+  {
+    $payees = Payee::where("name", "like", "%{$name}%")->paginate();
+    return Respond::Paginated($payees, $this->transformCollection($payees->all()));
+  }
+
 
 
 	/**

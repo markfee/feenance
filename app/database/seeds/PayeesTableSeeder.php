@@ -17,7 +17,7 @@ class PayeesTableSeeder extends Seeder {
       }
 			Payee::create([
         "id" => $record->PAYEEID,
-        "title" => $record->PAYEENAME,
+        "name" => $record->PAYEENAME,
         "category_id" => $categoryId
 			]);
 		}

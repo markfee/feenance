@@ -15,7 +15,7 @@ class CategoriesTableSeeder extends Seeder {
     {
       Category::create([
         "id" => $record->CATEGID,
-        "title" => $record->CATEGNAME
+        "name" => $record->CATEGNAME
       ]);
     }
 
@@ -25,7 +25,7 @@ class CategoriesTableSeeder extends Seeder {
     {
       Category::create([
         "parent_id"     => $record->CATEGID,
-        "title"         => $record->SUBCATEGNAME,
+        "name"         => $record->SUBCATEGNAME,
         "mmex_subcatid" => $record->SUBCATEGID,
       ]);
     }

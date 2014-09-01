@@ -14,7 +14,7 @@ class PayeeTransformer extends Transformer {
   public function transform($record) {
     return [
       "id"                => (int)$record->id,
-      "name"              => $record->title,
+      "name"              => $record->name,
       "category_id"       => (int)$record->category_id,
       ];
   }

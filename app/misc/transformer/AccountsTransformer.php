@@ -18,7 +18,7 @@ class AccountsTransformer extends Transformer {
   public function transform($record) {
     return [
       "id"                => (int)$record->id,
-      "name"              => $record->title,
+      "name"              => $record->name,
       "bank"              => $record->bank,
       "sort_code"         => $record->acc_number,
       "acc_number"         => $record->acc_number,

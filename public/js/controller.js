@@ -22,25 +22,49 @@ feenance.controller('AccountController', function($scope, AccountsApi) {
   }
 });
 
-/*feenance.directive('Account', function() {
-  return {
-      templateUrl: "Account.html"
+feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi, CurrentAccount) {
+  // Set the default for the Form!
+  $scope.transaction = {
+    "reconciled": "true",
+    "date": (new Date()).toISOString().substr(0,10),
+    "amount": 0.0
   };
-});*/
-
-
-
-feenance.controller('TransactionsController', function($scope, AccountsApi, CurrentAccount) {
   CurrentAccount.onChange(function($newAccount) {
     if ($newAccount.id) {
       $scope.account = $newAccount;
       var records = AccountsApi.transactions( {id:$newAccount.id  },function () {
-        $scope.items = records.data;
+        $scope.transactions = records.data;
         $scope.accountId = $newAccount.id;
       });
     }
   });
+  $scope.update = function(transaction) {
+//    TransactionsApi
+    alert(transaction.amount);
+  }
 });
+
+feenance.controller('PayeeController', function($scope, PayeesApi) {
+  // Set the default for the Form!
+  $scope.transaction = {
+    "reconciled": "true",
+    "date": (new Date()).toISOString().substr(0,10),
+    "amount": 0.0
+  };
+  CurrentAccount.onChange(function($newAccount) {
+    if ($newAccount.id) {
+      $scope.account = $newAccount;
+      var records = AccountsApi.transactions( {id:$newAccount.id  },function () {
+        $scope.transactions = records.data;
+        $scope.accountId = $newAccount.id;
+      });
+    }
+  });
+  $scope.update = function(payee) {
+    alert(payee.name);
+  }
+});
+
 
 feenance.directive('account', function(AccountsApi) {
   return {
@@ -76,7 +100,6 @@ feenance.directive('payee', function(PayeesApi) {
     }
   };
 });
-
 
 feenance.directive('transaction', function(TransactionsApi, AccountsApi) {
   return {

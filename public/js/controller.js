@@ -51,15 +51,17 @@ feenance.controller('PayeeController', function($scope, PayeesApi) {
     "date": (new Date()).toISOString().substr(0,10),
     "amount": 0.0
   };
-  CurrentAccount.onChange(function($newAccount) {
-    if ($newAccount.id) {
-      $scope.account = $newAccount;
-      var records = AccountsApi.transactions( {id:$newAccount.id  },function () {
-        $scope.transactions = records.data;
-        $scope.accountId = $newAccount.id;
-      });
-    }
-  });
+
+  function getPage($page) {
+    $payees = PayeesApi.get({page: $page}, function() {
+      $scope.payees = $scope.payees.concat($payees.data);
+      if ($payees.paginator.next != undefined) {
+        getPage($payees.paginator.next);
+      }
+    });
+  }
+  $scope.payees = [];
+  getPage(1);
   $scope.update = function(payee) {
     alert(payee.name);
   }

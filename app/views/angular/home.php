@@ -21,7 +21,7 @@
 <script type="text/ng-template" id="newTransaction.html">
   <div data-ng-controller="PayeeController" >
     <h3>Payees<h3/>
-      <select ng-model="myPayee" ng-options="account.name for account in accounts" ng-change="change()">    </select>
+      <select ng-model="myPayee" ng-options="payee.name for payee in payees" ng-change="change()">    </select>
   </div>
 </script>
 

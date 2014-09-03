@@ -1,4 +1,4 @@
-var feenance = angular.module("feenance", ['ngResource', 'ngRoute']);
+var feenance = angular.module("feenance", ['ngResource', 'ngRoute', 'ui.bootstrap']);
 
 feenance.factory('Notifier', function () {
   var observerCallbacks = {};

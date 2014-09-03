@@ -10,6 +10,7 @@ feenance.controller('AccountsController', function($scope, AccountsApi, CurrentA
   }
 });
 
+
 feenance.controller('AccountController', function($scope, AccountsApi) {
   var records = AccountsApi.get( {  },
     function () {
@@ -44,12 +45,29 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   }
 });
 
-feenance.controller('PayeeController', function($scope, PayeesApi) {
+function TypeaheadCtrl($scope, $http) {
+  $scope.selected = undefined;
+  $scope.getPayees = function($viewValue) {
+    return $http.get('js/payees.json').then(function(response){
+      return response.data;
+    });
+  };
+}
+
+feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   // Set the default for the Form!
+  $scope.selected = undefined;
   $scope.transaction = {
     "reconciled": "true",
     "date": (new Date()).toISOString().substr(0,10),
     "amount": 0.0
+  };
+
+  $scope.lookupPayeesHttp = function($viewValue) {
+    return $http.get($API_ROOT + "payees/"+$viewValue).then(function(response) {
+      return response.data.data;
+//      return limitToFilter(response.data.data, 15);
+    });
   };
 
   function getPage($page) {
@@ -60,6 +78,16 @@ feenance.controller('PayeeController', function($scope, PayeesApi) {
       }
     });
   }
+
+ $scope.lookupPayees = function($val) {
+    var resultsPromise = PayeesApi.get({id: $val}).$promise;
+    resultsPromise.then(function(response) {
+      $scope.lpayee = response.data;
+      return response.data;
+    });
+    return resultsPromise;
+  }
+
   $scope.payees = [];
   getPage(1);
   $scope.update = function(payee) {

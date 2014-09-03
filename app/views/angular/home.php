@@ -1,10 +1,12 @@
 <div class = "row">
 <div class = "col-lg-12">
     <div data-ng-controller="AccountsController" ng-show="accounts">
-      <select ng-model="myAccount" ng-options="account.name for account in accounts" ng-change="change()">    </select>
+      <select ng-model="myAccount" ng-options="account.name for account in accounts" ng-change="change()"> </select>
     </div>
   </div>
 </div>
+
+
 <div class = "row">
   <div class = "col-lg-8">
     <div class = "row">
@@ -13,19 +15,31 @@
   </div>
   <div class = "col-lg-4">
 
-    <div class = "col-lg-12" ng-include="'newTransaction.html'"></div>
+    <div class = "col-lg-12" ng-include="'typeahead.html'"></div>
     <div class = "col-lg-12" ng-include="'newPayee.html'"> </div>
+    <div class = "col-lg-12" ng-include="'newTransaction.html'"></div>
   </div>
 </div>
 
-<script type="text/ng-template" id="newTransaction.html">
-  <div data-ng-controller="PayeeController" >
-    <h3>Payees<h3/>
-      <select ng-model="myPayee" ng-options="payee.name for payee in payees" ng-change="change()">    </select>
+<script type="text/ng-template" id="typeahead.html">
+  <h3>Typeahead<h3/>
+  <div class='container-fluid' data-ng-controller="TypeaheadCtrl">
+    <!-- <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue"> -->
+    <input type="text" ng-model="selected" typeahead="payee.id as payee.name for payee in getPayees($viewValue)" class="form-control" />
+    <pre>Model: {{selected | json}}</pre>
   </div>
 </script>
 
 <script type="text/ng-template" id="newPayee.html">
+  <div data-ng-controller="PayeeController" >
+    <h3>Payees<h3/>
+      <!--<select ng-model="ngPayee" ng-options="payee.name for payee in payees" ng-change="change()">    </select>-->
+      <input type="text" ng-model="selected" typeahead="payee.id as payee.name for payee in lookupPayeesHttp($viewValue)" class="form-control">
+      <pre>Model: {{selected | json}}</pre>
+  </div>
+</script>
+
+<script type="text/ng-template" id="newTransaction.html">
   <div data-ng-controller="TransactionsController" >
     <h3>New Transaction<h3/>
       <form novalidate role="form" class="form-horizontal">
@@ -39,7 +53,10 @@
         </div>
         <div class="form-group">
           <label class="col-sm-4" for="transaction_reconciled">    Reconciled:</label>
-          <div class="col-sm-8"><input id="transaction_reconciled"   type="checkbox" ng-model="transaction.reconciled" ng-true-value=true ng-false-value=false /></div>
+          <div class="col-sm-8">
+            <input id="transaction_reconciled"
+                   type="checkbox" ng-model="transaction.reconciled" ng-true-value=true ng-false-value=false />
+          </div>
         </div>
         <div class="form-group">
             <button ng-click="reset()">RESET</button>
@@ -65,8 +82,14 @@
       <tr ng-repeat="transaction in transactions">
         <td>{{transaction.date | date}} </td>
         <td><payee payeeid="transaction.payee_id" />           </td>
-        <td><span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}   </span> <transaction source="transaction.source" />           </td>
-        <td><span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}   </span> <transaction destination="transaction.destination" /> </td>
+        <td>
+          <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}   </span>
+          <transaction source="transaction.source" />
+        </td>
+        <td>
+          <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}   </span>
+          <transaction destination="transaction.destination" />
+        </td>
         <td>{{transaction.balance | currency: "£" }}</td>
         <!--
               <td><span ng-show="accountId==transaction.credit.account_id">{{transaction.credit.amount  | currency: "£" }}  <account direction="from" accountid="transaction.credit.transfer_id">  </account> </span></td>

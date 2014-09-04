@@ -45,15 +45,6 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   }
 });
 
-function TypeaheadCtrl($scope, $http) {
-  $scope.selected = undefined;
-  $scope.getPayees = function($viewValue) {
-    return $http.get('js/payees.json').then(function(response){
-      return response.data;
-    });
-  };
-}
-
 feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   // Set the default for the Form!
   $scope.selected = undefined;
@@ -63,10 +54,27 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
     "amount": 0.0
   };
 
-  $scope.lookupPayeesHttp = function($viewValue) {
-    return $http.get($API_ROOT + "payees/"+$viewValue).then(function(response) {
-      return response.data.data;
-//      return limitToFilter(response.data.data, 15);
+  $scope.lookupResults = [];
+  $scope.lookupPayees = function($viewValue, $page, $mid) {
+    if ($page == undefined) {
+      $scope.lookupResults = [];
+    }
+    if ($page == undefined) {
+      $page = 1;
+    }
+    $options = "?page="+$page;
+    if ($mid != undefined) {
+      $options = $options+"&mid";
+    }
+    return $http.get($API_ROOT + "payees/"+$viewValue + $options).then(function(response) {
+      var $payees = response.data;
+      $scope.lookupResults = $scope.lookupResults.concat($payees.data);
+      if ($payees.paginator.next != undefined) {
+        $scope.lookupPayees($viewValue, $payees.paginator.next, $mid);
+      } else if ($mid == undefined) {
+        $scope.lookupPayees($viewValue, 1, true);
+      }
+      return $scope.lookupResults;
     });
   };
 
@@ -77,15 +85,6 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
         getPage($payees.paginator.next);
       }
     });
-  }
-
- $scope.lookupPayees = function($val) {
-    var resultsPromise = PayeesApi.get({id: $val}).$promise;
-    resultsPromise.then(function(response) {
-      $scope.lpayee = response.data;
-      return response.data;
-    });
-    return resultsPromise;
   }
 
   $scope.payees = [];

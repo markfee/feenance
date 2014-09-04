@@ -5,7 +5,7 @@ use \Payee;
 use Markfee\Responder\Respond;
 use Misc\Transformers\PayeeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
+use \Input;
 class PayeesController extends BaseController {
 
   /* @return Transformer */
@@ -43,8 +43,15 @@ class PayeesController extends BaseController {
 
   public function search($name)
   {
-    $payees = Payee::where("name", "like", "%{$name}%")->paginate();
-    return Respond::Paginated($payees, $this->transformCollection($payees->all()));
+    $mid = (false !== Input::get("mid", false));
+    if (! $mid) {
+      $payees = Payee::where("name", "like", "{$name}%")->orderBy("name")->paginate();
+    }
+    elseif ($mid || ! $payees->count()) {
+      $payees = Payee::where("name", "NOT LIKE", "{$name}%")->where("name", "like", "%{$name}%")->orderBy("name")->paginate();
+    }
+    $response = Respond::Paginated($payees, $this->transformCollection($payees->all()));
+    return $response;
   }
 
 

@@ -15,26 +15,19 @@
   </div>
   <div class = "col-lg-4">
 
-    <div class = "col-lg-12" ng-include="'typeahead.html'"></div>
     <div class = "col-lg-12" ng-include="'newPayee.html'"> </div>
     <div class = "col-lg-12" ng-include="'newTransaction.html'"></div>
   </div>
 </div>
 
-<script type="text/ng-template" id="typeahead.html">
-  <h3>Typeahead<h3/>
-  <div class='container-fluid' data-ng-controller="TypeaheadCtrl">
-    <!-- <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue"> -->
-    <input type="text" ng-model="selected" typeahead="payee.id as payee.name for payee in getPayees($viewValue)" class="form-control" />
-    <pre>Model: {{selected | json}}</pre>
-  </div>
-</script>
-
 <script type="text/ng-template" id="newPayee.html">
   <div data-ng-controller="PayeeController" >
     <h3>Payees<h3/>
-      <!--<select ng-model="ngPayee" ng-options="payee.name for payee in payees" ng-change="change()">    </select>-->
-      <input type="text" ng-model="selected" typeahead="payee.id as payee.name for payee in lookupPayeesHttp($viewValue)" class="form-control">
+      <input autocomplete="off"
+            type="text"
+             ng-model="selected"
+             typeahead="payee as payee.name for payee in lookupPayees($viewValue) | filter:$viewValue"
+             class="form-control">
       <pre>Model: {{selected | json}}</pre>
   </div>
 </script>

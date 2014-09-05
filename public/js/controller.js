@@ -48,6 +48,8 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
 feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   // Set the default for the Form!
   $scope.selected = undefined;
+  $scope.dom = undefined;
+  $scope.editing = false;
   $scope.transaction = {
     "reconciled": "true",
     "date": (new Date()).toISOString().substr(0,10),
@@ -78,10 +80,23 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
     });
   };
 
+  $scope.edit = function () {
+    var editRecord = PayeesApi.get({id:$scope.selected.id}, function() {
+      $scope.selected = editRecord;
+      $scope.editing = true;
+    });
+  }
+  $scope.save = function () {
+    PayeesApi.update({id:$scope.selected.id},$scope.selected);
+    $scope.editing = false;
+
+  }
+
+
   function getPage($page) {
     $payees = PayeesApi.get({page: $page}, function() {
       $scope.payees = $scope.payees.concat($payees.data);
-      if ($payees.paginator.next != undefined) {
+      if ($payees.paginator != undefined && $payees.paginator.next != undefined) {
         getPage($payees.paginator.next);
       }
     });
@@ -92,6 +107,24 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   $scope.update = function(payee) {
     alert(payee.name);
   }
+});
+
+feenance.directive('payeeSelector', function(PayeesApi, $compile) {
+  return {
+    restrict: 'E',
+    scope: {
+      payeeid: "="
+    },
+    templateUrl: 'newPayee.html'
+    , link: function (scope, element, attr) {
+      scope.dom = element;
+//        element.children().addClass("bg-primary");
+//      element.addClass("bg-primary");
+//      $compile(element)(scope);
+//      alert("payee selector");
+    }
+    , controller: "PayeeController"
+  };
 });
 
 
@@ -129,6 +162,7 @@ feenance.directive('payee', function(PayeesApi) {
     }
   };
 });
+
 
 feenance.directive('transaction', function(TransactionsApi, AccountsApi) {
   return {

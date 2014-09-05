@@ -6,6 +6,8 @@ use Markfee\Responder\Respond;
 use Misc\Transformers\PayeeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Input;
+use \Validator;
+
 class PayeesController extends BaseController {
 
   /* @return Transformer */
@@ -55,7 +57,6 @@ class PayeesController extends BaseController {
   }
 
 
-
 	/**
 	 * Store a newly created payee in storage.
 	 *
@@ -102,12 +103,11 @@ class PayeesController extends BaseController {
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			return \Redirect::back()->withErrors($validator)->withInput();
 		}
 
 		$payee->update($data);
-
-		return Redirect::route('payees.index');
+		return Respond::Updated($data);
 	}
 
 	/**

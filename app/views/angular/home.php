@@ -1,4 +1,4 @@
-<div class = "row">
+<div class="row" xmlns="http://www.w3.org/1999/html">
 <div class = "col-lg-12">
     <div data-ng-controller="AccountsController" ng-show="accounts">
       <select ng-model="myAccount" ng-options="account.name for account in accounts" ng-change="change()"> </select>
@@ -15,20 +15,29 @@
   </div>
   <div class = "col-lg-4">
 
-    <div class = "col-lg-12" ng-include="'newPayee.html'"> </div>
+    <div class = "col-lg-12" > <payee-selector class="bg-primary"> </payee-selector> </div>
+<!--    <div class = "col-lg-12" ng-include="'newPayee.html'"> </div>-->
     <div class = "col-lg-12" ng-include="'newTransaction.html'"></div>
   </div>
 </div>
 
 <script type="text/ng-template" id="newPayee.html">
-  <div data-ng-controller="PayeeController" >
+  <div>
     <h3>Payees<h3/>
+      <pre>Model: {{selected | json}}</pre>
       <input autocomplete="off"
-            type="text"
+             type="text"
              ng-model="selected"
              typeahead="payee as payee.name for payee in lookupPayees($viewValue) | filter:$viewValue"
-             class="form-control">
-      <pre>Model: {{selected | json}}</pre>
+             class="form-control"
+             ng-show="!editing"
+      >
+
+      <input autocomplete="off" type="text" ng-model="selected.name" class="form-control" ng-show="editing">
+
+      <button ng-click="add()"    ng-show="selected && !selected.id">Add</button>
+      <button ng-click="edit()"   ng-show="selected.id && !editing">Edit</button>
+      <button ng-click="save()"   ng-show="selected.id && editing" >Save</button>
   </div>
 </script>
 

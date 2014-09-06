@@ -11,7 +11,7 @@ use \Exception;
 use \Input;
 use \Validator;
 
-class $NAME$ extends \BaseController {
+class $NAME$ extends BaseController {
 
   /* @return Transformer */
   protected function getTransformer() {    return $this->transformer ?: new $MODEL$Transformer;    }

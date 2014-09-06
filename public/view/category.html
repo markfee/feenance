@@ -1,12 +1,12 @@
 <div>
-<!--  <h3>Payee</h3>-->
+<!--  <h3>Category</h3>-->
   <div class="row">
-      <label class="col-sm-3" >    Payee:</label>
+      <label class="col-sm-3" >    Category:</label>
     <div class="col-sm-9" >
           <input autocomplete="off"
                  type="text"
                  ng-model="selected"
-                 typeahead="record as record.name for record in lookupRecords($viewValue) | filter:$viewValue"
+                 typeahead="record as record.fullName for record in lookupRecords($viewValue) | filter:$viewValue"
                  typeahead-on-select="onSelect($item)"
                  class="form-control"
                  ng-show="!editing"

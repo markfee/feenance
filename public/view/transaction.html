@@ -1,0 +1,30 @@
+<div data-ng-controller="TransactionsController" >
+  <h3>New Transaction</h3>
+  <form novalidate role="form" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-3" for="transaction_amount">    Amount:</label>
+      <div class="col-sm-9"><input id="transaction_amount"   type="number"    ng-model="transaction.amount" /></div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3" for="transaction_date">  Date </label>
+      <div class="col-sm-9"><input id="transaction_date"   type="date" ng-model="transaction.date"></div>
+    </div>
+
+    <payee-selector ng-model="transaction.payee" > </payee-selector>
+
+    <category-selector ng-model="transaction.category" > </category-selector>
+
+    <div class="form-group">
+      <label class="col-sm-3" for="transaction_reconciled">    Reconciled:</label>
+      <div class="col-sm-9">
+        <input id="transaction_reconciled"
+               type="checkbox" ng-model="transaction.reconciled" ng-true-value=true ng-false-value=false />
+      </div>
+    </div>
+    <div class="form-group">
+      <button ng-click="reset()">RESET</button>
+      <button type="submit" ng-click="update(transaction)">SAVE</button>
+    </div>
+  </form>
+  <pre>form = {{transaction | json}}{{transaction.category_id}}</pre>
+</div>

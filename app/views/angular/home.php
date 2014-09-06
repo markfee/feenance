@@ -6,7 +6,6 @@
   </div>
 </div>
 
-
 <div class = "row">
   <div class = "col-lg-8">
     <div class = "row">
@@ -14,42 +13,10 @@
     </div>
   </div>
   <div class = "col-lg-4">
-
 <!--    <div class = "col-lg-12" > <payee-selector> </payee-selector> </div>-->
-    <div class = "col-lg-12" ng-include="'newTransaction.html'"></div>
+    <div class = "col-lg-12" ng-include="'view/transaction.html'"></div>
   </div>
 </div>
-
-<script type="text/ng-template" id="newTransaction.html">
-  <div data-ng-controller="TransactionsController" >
-    <h3>New Transaction</h3>
-      <form novalidate role="form" class="form-horizontal">
-        <div class="form-group">
-          <label class="col-sm-3" for="transaction_amount">    Amount:</label>
-          <div class="col-sm-9"><input id="transaction_amount"   type="number"    ng-model="transaction.amount" /></div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3" for="transaction_date">  Date </label>
-          <div class="col-sm-9"><input id="transaction_date"   type="date" ng-model="transaction.date"></div>
-        </div>
-
-        <payee-selector ng-model="transaction.payee" payee_id=85> </payee-selector>
-
-        <div class="form-group">
-          <label class="col-sm-3" for="transaction_reconciled">    Reconciled:</label>
-          <div class="col-sm-9">
-            <input id="transaction_reconciled"
-                   type="checkbox" ng-model="transaction.reconciled" ng-true-value=true ng-false-value=false />
-          </div>
-        </div>
-        <div class="form-group">
-            <button ng-click="reset()">RESET</button>
-            <button type="submit" ng-click="update(transaction)">SAVE</button>
-        </div>
-    </form>
-    <pre>form = {{transaction | json}}</pre>
-    <pre>master = {{master | json}}</pre>
-</script>
 
 
 <script type="text/ng-template" id="transactionstable.html">

@@ -20,39 +20,9 @@
   </div>
 </div>
 
-<script type="text/ng-template" id="newPayee.html">
-  <div>
-    <!--<h3>Payees<h3/>-->
-    <div class="row" ng-hide="false">
-      <pre class="col-sm-12">Model:  {{selected | json}} ngModel:{{selected_id}}
-      </pre>
-    </div>
-
-    <div class="row">
-      <label class="col-sm-3" >    Payee:</label>
-      <div class="col-sm-9" >
-        <input autocomplete="off"
-               type="text"
-               ng-model="selected"
-               typeahead="payee as payee.name for payee in lookupPayees($viewValue) | filter:$viewValue"
-               typeahead-on-select="onSelect($item)"
-               class="form-control"
-               ng-show="!editing"
-        >
-      </div>
-    </div>
-    <input autocomplete="off" type="text" ng-model="selected.name" class="form-control" ng-show="editing">
-    <button ng-click="add($viewValue)"    ng-show="selected && !selected.id">Add</button>
-    <button ng-click="edit()"   ng-show="selected.id && !editing">Edit</button>
-    <button ng-click="save()"   ng-show="selected.id && editing" >Save</button>
-    <button ng-click="cancel()" ng-show="selected.id && editing" >Cancel</button>
-
-  </div>
-</script>
-
 <script type="text/ng-template" id="newTransaction.html">
   <div data-ng-controller="TransactionsController" >
-    <h3>New Transaction<h3/>
+    <h3>New Transaction</h3>
       <form novalidate role="form" class="form-horizontal">
         <div class="form-group">
           <label class="col-sm-3" for="transaction_amount">    Amount:</label>
@@ -63,7 +33,7 @@
           <div class="col-sm-9"><input id="transaction_date"   type="date" ng-model="transaction.date"></div>
         </div>
 
-        <payee-selector ng-model="transaction.payee_id" payee_id=85> </payee-selector>
+        <payee-selector ng-model="transaction.payee" payee_id=85> </payee-selector>
 
         <div class="form-group">
           <label class="col-sm-3" for="transaction_reconciled">    Reconciled:</label>

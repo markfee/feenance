@@ -1,10 +1,15 @@
 <?php
 
 namespace api;
+
 use \$MODEL$;
 use Markfee\Responder\Respond;
 use Misc\Transformers\$MODEL$Transformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use \Exception;
+use \Input;
+use \Validator;
 
 class $NAME$ extends \BaseController {
 
@@ -23,13 +28,16 @@ class $NAME$ extends \BaseController {
   }
 
   /**
-   * Display the specified $RESOURCE$.
+   * Display a specific $RESOURCE$.
    *
    * @param  int  $id
    * @return Response
    */
   public function show($id)
   {
+    if (!is_numeric($id)) {
+      return $this->search($id);
+    }
     try {
       $$RESOURCE$ = $MODEL$::findOrFail($id);
       return Respond::Raw($this->transform($$RESOURCE$));
@@ -38,9 +46,23 @@ class $NAME$ extends \BaseController {
     }
   }
 
+  /**
+   * Search for $RESOURCE$ with name like $name
+   *
+   * @param  string $name
+   * @return Response
+   */
+  public function search($name)  {
+    $$RESOURCE$ = $MODEL$::where("name", "LIKE", "{$name}%")->orWhere("name", "like", "%{$name}%")->orderBy("name")->paginate();
+    if ($$RESOURCE$->count() == 0) {
+      return Respond::NotFound();
+    }
+    return Respond::Paginated($$RESOURCE$, $this->transformCollection($$RESOURCE$->all()));
+  }
+
 
 	/**
-	 * Store a newly created $RESOURCE$ in storage.
+	 * Add a new  $RESOURCE$.
 	 *
 	 * @return Response
 	 */
@@ -48,31 +70,17 @@ class $NAME$ extends \BaseController {
 	{
 		$validator = Validator::make($data = Input::all(), $MODEL$::$rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
+		if ($validator->fails())		{
+			return Respond::ValidationFailed();
 		}
 
-		$MODEL$::create($data);
+		$$RESOURCE$ = $MODEL$::create($data);
 
-		return Redirect::route('$COLLECTION$.index');
+		return Respond::Raw($this->transform($$RESOURCE$));
 	}
 
 	/**
-	 * Show the form for editing the specified $RESOURCE$.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$$RESOURCE$ = $MODEL$::find($id);
-
-		return View::make('$COLLECTION$.edit', compact('$RESOURCE$'));
-	}
-
-	/**
-	 * Update the specified $RESOURCE$ in storage.
+	 * Update a specific $RESOURCE$.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -85,12 +93,11 @@ class $NAME$ extends \BaseController {
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+      return Respond::ValidationFailed();
 		}
 
 		$$RESOURCE$->update($data);
-
-		return Redirect::route('$COLLECTION$.index');
+    return Respond::Raw($this->transform($$RESOURCE$));
 	}
 
 	/**
@@ -101,9 +108,16 @@ class $NAME$ extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$MODEL$::destroy($id);
-
-		return Redirect::route('$COLLECTION$.index');
+    try {
+      if (! $MODEL$::destroy($id) ) {
+          return Respond::NotFound();
+      }
+    } catch (QueryException $e) {
+        return Respond::QueryException($e);
+    } catch (Exception $e) {
+      return Respond::InternalError($e->getMessage());
+    }
+		return Respond::Success();
 	}
 
 }

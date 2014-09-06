@@ -1,12 +1,13 @@
 <?php
 
 namespace api;
+
 use \Payee;
-use \Exception;
 use Markfee\Responder\Respond;
 use Misc\Transformers\PayeeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use \Exception;
 use \Input;
 use \Validator;
 
@@ -26,7 +27,7 @@ class PayeesController extends BaseController {
   }
 
   /**
-   * Display the specified payee.
+   * Display a specific payee.
    *
    * @param  int  $id
    * @return Response
@@ -44,6 +45,12 @@ class PayeesController extends BaseController {
     }
   }
 
+  /**
+   * Search for Payees with name like $name
+   *
+   * @param  string $name
+   * @return Response
+   */
   public function search($name)  {
     $payees = Payee::where("name", "LIKE", "{$name}%")->orWhere("name", "like", "%{$name}%")->orderBy("name")->paginate();
     if ($payees->count() == 0) {
@@ -52,11 +59,10 @@ class PayeesController extends BaseController {
     return Respond::Paginated($payees, $this->transformCollection($payees->all()));
   }
 
-
 	/**
-	 * Store a newly created payee in storage.
+	 * Add a new Payee
 	 *
-	 * @return Response
+	 * @return Respond
 	 */
 	public function store()
 	{
@@ -71,7 +77,7 @@ class PayeesController extends BaseController {
 	}
 
 	/**
-	 * Update the specified payee in storage.
+	 * Update a specific payee.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -86,11 +92,10 @@ class PayeesController extends BaseController {
 
     $payee->update($data);
     return Respond::Raw($this->transform($payee));
-//    return Respond::Updated($data);
 	}
 
 	/**
-	 * Remove the specified payee from storage.
+	 * delete a specific payee.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -108,5 +113,4 @@ class PayeesController extends BaseController {
     }
 		return Respond::Success();
 	}
-
 }

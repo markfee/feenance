@@ -1,6 +1,5 @@
 <div>
 <!--  <h3>Payee</h3>-->
-
   <div class="row">
       <label class="col-sm-3" >    Payee:</label>
     <div class="col-sm-9" >
@@ -18,20 +17,11 @@
   <div class="row" ng-hide="false">
     <div class="col-sm-10" ></div>
     <div class="col-sm-2" >
-      <button class="btn btn-default btn-sm" ng-click="edit()"            ng-show="selected.id && !editing">
-        <i class="fa fa-edit fa-lg">        </i>
-      </button>
-      <button class="btn btn-default btn-sm" ng-click="add($viewValue)"   ng-show="selected && !selected.id">
-        <i class="fa fa-plus-circle fa-lg"> </i>
-      </button>
-      <button class="btn btn-default btn-sm" ng-click="save()"            ng-show="selected.id && editing" >
-        <i class="fa fa-save fa-2x">        </i>
-      </button>
-      <button class="btn btn-default btn-sm" ng-click="cancel()"          ng-show="selected.id && editing" >
-        <i class="fa fa-undo fa-2x">        </i>
-      </button>
+      <button class="btn btn-default btn-sm" ng-click="edit()"            ng-show="selected.id && !editing">  <i class="fa fa-edit fa-lg">        </i>  </button>
+      <button class="btn btn-default btn-sm" ng-click="add($viewValue)"   ng-show="selected && !selected.id"> <i class="fa fa-plus-circle fa-lg"> </i>  </button>
+      <button class="btn btn-default btn-sm" ng-click="save()"            ng-show="selected.id && editing" >  <i class="fa fa-save fa-lg">        </i>  </button>
+      <button class="btn btn-default btn-sm" ng-click="cancel()"          ng-show="selected.id && editing" >  <i class="fa fa-undo fa-lg">        </i>  </button>
     </div>
   </div>
-  <pre class="col-sm-12">payee:  {{selected | json}} id:{{selected_id}}</pre>
-
+  <pre class="col-sm-12">payee:  {{selected | json}} id:{{selected_id}} </pre>
 </div>

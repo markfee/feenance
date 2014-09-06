@@ -2,9 +2,11 @@
 
 namespace api;
 use \Payee;
+use \Exception;
 use Markfee\Responder\Respond;
 use Misc\Transformers\PayeeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use \Input;
 use \Validator;
 
@@ -18,8 +20,7 @@ class PayeesController extends BaseController {
    *
    * @return Response
    */
-  public function index()
-  {
+  public function index()  {
     $payees = Payee::orderBy("name")->paginate();
     return Respond::Paginated($payees, $this->transformCollection($payees->all()));
   }
@@ -43,17 +44,12 @@ class PayeesController extends BaseController {
     }
   }
 
-  public function search($name)
-  {
-    $mid = (false !== Input::get("mid", false));
-    if (! $mid) {
-      $payees = Payee::where("name", "like", "{$name}%")->orderBy("name")->paginate();
+  public function search($name)  {
+    $payees = Payee::where("name", "LIKE", "{$name}%")->orWhere("name", "like", "%{$name}%")->orderBy("name")->paginate();
+    if ($payees->count() == 0) {
+      return Respond::NotFound();
     }
-    elseif ($mid || ! $payees->count()) {
-      $payees = Payee::where("name", "NOT LIKE", "{$name}%")->where("name", "like", "%{$name}%")->orderBy("name")->paginate();
-    }
-    $response = Respond::Paginated($payees, $this->transformCollection($payees->all()));
-    return $response;
+    return Respond::Paginated($payees, $this->transformCollection($payees->all()));
   }
 
 
@@ -66,27 +62,12 @@ class PayeesController extends BaseController {
 	{
 		$validator = Validator::make($data = Input::all(), Payee::$rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
+		if ($validator->fails())		{
+			return Respond::ValidationFailed();
 		}
 
-		Payee::create($data);
-
-		return Redirect::route('payees.index');
-	}
-
-	/**
-	 * Show the form for editing the specified payee.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$payee = Payee::find($id);
-
-		return View::make('payees.edit', compact('payee'));
+    $payee = Payee::create($data);
+    return Respond::Raw($this->transform($payee));
 	}
 
 	/**
@@ -98,16 +79,14 @@ class PayeesController extends BaseController {
 	public function update($id)
 	{
 		$payee = Payee::findOrFail($id);
-
 		$validator = Validator::make($data = Input::all(), Payee::$rules);
-
-		if ($validator->fails())
-		{
-			return \Redirect::back()->withErrors($validator)->withInput();
+		if ($validator->fails()) {
+      return Respond::ValidationFailed();
 		}
 
-		$payee->update($data);
-		return Respond::Updated($data);
+    $payee->update($data);
+    return Respond::Raw($this->transform($payee));
+//    return Respond::Updated($data);
 	}
 
 	/**
@@ -116,11 +95,18 @@ class PayeesController extends BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
-		Payee::destroy($id);
+	public function destroy($id)	{
 
-		return Redirect::route('payees.index');
+    try {
+      if (! Payee::destroy($id) ) {
+        return Respond::NotFound();
+      }
+    } catch (QueryException $e) {
+        return Respond::QueryException($e);
+    } catch (Exception $e) {
+      return Respond::InternalError($e->getMessage());
+    }
+		return Respond::Success();
 	}
 
 }

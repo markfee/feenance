@@ -48,50 +48,56 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
 feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   // Set the default for the Form!
   $scope.selected = undefined;
-  $scope.dom = undefined;
+  $scope.selected_id = null;
   $scope.editing = false;
-  $scope.transaction = {
-    "reconciled": "true",
-    "date": (new Date()).toISOString().substr(0,10),
-    "amount": 0.0
-  };
 
-  $scope.lookupResults = [];
-  $scope.lookupPayees = function($viewValue, $page, $mid) {
-    if ($page == undefined) {
-      $scope.lookupResults = [];
-    }
-    if ($page == undefined) {
-      $page = 1;
-    }
-    $options = "?page="+$page;
-    if ($mid != undefined) {
-      $options = $options+"&mid";
-    }
-    return $http.get($API_ROOT + "payees/"+$viewValue + $options).then(function(response) {
-      var $payees = response.data;
-      $scope.lookupResults = $scope.lookupResults.concat($payees.data);
-      if ($payees.paginator.next != undefined) {
-        $scope.lookupPayees($viewValue, $payees.paginator.next, $mid);
-      } else if ($mid == undefined) {
-        $scope.lookupPayees($viewValue, 1, true);
-      }
-      return $scope.lookupResults;
+
+  $scope.select = function($id) {
+    var payee = PayeesApi.get({id:$id}, function() {
+      $scope.selected = payee;
+      $scope.editing = false;
+      $scope.selected_id = $scope.selected.id;
+    });
+  }
+
+  $scope.onSelect = function($item) {
+    $scope.selected_id = $item.id;
+  }
+
+  $scope.lookupPayees = function($viewValue) {
+    return $http.get($API_ROOT + "payees/"+$viewValue).then(function(response) {
+      return response.data.data;
     });
   };
+  $scope.cancel = function () {
+    $scope.select($scope.selected.id);
+  }
 
   $scope.edit = function () {
     var editRecord = PayeesApi.get({id:$scope.selected.id}, function() {
       $scope.selected = editRecord;
       $scope.editing = true;
+      $scope.selected_id = $scope.selected.id;
     });
   }
-  $scope.save = function () {
-    PayeesApi.update({id:$scope.selected.id},$scope.selected);
-    $scope.editing = false;
 
+  $scope.save = function ($name) {
+    PayeesApi.update({id:$scope.selected.id}, $scope.selected, function(response) {
+      $scope.selected = response;
+      $scope.editing = false;
+      $scope.selected_id = $scope.selected.id;
+    });
   }
 
+  $scope.add = function () {
+    $record = new PayeesApi();
+    $record.name = $scope.selected;
+    $record.$save(function(response) {
+      $scope.selected = response;
+      $scope.editing = false;
+      $scope.selected_id = $scope.selected.id;
+    });
+  }
 
   function getPage($page) {
     $payees = PayeesApi.get({page: $page}, function() {
@@ -101,27 +107,22 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
       }
     });
   }
-
   $scope.payees = [];
   getPage(1);
-  $scope.update = function(payee) {
-    alert(payee.name);
-  }
 });
 
 feenance.directive('payeeSelector', function(PayeesApi, $compile) {
   return {
     restrict: 'E',
     scope: {
-      payeeid: "="
+      selected_id: "=ngModel"
+    , payeeId: "=" // remember payee_id in markup payeeId in directive / controller ???
     },
     templateUrl: 'newPayee.html'
     , link: function (scope, element, attr) {
-      scope.dom = element;
-//        element.children().addClass("bg-primary");
-//      element.addClass("bg-primary");
-//      $compile(element)(scope);
-//      alert("payee selector");
+      if (scope.payeeId) {
+        scope.select(scope.payeeId);
+      }
     }
     , controller: "PayeeController"
   };

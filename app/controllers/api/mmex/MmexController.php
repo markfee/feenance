@@ -2,7 +2,7 @@
 
 namespace MMEX;
 
-class MmexController extends \BaseController {
+class MmexController extends \api\BaseController {
 
 	/**
 	 * Display a listing of the resource.

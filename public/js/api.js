@@ -10,12 +10,22 @@ feenance.factory('AccountsApi', function($resource) {
 });
 
 feenance.factory('PayeesApi', function($resource) {
-  return $resource(   $API_ROOT + "payees/:id/:collection",   {}
+  return $resource(   $API_ROOT + "payees/:id",   {}
     ,   {
       'update':   { method:'PUT'                    }
     }
   );
 });
+
+feenance.factory('CategoriesApi', function($resource) {
+  return $resource(   $API_ROOT + "categories/:id",   {}
+    ,   {
+      'update':   { method:'PUT'                    }
+    }
+  );
+});
+
+
 
 
 feenance.factory('TransactionsApi', function($resource) {

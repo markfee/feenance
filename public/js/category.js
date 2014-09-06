@@ -1,4 +1,4 @@
-feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
+feenance.controller('CategoryController', function($scope, $http, CategoriesApi) {
   // Set the default for the Form!
   $scope.selected = undefined;
   $scope.selected_id = null;
@@ -6,20 +6,24 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
 
 
   $scope.select = function($id) {
-    var record = PayeesApi.get({id:$id}, function() {
+    var record = CategoriesApi.get({id:$id}, function() {
       $scope.selected = record;
       $scope.editing = false;
       $scope.selected_id = $scope.selected.id;
     });
   };
 
+  $scope.$on('setCategory', function (something, item) {
+    $scope.select(item);
+  });
+
+
   $scope.onSelect = function($item) {
     $scope.selected_id = $item.id;
-    $scope.$emit('payeeUpdated', $item);
   };
 
   $scope.lookupRecords = function($viewValue) {
-    return $http.get($API_ROOT + "payees/"+$viewValue).then(function(response) {
+    return $http.get($API_ROOT + "categories/"+$viewValue).then(function(response) {
       return response.data.data;
     });
   };
@@ -29,7 +33,7 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   };
 
   $scope.edit = function () {
-    var editRecord = PayeesApi.get({id:$scope.selected.id}, function() {
+    var editRecord = CategoriesApi.get({id:$scope.selected.id}, function() {
       $scope.selected = editRecord;
       $scope.editing = true;
       $scope.selected_id = $scope.selected.id;
@@ -37,7 +41,7 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   };
 
   $scope.save = function ($name) {
-    PayeesApi.update({id:$scope.selected.id}, $scope.selected, function(response) {
+    CategoriesApi.update({id:$scope.selected.id}, $scope.selected, function(response) {
       $scope.selected = response;
       $scope.editing = false;
       $scope.selected_id = $scope.selected.id;
@@ -45,7 +49,7 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   };
 
   $scope.add = function () {
-    $record = new PayeesApi();
+    $record = new CategoriesApi();
     $record.name = $scope.selected;
     $record.$save(function(response) {
       $scope.selected = response;
@@ -55,32 +59,31 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   };
 
   function getPage($page) {
-    $records = PayeesApi.get({page: $page}, function() {
+    $records = CategoriesApi.get({page: $page}, function() {
       $scope.records = $scope.records.concat($records.data);
       if ($records.paginator != undefined && $records.paginator.next != undefined) {
         getPage($records.paginator.next);
       }
     });
   }
-
   $scope.records = [];
   getPage(1);
 });
 
-feenance.directive('payeeSelector', function() {
+feenance.directive('categorySelector', function() {
   return {
     restrict: 'E',
     scope:
     {
       selected: "=ngModel"
-    , payeeId: "=" // remember payee_id in markup payeeId in directive / controller ???
+    , categoryId: "=" // remember category_id in markup categoryId in directive / controller ???
     }
-  , templateUrl: 'view/payee.html'
+  , templateUrl: 'view/category.html'
   , link: function (scope, element, attr) {
-      if (scope.payeeId) {
-        scope.select(scope.payeeId);
+      if (scope.categoryId) {
+        scope.select(scope.categoryId);
       }
     }
-  , controller: "PayeeController"
+  , controller: "CategoryController"
   };
 });

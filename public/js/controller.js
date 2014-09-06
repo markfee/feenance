@@ -30,6 +30,11 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
     "date": (new Date()).toISOString().substr(0,10),
     "amount": 0.0
   };
+
+  $scope.$on('payeeUpdated', function (something, item) {
+    $scope.$broadcast('setCategory', item.category_id);
+  });
+
   CurrentAccount.onChange(function($newAccount) {
     if ($newAccount.id) {
       $scope.account = $newAccount;

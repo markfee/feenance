@@ -16,6 +16,7 @@
 {{ HTML::script('js/feenance.js') }}
 {{ HTML::script('js/api.js') }}
 {{ HTML::script('js/controller.js') }}
+{{ HTML::script('js/payee.js') }}
 
 <!--
   {{ HTML::script('js/apiService.js') }}

@@ -21,7 +21,8 @@ class AccountsTransformer extends Transformer {
       "name"              => $record->name,
       "bank"              => $record->bank,
       "sort_code"         => $record->acc_number,
-      "acc_number"         => $record->acc_number,
+      "acc_number"        => $record->acc_number,
+      "open"              => (boolean)$record->open,
       "opening_balance"   => 0.01 * $record->opening_balance,
       "notes"             => $record->notes?:null ,
       ];

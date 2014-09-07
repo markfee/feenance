@@ -15,6 +15,25 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 		return require __DIR__.'/../../bootstrap/start.php';
 	}
 
+  public function seed($seederName) {
+    Eloquent::unguard();
+    $seeder = new DatabaseSeeder();
+    $seeder->call("test".$seederName);
+    Eloquent::reguard();
+  }
+  /**
+   * Default preparation for each test
+   */
+  public function setUp()
+  {
+    parent::setUp();
+    Markfee\Responder\Respond::Reset();
+    Artisan::call('migrate');
+    Eloquent::reguard();
+
+  }
+
+
   protected function assertNoErrors($jsonResponse) {
     if ( count($jsonResponse->errors) ) {
       $str = print_r($jsonResponse->errors, true);

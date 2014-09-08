@@ -75,12 +75,29 @@ feenance.directive('payeeSelector', function() {
       selected: "=ngModel"
     , payeeId: "=" // remember payee_id in markup payeeId in directive / controller ???
     }
-  , templateUrl: 'view/payee.html'
+  , templateUrl: 'view/payeeSelector.html'
   , link: function (scope, element, attr) {
       if (scope.payeeId) {
         scope.select(scope.payeeId);
       }
     }
   , controller: "PayeeController"
+  };
+});
+
+feenance.directive('payee', function(PayeesApi) {
+  return {
+    restrict: 'E',
+    scope: {
+      payeeid: "="
+    },
+    templateUrl: 'view/payee.html'
+    , link: function (scope) {
+      if (scope.payeeid) {
+        var $payee = PayeesApi.get({id:scope.payeeid}, function() {
+          scope.payee= $payee;
+        });
+      }
+    }
   };
 });

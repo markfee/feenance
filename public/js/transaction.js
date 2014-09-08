@@ -1,28 +1,3 @@
-feenance.controller('AccountsController', function($scope, AccountsApi, CurrentAccount) {
-  var records = AccountsApi.get( {  },
-    function () {
-      $scope.accounts = records.data;
-      $scope.myAccount = records.data[0];
-      CurrentAccount.set($scope.myAccount);
-    });
-  $scope.change = function() {
-    CurrentAccount.set($scope.myAccount);
-  }
-});
-
-
-feenance.controller('AccountController', function($scope, AccountsApi) {
-  var records = AccountsApi.get( {  },
-    function () {
-      $scope.accounts = records.data;
-      $scope.myAccount = records.data[0];
-      CurrentAccount.set($scope.myAccount);
-    });
-  $scope.change = function() {
-    CurrentAccount.set($scope.myAccount);
-  }
-});
-
 feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi, CurrentAccount) {
   // Set the default for the Form!
   $scope.transaction = {
@@ -44,56 +19,39 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
       });
     }
   });
+
   $scope.update = function(transaction) {
 //    TransactionsApi
     alert(transaction.amount);
   }
 });
 
-feenance.directive('account', function(AccountsApi) {
+feenance.directive('newTransaction', function(AccountsApi) {
   return {
     restrict: 'E',
     scope: {
-      accountid: "="
+//      accountId: "=" // remember account_id in markup accountId in directive / controller ???
     },
-    templateUrl: 'account.html'
-    , link: function (scope, element, attrs) {
-      if (scope.accountid) {
-        var $account = AccountsApi.get({id:scope.accountid}, function() {
-          scope.account = $account;
-          scope.direction = attrs.direction
-        });
-      }
-    }
-  };
-});
-
-feenance.directive('payee', function(PayeesApi) {
-  return {
-    restrict: 'E',
-    scope: {
-      payeeid: "="
-    },
-    templateUrl: 'payee.html'
+    templateUrl: 'view/newTransaction.html'
     , link: function (scope) {
-      if (scope.payeeid) {
-        var $payee = PayeesApi.get({id:scope.payeeid}, function() {
-          scope.payee= $payee;
+      if (scope.accountId) {
+        var $account = AccountsApi.get({id:scope.accountId}, function() {
+          scope.account= $account;
         });
       }
     }
+    , controller: "TransactionsController"
   };
 });
 
-
-feenance.directive('transaction', function(TransactionsApi, AccountsApi) {
+feenance.directive('transfer', function(TransactionsApi, AccountsApi) {
   return {
     restrict: 'E',
     scope: {
         source: "="
       , destination: "="
     },
-    templateUrl: 'transaction.html'
+    templateUrl: 'view/transfer.html'
     , link: function (scope) {
       if (scope.source || scope.destination) {
         var $id = (scope.source == undefined ? scope.destination : scope.source);

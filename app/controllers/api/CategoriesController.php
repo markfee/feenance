@@ -29,6 +29,16 @@ class CategoriesController extends BaseController {
   }
 
   /**
+   * @param String $str
+   * Takes a string "House: Insurance" and returns an array = ["House", "Insurance"]
+   * Takes a string "House Insurance" and returns an array = ["House Insurance"]
+   */
+  public static function splitCategory($str) {
+
+    return array_map('trim', explode(':', $str));
+  }
+
+  /**
    * Display a specific category.
    *
    * @param  int  $id

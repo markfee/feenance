@@ -25,9 +25,6 @@ feenance.factory('CategoriesApi', function($resource) {
   );
 });
 
-
-
-
 feenance.factory('TransactionsApi', function($resource) {
   return $resource(   $API_ROOT + "transactions/:id",   {}
     ,   {

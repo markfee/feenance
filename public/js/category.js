@@ -78,7 +78,7 @@ feenance.directive('categorySelector', function() {
       selected: "=ngModel"
     , categoryId: "=" // remember category_id in markup categoryId in directive / controller ???
     }
-  , templateUrl: 'view/category.html'
+  , templateUrl: 'view/categorySelector.html'
   , link: function (scope, element, attr) {
       if (scope.categoryId) {
         scope.select(scope.categoryId);

@@ -1,0 +1,32 @@
+
+<!--TRANSACTIONS TABLE-->
+
+<div data-ng-controller="TransactionsController" ng-show="transactions" >
+  <h3>{{account.name}}</h3>
+  <table class="table table-striped">
+    <tr>
+      <th>Date</th>
+      <th>Payee</th>
+      <th>Credit</th>
+      <th>Debit</th>
+      <th>Balance</th>
+    </tr>
+    <tr ng-repeat="transaction in transactions">
+      <td>{{transaction.date | date}} </td>
+      <td><payee payeeid="transaction.payee_id" />           </td>
+      <td>
+        <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}   </span>
+        <transfer source="transaction.source" />
+      </td>
+      <td>
+        <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}   </span>
+        <transfer destination="transaction.destination" />
+      </td>
+      <td>{{transaction.balance | currency: "£" }}</td>
+      <!--
+            <td><span ng-show="accountId==transaction.credit.account_id">{{transaction.credit.amount  | currency: "£" }}  <account direction="from" accountid="transaction.credit.transfer_id">  </account> </span></td>
+            <td><span ng-show="accountId==transaction.debit.account_id">{{transaction.debit.amount  | currency: "£" }}    <account direction="to" accountid="transaction.credit.transfer_id">  </account> </span></td>
+      -->
+    </tr>
+  </table>
+</div>

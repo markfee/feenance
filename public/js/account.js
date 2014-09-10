@@ -7,9 +7,6 @@ feenance.controller('AccountController', function($scope, AccountsApi) {
     $scope.accounts = records.data;
     if ($scope.selectedId) {
       $scope.select($scope.selectedId);
-    } else {
-      $scope.selected   = records.data[0];
-      $scope.change();
     }
   });
 

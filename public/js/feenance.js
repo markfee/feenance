@@ -1,5 +1,12 @@
 var feenance = angular.module("feenance", ['ngResource', 'ngRoute', 'ui.bootstrap']);
 
+feenance.controller('FeenanceController', function($scope) {
+  $scope.$on('accountUpdated', function(something, account) {
+    console.log("accountUpdated in FeenanceController");
+    $scope.$broadcast('setAccount', account);
+  });
+});
+
 feenance.factory('Notifier', function () {
   var observerCallbacks = {};
   return {

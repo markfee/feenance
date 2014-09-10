@@ -1,14 +1,52 @@
-feenance.controller('AccountsController', function($scope, AccountsApi, CurrentAccount) {
-  var records = AccountsApi.get( {  },
-    function () {
-      $scope.accounts = records.data;
-      $scope.myAccount = records.data[0];
-      CurrentAccount.set($scope.myAccount);
+feenance.controller('AccountController', function($scope, AccountsApi) {
+  $scope.accounts   = {};
+  $scope.selected   = null;
+  $scope.selectedId = null;
+
+  var records = AccountsApi.get( {}, function () {
+    $scope.accounts = records.data;
+    if ($scope.selectedId) {
+      $scope.select($scope.selectedId);
+    } else {
+      $scope.selected   = records.data[0];
+      $scope.change();
+    }
+  });
+
+  $scope.select= function(id) {
+    $scope.selectedId = id;
+    angular.forEach($scope.accounts, function(account, key) {
+      if (account.id == id) {
+        $scope.selected =   records.data[key];
+        $scope.change();
+        return;
+      }
     });
+  };
+
   $scope.change = function() {
-    CurrentAccount.set($scope.myAccount);
-  }
+    $scope.selectedId = $scope.selected.id;
+    $scope.$emit('accountUpdated', $scope.selected);
+  };
 });
+
+feenance.directive('accountSelector', function() {
+ return {
+    restrict: 'E'
+ ,  scope: {
+      selected: "=ngModel"
+      , accountId: "=" // remember account_id in markup accountId in directive / controller ???
+    }
+ , templateUrl: 'view/accountSelector.html'
+    , link: function (scope, element, attr) {
+        if (scope.accountId) {
+          scope.select(scope.accountId);
+        }
+    }
+    , controller: "AccountController"
+  };
+});
+
 
 feenance.directive('account', function(AccountsApi) {
   return {

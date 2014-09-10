@@ -1,4 +1,4 @@
-feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi, CurrentAccount) {
+feenance.controller('TransactionController', function($scope, TransactionsApi, AccountsApi, CurrentAccount) {
   // Set the default for the Form!
   $scope.transaction = {
     "reconciled": "true",
@@ -10,7 +10,14 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
     $scope.$broadcast('setCategory', item.category_id);
   });
 
-  CurrentAccount.onChange(function($newAccount) {
+  $scope.$on('accountUpdated', function ($event, item) {
+    $event.stopPropagation();
+    console.log("accountUpdated in TransactionController");
+
+  });
+
+
+  $scope.$on('setAccount', function (something, $newAccount) {
     if ($newAccount.id) {
       $scope.account = $newAccount;
       var records = AccountsApi.transactions( {id:$newAccount.id  },function () {
@@ -21,7 +28,6 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   });
 
   $scope.update = function(transaction) {
-//    TransactionsApi
     alert(transaction.amount);
   }
 });
@@ -40,7 +46,7 @@ feenance.directive('newTransaction', function(AccountsApi) {
         });
       }
     }
-    , controller: "TransactionsController"
+    , controller: "TransactionController"
   };
 });
 

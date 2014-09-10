@@ -21,6 +21,7 @@
 {{ HTML::script('js/account.js') }}
 {{ HTML::script('js/transaction.js') }}
 
+
 <!--
   {{ HTML::script('js/apiService.js') }}
   {{ HTML::script('js/nodes.js') }}

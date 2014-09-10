@@ -53,7 +53,7 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
       $scope.selected_id = $scope.selected.id;
     });
   };
-
+/*
   function getPage($page) {
     $records = PayeesApi.get({page: $page}, function() {
       $scope.records = $scope.records.concat($records.data);
@@ -65,6 +65,7 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
 
   $scope.records = [];
   getPage(1);
+*/
 });
 
 feenance.directive('payeeSelector', function() {

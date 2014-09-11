@@ -101,16 +101,15 @@ class PayeesController extends BaseController {
 	 * @return Response
 	 */
 	public function destroy($id)	{
-
     try {
       if (! Payee::destroy($id) ) {
         return Respond::NotFound();
       }
     } catch (QueryException $e) {
-        return Respond::QueryException($e);
+      return Respond::QueryException($e);
     } catch (Exception $e) {
       return Respond::InternalError($e->getMessage());
     }
-		return Respond::Success();
+    return Respond::Success();
 	}
 }

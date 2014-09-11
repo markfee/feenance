@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh webserv -t "cd www/feenance; phpunit $1"

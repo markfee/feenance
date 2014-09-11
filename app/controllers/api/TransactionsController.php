@@ -5,6 +5,11 @@ use \Transaction;
 use Markfee\Responder\Respond;
 use Misc\Transformers\TransactionTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use \Exception;
+use \Input;
+use \Validator;
+use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 
 class TransactionsController extends BaseController {
 
@@ -56,29 +61,16 @@ class TransactionsController extends BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Transaction::$rules);
+		$validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+    if ($validator->fails())		{
+      Respond::WithErrors($validator->getMessageBag());
+      return Respond::ValidationFailed();
+    }
 
-		Transaction::create($data);
-
-		return Redirect::route('transactions.index');
-	}
-
-	/**
-	 * Show the form for editing the specified transaction.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$transaction = Transaction::find($id);
-
-		return View::make('transactions.edit', compact('transaction'));
+    $transaction = Transaction::create($data);
+    Respond::setStatusCode(ResponseCodes::HTTP_CREATED);
+    return Respond::Raw($this->transform($transaction));
 	}
 
 	/**
@@ -90,17 +82,12 @@ class TransactionsController extends BaseController {
 	public function update($id)
 	{
 		$transaction = Transaction::findOrFail($id);
-
 		$validator = Validator::make($data = Input::all(), Transaction::$rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		$transaction->update($data);
-
-		return Redirect::route('transactions.index');
+    if ($validator->fails()) {
+      return Respond::ValidationFailed();
+    }
+    $transaction->update($data);
+    return Respond::Raw($this->transform($transaction));
 	}
 
 	/**
@@ -110,8 +97,15 @@ class TransactionsController extends BaseController {
 	 * @return Response
 	 */
 	public function destroy($id)	{
-		Transaction::destroy($id);
-		return Redirect::route('transactions.index');
+    try {
+      if (!Transaction::destroy($id)) {
+        return Respond::NotFound();
+      }
+    } catch (QueryException $e) {
+      return Respond::QueryException($e);
+    } catch (Exception $e) {
+      return Respond::InternalError($e->getMessage());
+    }
+    return Respond::Success();
 	}
-
 }

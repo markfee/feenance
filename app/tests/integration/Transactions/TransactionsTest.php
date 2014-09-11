@@ -26,7 +26,6 @@ class TransactionsTest extends TestCase {
     ];
 
     $response = $this->call('POST', $this->API_ROOT, $newTransaction);
-
     $this->assertResponseStatus(Response::HTTP_CREATED);
   }
 

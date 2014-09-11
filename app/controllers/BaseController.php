@@ -41,6 +41,15 @@ class BaseController extends \Controller {
    * @param $record
    * @return mixed
    */
+  protected function transformInput($record) {
+    $transform = $this->getTransformer();
+    return $transform ? $transform->transformInput($record) : $record;
+  }
+
+  /**
+   * @param $record
+   * @return mixed
+   */
   protected function transformCollection($record) {
     $transform = $this->getTransformer();
     return $transform ? $transform->transformCollection($record) : $record;

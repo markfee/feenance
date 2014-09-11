@@ -13,6 +13,7 @@ abstract class Transformer {
   }
 
   public abstract function transform($record);
+  public function transformInput($record) {    return $record;  } // to be overridden
   public function transformWith($record, $with=[]) {
     return array_merge($this->transform($record), empty($with) ? $with : $this->withTransform($record, $with));
   }

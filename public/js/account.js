@@ -1,7 +1,19 @@
-feenance.controller('AccountController', function($scope, AccountsApi) {
+feenance.controller('AccountController', function($scope, $transclude, AccountsApi) {
   $scope.accounts   = {};
   $scope.selected   = null;
   $scope.selectedId = null;
+  $scope.title = "Account";
+
+  $transclude(function(clone,scope) {
+    $scope.title = clone.html();
+    if ($scope.title == undefined)  $scope.title = "Account";
+  });
+
+  $scope.$on('setAccount', function (something, $newAccount) {
+    if ($scope.linkedAccount){
+      $scope.select($newAccount.id);
+    }
+  });
 
   var records = AccountsApi.get( {}, function () {
     $scope.accounts = records.data;
@@ -10,7 +22,7 @@ feenance.controller('AccountController', function($scope, AccountsApi) {
     }
   });
 
-  $scope.select= function(id) {
+  $scope.select = function(id) {
     $scope.selectedId = id;
     angular.forEach($scope.accounts, function(account, key) {
       if (account.id == id) {
@@ -30,12 +42,16 @@ feenance.controller('AccountController', function($scope, AccountsApi) {
 feenance.directive('accountSelector', function() {
  return {
     restrict: 'E'
+ , transclude: true
  ,  scope: {
       selected: "=ngModel"
       , accountId: "=" // remember account_id in markup accountId in directive / controller ???
     }
  , templateUrl: 'view/accountSelector.html'
     , link: function (scope, element, attr) {
+        if (attr.linkedAccount) {
+          scope.linkedAccount = true;
+        }
         if (scope.accountId) {
           scope.select(scope.accountId);
         }

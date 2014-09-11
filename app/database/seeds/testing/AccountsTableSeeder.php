@@ -1,6 +1,5 @@
 <?php
 
-//use MMEX\Accounts as mmexAccount;
 use Faker\Factory as Faker;
 
 class testAccountsTableSeeder extends Seeder {

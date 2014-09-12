@@ -11,7 +11,7 @@
     </div>
 
     <account-selector ng-model="transaction.account" linked-account="true">Account</account-selector>
-    <account-selector ng-model="transaction.transferDestination">Transfer</account-selector>
+    <account-selector ng-model="transaction.transfer" emit-message="transferUpdated" optional="true">Transfer</account-selector>
 
     <payee-selector ng-model="transaction.payee" >        </payee-selector>
 
@@ -26,8 +26,8 @@
     </div>
     <div class="form-group">
       <button ng-click="reset()">RESET</button>
-      <button type="submit" ng-click="update(transaction)">SAVE</button>
+      <button type="submit" ng-click="add(transaction)">SAVE</button>
     </div>
   </form>
-  <pre>form = {{transaction | json}}{{transaction.category_id}}</pre>
+  <pre>transaction = {{transaction | json}}{{transaction.category_id}}</pre>
 </div>

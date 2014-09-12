@@ -17,4 +17,3 @@ class AccountsTest extends TestCase {
     $this->assertValidJsonResponse($response, ['name', 'acc_number', 'sort_code', 'notes', 'open', 'bank', 'opening_balance']);
   }
 };
-

@@ -3,6 +3,20 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.selected   = null;
   $scope.selectedId = null;
   $scope.title = "Account";
+  $scope.emitMessage = "accountUpdated";
+  $scope.optional = false;
+
+  var records = AccountsApi.get( {}, function () {
+    $scope.accounts = records.data;
+    if ($scope.optional) {
+      $scope.accounts.splice(0, 0, { "id":null, name:""});
+      $scope.selected = records.data[0];
+    }
+    if ($scope.selectedId) {
+      $scope.select($scope.selectedId);
+    }
+  });
+
 
   $transclude(function(clone,scope) {
     $scope.title = clone.html();
@@ -12,13 +26,6 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.$on('setAccount', function (something, $newAccount) {
     if ($scope.linkedAccount){
       $scope.select($newAccount.id);
-    }
-  });
-
-  var records = AccountsApi.get( {}, function () {
-    $scope.accounts = records.data;
-    if ($scope.selectedId) {
-      $scope.select($scope.selectedId);
     }
   });
 
@@ -35,7 +42,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 
   $scope.change = function() {
     $scope.selectedId = $scope.selected.id;
-    $scope.$emit('accountUpdated', $scope.selected);
+    $scope.$emit($scope.emitMessage, $scope.selected);
   };
 });
 
@@ -49,32 +56,13 @@ feenance.directive('accountSelector', function() {
     }
  , templateUrl: 'view/accountSelector.html'
     , link: function (scope, element, attr) {
-        if (attr.linkedAccount) {
-          scope.linkedAccount = true;
-        }
-        if (scope.accountId) {
-          scope.select(scope.accountId);
-        }
-    }
-    , controller: "AccountController"
-  };
-});
-
-
-feenance.directive('account', function(AccountsApi) {
-  return {
-    restrict: 'E',
-    scope: {
-      accountid: "="
-    },
-    templateUrl: 'account.html'
-    , link: function (scope, element, attrs) {
-      if (scope.accountid) {
-        var $account = AccountsApi.get({id:scope.accountid}, function() {
-          scope.account = $account;
-          scope.direction = attrs.direction
-        });
+      scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
+     scope.linkedAccount = attr.linkedAccount ? true : false;
+     scope.optional = attr.optional ? true : false;
+      if (scope.accountId) {
+        scope.select(scope.accountId);
       }
     }
+    , controller: "AccountController"
   };
 });

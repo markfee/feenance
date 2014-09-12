@@ -53,9 +53,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
 feenance.directive('newTransaction', function(AccountsApi) {
   return {
     restrict: 'E',
-    scope: {
-//      accountId: "=" // remember account_id in markup accountId in directive / controller ???
-    },
+    scope: {    },
     templateUrl: 'view/newTransaction.html'
     , link: function (scope) {
       if (scope.accountId) {

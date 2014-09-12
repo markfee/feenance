@@ -48,17 +48,17 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 
 feenance.directive('accountSelector', function() {
  return {
-    restrict: 'E'
+  restrict: 'E'
  , transclude: true
  ,  scope: {
       selected: "=ngModel"
-      , accountId: "=" // remember account_id in markup accountId in directive / controller ???
+      , accountId: "=" // remember account_id in markup accountId in directive / controller
     }
  , templateUrl: 'view/accountSelector.html'
     , link: function (scope, element, attr) {
       scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
-     scope.linkedAccount = attr.linkedAccount ? true : false;
-     scope.optional = attr.optional ? true : false;
+      scope.linkedAccount = attr.linkedAccount ? true : false;
+      scope.optional = attr.optional ? true : false;
       if (scope.accountId) {
         scope.select(scope.accountId);
       }

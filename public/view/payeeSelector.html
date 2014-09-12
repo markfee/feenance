@@ -1,3 +1,4 @@
+<div>
 <!--  <h3>Payee</h3>-->
   <div class="row">
       <label class="col-sm-3" >    Payee:</label>
@@ -22,6 +23,5 @@
       <button class="btn btn-default btn-sm" ng-click="cancel()"          ng-show="selected.id && editing" >  <i class="fa fa-undo fa-lg">        </i>  </button>
     </div>
   </div>
-  <div class="row">
-    <pre class="col-sm-12, form-control">payee:  {{selected | json}} id:{{selected_id}} </pre>
-  </div>
+  <pre >payee:  {{selected | json}} id:{{selected_id}} </pre>
+</div>

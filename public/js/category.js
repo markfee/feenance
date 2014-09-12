@@ -13,14 +13,14 @@ feenance.controller('CategoryController', function($scope, $http, CategoriesApi)
     });
   };
 
+  $scope.onSelect = function($item) {
+    $scope.selected_id = $item.id;
+    $scope.$emit('categoryUpdated', $item);
+  };
+
   $scope.$on('setCategory', function (something, item) {
     $scope.select(item);
   });
-
-
-  $scope.onSelect = function($item) {
-    $scope.selected_id = $item.id;
-  };
 
   $scope.lookupRecords = function($viewValue) {
     return $http.get($API_ROOT + "categories/"+$viewValue).then(function(response) {

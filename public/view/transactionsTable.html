@@ -23,10 +23,6 @@
         <transfer destination="transaction.destination" />
       </td>
       <td>{{transaction.balance | currency: "£" }}</td>
-      <!--
-            <td><span ng-show="accountId==transaction.credit.account_id">{{transaction.credit.amount  | currency: "£" }}  <account direction="from" accountid="transaction.credit.transfer_id">  </account> </span></td>
-            <td><span ng-show="accountId==transaction.debit.account_id">{{transaction.debit.amount  | currency: "£" }}    <account direction="to" accountid="transaction.credit.transfer_id">  </account> </span></td>
-      -->
     </tr>
   </table>
 </div>

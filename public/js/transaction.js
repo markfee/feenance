@@ -1,21 +1,38 @@
 feenance.controller('TransactionController', function($scope, TransactionsApi, AccountsApi, CurrentAccount) {
   // Set the default for the Form!
-  $scope.transaction = {
-    "reconciled": "true",
-    "date": (new Date()).toISOString().substr(0,10),
-    "amount": 0.0
-  };
+  $scope.transaction = new TransactionsApi();
+  $scope.transaction.reconciled   = true;
+  $scope.transaction.date         =  (new Date()).toISOString().substr(0,10);
+  $scope.transaction.amount       = 0.0;
+  $scope.transaction.category_id  = null;
+  $scope.transaction.account_id   = null;
+  $scope.transaction.transfer_id  = null;
+  $scope.transaction.payee_id     = null;
+  $scope.transaction.account      = null;
+  $scope.transaction.transfer     = null;
+  $scope.transaction.payee        = null;
 
   $scope.$on('payeeUpdated', function (something, item) {
     $scope.$broadcast('setCategory', item.category_id);
+    $scope.transaction.payee_id = (item.id) ? item.id : null;
+  });
+
+  $scope.$on('categoryUpdated', function (something, item) {
+    $scope.$broadcast('setCategory', item.category_id);
+    $scope.transaction.category_id = (item.id) ? item.id : null;
   });
 
   $scope.$on('accountUpdated', function ($event, item) {
     $event.stopPropagation();
-    console.log("accountUpdated in TransactionController");
-
+    console.log("accountUpdated in TransactionController" + item.id);
+    $scope.transaction.account_id = (item.id) ? item.id : null;
   });
 
+  $scope.$on('transferUpdated', function ($event, item) {
+    $event.stopPropagation();
+    console.log("accountUpdated in TransactionController" + item.id);
+    $scope.transaction.transfer_id = (item.id) ? item.id : null;
+  });
 
   $scope.$on('setAccount', function (something, $newAccount) {
     if ($newAccount.id) {
@@ -27,8 +44,9 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
     }
   });
 
-  $scope.update = function(transaction) {
-    alert(transaction.amount);
+  $scope.add = function(transaction) {
+    $scope.transaction.$save();
+//    alert(transaction.amount);
   }
 });
 

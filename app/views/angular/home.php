@@ -10,6 +10,8 @@
     </div>
     <div class = "col-lg-4">
       <new-transaction accountId=""></new-transaction>
+      <transaction-uploader ng-model="transaction.uploadFile" ></transaction-uploader>
+
     </div>
   </div>
 </div>

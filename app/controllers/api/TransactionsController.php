@@ -99,13 +99,13 @@ class TransactionsController extends BaseController {
     return Respond::Created($this->transformCollection($collection));
   }
 
-	/**
-	 * Update the specified transaction in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
+  /**
+   * Update the specified transaction in storage.
+   *
+   * @param  int  $id
+   * @return Response
+   */
+  public function update($id)
 	{
 		$transaction = Transaction::findOrFail($id);
     $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
@@ -115,6 +115,27 @@ class TransactionsController extends BaseController {
     $transaction->update($data);
     return Respond::Raw($this->transform($transaction));
 	}
+
+  /**
+   * Upload a file to the server for import.
+   *
+   * @param  int  $id
+   * @return Response
+   */
+  public function upload() {
+    $file = Input::file('file');
+    $SplFileObject = $file->openFile('r');
+    $SplFileObject->next();
+    while(!$SplFileObject->eof()){
+      $line = $SplFileObject->getCurrentLine();
+      print "<br>{$line}";
+      $SplFileObject->next();
+    }
+
+    dd($file);
+  }
+
+
 
 	/**
 	 * Remove the specified transaction from storage.

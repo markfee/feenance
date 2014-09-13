@@ -13,12 +13,20 @@
 
 Route::get('/', function()
 {
-	return View::make('home');
+  return View::make('home');
 });
+
+Route::get('/import', function()
+{
+  return View::make('import');
+});
+
 
 Route::group(['prefix' =>  'api/v1/'], function() {
   $NAMESPACE = 'api\\';
-  Route::get('accounts/{id}/transactions/',          $NAMESPACE.'TransactionsController@index');
+  Route::get('accounts/{id}/transactions/',    $NAMESPACE.'TransactionsController@index');
+  Route::get('accounts/upload/',          $NAMESPACE.'TransactionsController@upload');
+  Route::post('accounts/upload/',          $NAMESPACE.'TransactionsController@upload');
   Route::resource('accounts', $NAMESPACE.'AccountsController');
   Route::resource('transactions', $NAMESPACE.'TransactionsController');
   Route::resource('payees', $NAMESPACE.'PayeesController');

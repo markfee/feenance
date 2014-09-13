@@ -23,5 +23,5 @@
       <button class="btn btn-default btn-sm" ng-click="cancel()"          ng-show="selected.id && editing" >  <i class="fa fa-undo fa-lg">        </i>  </button>
     </div>
   </div>
-  <pre >payee:  {{selected | json}} id:{{selected_id}} </pre>
+  <json-view ng-model="selected" title="payee"></json-view>
 </div>

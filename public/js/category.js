@@ -66,8 +66,8 @@ feenance.controller('CategoryController', function($scope, $http, CategoriesApi)
       }
     });
   }
-  $scope.records = [];
-  getPage(1);
+//  $scope.records = [];
+//  getPage(1);
 });
 
 feenance.directive('categorySelector', function() {

@@ -81,14 +81,22 @@ class TransactionsController extends BaseController {
   private function createTransfer($data, $transfer_id) {
     $transfer = $data;
     $transfer["account_id"] = $transfer_id;
-    $transfer["amount"] *= -1;
-    DB::beginTransaction();
+    $data["amount"] *= -1;
+    DB::beginTransaction();{
+
       $source       = Transaction::create($data);
       $destination  = Transaction::create($transfer);
+      $transfer = new \Transfer();
+      $transfer->source = $source->id;
+      $transfer->destination = $destination->id;
+      $transfer->save();
+    }
     DB::commit();
-    $collection = $source->all()->merge($destination->all());
-    return Respond::Created($this->transformCollection($collection->all()));
-//    return Respond::Paginated(\Paginator::make($collection->all(), 2, 2)->paginate(2));
+//    $collection = $source->all()->merge($destination->all());
+    $collection=[];
+    $collection[] = $source->first();
+    $collection[] = $destination->first();
+    return Respond::Created($this->transformCollection($collection));
   }
 
 	/**

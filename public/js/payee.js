@@ -91,6 +91,7 @@ feenance.directive('payee', function(PayeesApi) {
     restrict: 'E',
     scope: {
       payeeid: "="
+    , payee: "=ngModel"
     },
     templateUrl: 'view/payee.html'
     , link: function (scope) {

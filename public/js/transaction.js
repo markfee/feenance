@@ -1,16 +1,20 @@
-feenance.controller('TransactionController', function($scope, TransactionsApi, AccountsApi, CurrentAccount) {
+feenance.controller('TransactionController', function($scope, TransactionsApi, AccountsApi) {
   // Set the default for the Form!
-  $scope.transaction = new TransactionsApi();
-  $scope.transaction.reconciled   = true;
-  $scope.transaction.date         =  (new Date()).toISOString().substr(0,10);
-  $scope.transaction.amount       = 0.0;
-  $scope.transaction.category_id  = null;
-  $scope.transaction.account_id   = null;
-  $scope.transaction.transfer_id  = null;
-  $scope.transaction.payee_id     = null;
-  $scope.transaction.account      = null;
-  $scope.transaction.transfer     = null;
-  $scope.transaction.payee        = null;
+  $scope.reset = function() {
+    $scope.transaction = new TransactionsApi();
+    $scope.transaction.reconciled   = true;
+    $scope.transaction.date         =  (new Date()).toISOString().substr(0,10);
+    $scope.transaction.amount       = 0.0;
+    $scope.transaction.category_id  = null;
+    $scope.transaction.account_id   = null;
+    $scope.transaction.transfer_id  = null;
+    $scope.transaction.payee_id     = null;
+    $scope.transaction.account      = null;
+    $scope.transaction.transfer     = null;
+    $scope.transaction.payee        = null;
+  };
+  $scope.success        = null;
+  $scope.reset();
 
   $scope.$on('payeeUpdated', function (something, item) {
     $scope.$broadcast('setCategory', item.category_id);
@@ -34,6 +38,33 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
     $scope.transaction.transfer_id = (item.id) ? item.id : null;
   });
 
+  $scope.add = function(transaction) {
+    $scope.transaction.$save( function(response) {
+        $scope.success = "Saved Successfully";
+        // Make sure that an array of newTransactions is emitted - even if it's just one.
+        $transactions = (response.data ? response.data :  [response]);
+        $scope.$emit("newTransactions", $transactions);
+        $scope.reset();
+    } , function(response) {
+        $scope.success = response.data.errors.error[0];
+      }
+    );
+  }
+});
+
+feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi) {
+  $scope.transactions = null;
+  $scope.predicate    = "date";
+  $scope.reverse      = true;
+
+  $scope.$on('addTransactions', function($event, $transactions) {
+    angular.forEach($transactions, function($transaction, $key) {
+      if ($transaction.account_id == $scope.accountId) {
+        $scope.transactions.push($transaction);
+      }
+    });
+  });
+
   $scope.$on('setAccount', function (something, $newAccount) {
     if ($newAccount.id) {
       $scope.account = $newAccount;
@@ -43,12 +74,8 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
       });
     }
   });
-
-  $scope.add = function(transaction) {
-    $scope.transaction.$save();
-//    alert(transaction.amount);
-  }
 });
+
 
 feenance.directive('newTransaction', function(AccountsApi) {
   return {

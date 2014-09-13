@@ -10,8 +10,13 @@
       <div class="col-sm-9"><input id="transaction_date"   type="date" ng-model="transaction.date"></div>
     </div>
 
-    <account-selector ng-model="transaction.account" linked-account="true">Account</account-selector>
-    <account-selector ng-model="transaction.transfer" emit-message="transferUpdated" optional="true">Transfer</account-selector>
+    <account-selector ng-model="transaction.account" linked-account="true">
+      Account
+    </account-selector>
+
+    <account-selector ng-model="transaction.transfer" emit-message="transferUpdated" optional="true">
+      Transfer
+    </account-selector>
 
     <payee-selector ng-model="transaction.payee" >        </payee-selector>
 
@@ -28,7 +33,9 @@
       <button ng-click="reset()">RESET</button>
       <button type="submit" ng-click="add(transaction)">SAVE</button>
     </div>
+
   </form>
+
   <div ng-show="success">{{success}}</div>
   <json-view ng-model="transaction" title="transaction"></json-view>
 </div>

@@ -64,6 +64,7 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
       }
     });
   });
+
   $scope.toggleReconciled = function(transaction) {
     var reconciled = transaction.reconciled;
     transaction.reconciled = reconciled > 0 ? 0 : 1;
@@ -86,7 +87,6 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   });
 });
 
-
 feenance.directive('newTransaction', function(AccountsApi) {
   return {
     restrict: 'E',
@@ -102,6 +102,20 @@ feenance.directive('newTransaction', function(AccountsApi) {
     , controller: "TransactionController"
   };
 });
+
+feenance.directive('transactionUploader', function(AccountsApi) {
+  return {
+    restrict: 'E',
+    scope: {
+      uploadFile: "=ngModel"
+    },
+    templateUrl: 'view/transactionUploader.html'
+    , link: function (scope) {   }
+    , controller: "TransactionController"
+  };
+});
+
+
 
 feenance.directive('transfer', function(TransactionsApi, AccountsApi) {
   return {

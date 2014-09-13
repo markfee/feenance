@@ -12,7 +12,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.js"></script>
 
-{{ HTML::script('js/angular/angular-leaflet-directive.min.js') }}
+<!--{{ HTML::script('js/angular/angular-leaflet-directive.min.js') }}-->
+{{ HTML::script('js/angular/ng-upload.js') }}
 {{ HTML::script('js/angular/ui-bootstrap-tpls-0.11.0.js') }}
 {{ HTML::script('js/feenance.js') }}
 {{ HTML::script('js/api.js') }}

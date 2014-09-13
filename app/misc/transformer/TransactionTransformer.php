@@ -7,7 +7,8 @@
  */
 
 namespace Misc\Transformers;
-use \Carbon;
+use \Carbon\Carbon;
+use Mockery\CountValidator\Exception;
 
 class TransactionTransformer extends Transformer {
 
@@ -32,7 +33,10 @@ class TransactionTransformer extends Transformer {
   }
 
   public function transformInput($record) {
-    $record["amount"] *= 100;
+    if (isset($record["amount"])) $record["amount"] *= 100;
+    if (isset($record["date"])) {
+      $record["date"] = substr($record["date"], 0, 10);
+    }
     return $record;
   }
 }

@@ -64,7 +64,17 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
       }
     });
   });
+  $scope.toggleReconciled = function(transaction) {
+    var reconciled = transaction.reconciled;
+    transaction.reconciled = reconciled > 0 ? 0 : 1;
+    TransactionsApi.update({ id: transaction.id}, transaction, function(response) {
+      transaction.reconciled = response.reconciled;
+    }, function() {
+      // On Error reset Value
+      transaction.reconciled = reconciled;
+    });
 
+  };
   $scope.$on('setAccount', function (something, $newAccount) {
     if ($newAccount.id) {
       $scope.account = $newAccount;

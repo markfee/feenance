@@ -10,19 +10,25 @@
       <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Credit</a></th>
       <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Debit</a></th>
       <th><a href="" ng-click="predicate = 'balance';      reverse=!reverse">Balance</a></th>
+      <th><a href="" ng-click="predicate = 'reconciled';      reverse=!reverse" title="Reconciled">R</a></th>
     </tr>
     <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse">
       <td>{{transaction.date | date}} </td>
       <td><payee ng-model="transaction.payee" payeeid="transaction.payee_id" /></td>
       <td>
         <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}   </span>
-        <transfer source="transaction.source" />
+        <transfer destination="transaction.destination" />
       </td>
       <td>
         <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}   </span>
-        <transfer destination="transaction.destination" />
+        <transfer source="transaction.source" />
       </td>
       <td>{{transaction.balance | currency: "£" }}</td>
+      <td>
+        <a href="" ng-click="toggleReconciled(transaction)">
+        <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>
+        </a>
+      </td>
     </tr>
   </table>
 </div>

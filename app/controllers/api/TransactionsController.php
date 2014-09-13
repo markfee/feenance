@@ -108,7 +108,7 @@ class TransactionsController extends BaseController {
 	public function update($id)
 	{
 		$transaction = Transaction::findOrFail($id);
-		$validator = Validator::make($data = Input::all(), Transaction::$rules);
+    $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
     if ($validator->fails()) {
       return Respond::ValidationFailed();
     }

@@ -3,6 +3,8 @@ use Illuminate\Http\Response;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
   protected $expected_status = Response::HTTP_OK;
+  protected $expects_pagination = true;
+
 	/**
 	 * Creates the application.
 	 *
@@ -14,6 +16,11 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 		$testEnvironment = 'testing';
 		return require __DIR__.'/../../bootstrap/start.php';
 	}
+
+  public function assertExpectedStatus($status) {
+    $this->expected_status = $status;
+    return $this->assertResponseStatus($status);
+  }
 
   public function seed($seederName) {
     Eloquent::unguard();
@@ -35,6 +42,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
 
   protected function assertNoErrors($jsonResponse) {
+    $this->assertEquals(true,  isset($jsonResponse->errors),    "Empty errors attribute expected: \n");
     if ( count($jsonResponse->errors) ) {
       $str = print_r($jsonResponse->errors, true);
       $this->assertEquals(0,  count($jsonResponse->errors),    "Unexpected errors: \n{$str}");
@@ -65,23 +73,25 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     return $jsonResponse;
   }
 
+  protected function assertNRecordsResponse($response, $expectedCount, Array $expectedFields = null, Array $unexpectedFields = null) {
+    $this->expects_pagination = false;
+    $jsonResponse = $this->assertValidJsonResponse($response, $expectedFields, $unexpectedFields);
+    $this->assertEquals(true, count($jsonResponse->data) == $expectedCount,  "Are there exactly {$expectedCount} data items?");
+    return $jsonResponse;
+  }
+
   protected function assertValidJsonResponse($response, Array $expectedFields = null, Array $unexpectedFields = null) {
-//    dd($response);
-//    try {
-      $jsonResponse = $response->getData();
-      $this->assertNoErrors($jsonResponse);
-      $this->assertEquals($this->expected_status, $response->getStatusCode(), "Expected response {$this->expected_status} got " . $response->getStatusCode());
-      $this->assertEquals('application/json', $response->headers->get('Content-Type'));
-      $this->assertEquals(0,  count($jsonResponse->messages),  "Are there no messages?");
-      $this->assertEquals(true, count($jsonResponse->data) > 0,  "Is there at least one data item?");
+    $jsonResponse = $response->getData();
+    $this->assertNoErrors($jsonResponse);
+    $this->assertEquals($this->expected_status, $response->getStatusCode(), "Expected response {$this->expected_status} got " . $response->getStatusCode());
+    $this->assertEquals('application/json', $response->headers->get('Content-Type'));
+//    $this->assertEquals(0,  count($jsonResponse->messages),  "Are there no messages?");
+    $this->assertEquals(true, count($jsonResponse->data) > 0,  "Is there at least one data item?");
+    if ($this->expects_pagination)
       $this->assertEquals(1,  count($jsonResponse->paginator), "Is there pagination data?");
-      $this->assertExpectedFields($jsonResponse->data[0], $expectedFields);
-      $this->assertUnExpectedFields($jsonResponse->data[0], $unexpectedFields);
-      return $jsonResponse;
-//    } catch(Exception $ex) {
-//      print_r($jsonResponse);
-//      $this->assertEquals(true, false, $ex->getMessage());
-//    }
+    $this->assertExpectedFields($jsonResponse->data[0], $expectedFields);
+    $this->assertUnExpectedFields($jsonResponse->data[0], $unexpectedFields);
+    return $jsonResponse;
   }
 
   protected function assertCallback($jsonResponse, $callback) {
@@ -94,7 +104,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     $jsonResponse = $response->getData();
     $this->assertEquals($this->expected_status, $response->getStatusCode(), "Expected response {$this->expected_status} got " . $response->getStatusCode());
     $this->assertEquals('application/json', $response->headers->get('Content-Type'));
-    $this->assertTrue(true, count($jsonResponse) == 1,  "Is there at least one data item?");
+    $this->assertTrue(true, count($jsonResponse) == 1,  "Is there exactly one data item?");
     $this->assertExpectedFields($jsonResponse, $expectedFields);
     $this->assertUnExpectedFields($jsonResponse, $unexpectedFields);
     return $jsonResponse;

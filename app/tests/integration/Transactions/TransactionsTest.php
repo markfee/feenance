@@ -26,10 +26,57 @@ class TransactionsTest extends TestCase {
     ];
 
     $response = $this->call('POST', $this->API_ROOT, $newTransaction);
-    $this->assertResponseStatus(Response::HTTP_CREATED);
+    $this->assertExpectedStatus(Response::HTTP_CREATED);
+    $this->assertValidSingleRecordJsonResponse($response
+    , [
+          "id",
+          "date",
+          "amount",
+          "account_id",
+          "balance",
+          "reconciled",
+          "payee_id",
+          "category_id",
+          "notes",
+          "source",
+          "destination"
+        ]
+    );
+
   }
 
+  public function test_adding_a_new_transaction_with_a_transfer_id_should_create_a_transfer() {
+    $this->seed('AccountsTableSeeder');
+    $newTransaction = [
+      "date"              =>  Carbon::now(),
+      "amount"            =>  10.25,
+      "account_id"        =>  1,
+      "transfer_id"       =>  2,
+      "reconciled"        =>  true,
+      "payee_id"          =>  null,
+      "category_id"       =>  null,
+      "notes"             =>  "this is a test"
+    ];
 
+    $response = $this->call('POST', $this->API_ROOT, $newTransaction);
+    $this->assertExpectedStatus(Response::HTTP_CREATED);
 
-  };
+    $this->assertNRecordsResponse($response, 2
+      , [
+        "id",
+        "date",
+        "amount",
+        "account_id",
+        "balance",
+        "reconciled",
+        "payee_id",
+        "category_id",
+        "notes",
+        "source",
+        "destination"
+      ]
+    );
+  }
+
+};
 

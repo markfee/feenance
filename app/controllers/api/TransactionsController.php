@@ -10,6 +10,7 @@ use \Exception;
 use \Input;
 use \Validator;
 use Symfony\Component\HttpFoundation\Response as ResponseCodes;
+use \DB;
 
 class TransactionsController extends BaseController {
 
@@ -61,17 +62,34 @@ class TransactionsController extends BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
+    $transfer_id = (empty(Input::all()["transfer_id"]) ? null : Input::all()["transfer_id"]);
+
+    $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
 
     if ($validator->fails())		{
       Respond::WithErrors($validator->getMessageBag());
       return Respond::ValidationFailed();
     }
-
+    if (!empty($transfer_id)) {
+      return $this->createTransfer($data, $transfer_id);
+    }
     $transaction = Transaction::create($data);
     Respond::setStatusCode(ResponseCodes::HTTP_CREATED);
     return Respond::Raw($this->transform($transaction));
 	}
+
+  private function createTransfer($data, $transfer_id) {
+    $transfer = $data;
+    $transfer["account_id"] = $transfer_id;
+    $transfer["amount"] *= -1;
+    DB::beginTransaction();
+      $source       = Transaction::create($data);
+      $destination  = Transaction::create($transfer);
+    DB::commit();
+    $collection = $source->all()->merge($destination->all());
+    return Respond::Created($this->transformCollection($collection->all()));
+//    return Respond::Paginated(\Paginator::make($collection->all(), 2, 2)->paginate(2));
+  }
 
 	/**
 	 * Update the specified transaction in storage.

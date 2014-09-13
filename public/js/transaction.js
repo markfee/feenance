@@ -18,7 +18,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
   });
 
   $scope.$on('categoryUpdated', function (something, item) {
-    $scope.$broadcast('setCategory', item.category_id);
+//    $scope.$broadcast('setCategory', item.category_id);
     $scope.transaction.category_id = (item.id) ? item.id : null;
   });
 

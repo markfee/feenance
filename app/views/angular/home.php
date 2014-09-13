@@ -1,5 +1,6 @@
 <div data-ng-controller="FeenanceController">
-   <account-selector ng-model="account" account-id="2"> </account-selector>
+  <account-selector ng-model="account" account-id="2"> </account-selector>
+  <button ng-click="toggleDebug()">Debug</button>
 
   <div class = "row">
     <div class = "col-lg-8">

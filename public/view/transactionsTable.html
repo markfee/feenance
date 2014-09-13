@@ -1,19 +1,19 @@
 
 <!--TRANSACTIONS TABLE-->
 
-<div data-ng-controller="TransactionController" ng-show="transactions" >
+<div data-ng-controller="TransactionsController" ng-show="transactions" >
   <h3>{{account.name}}</h3>
   <table class="table table-striped">
     <tr>
-      <th>Date</th>
-      <th>Payee</th>
-      <th>Credit</th>
-      <th>Debit</th>
-      <th>Balance</th>
+      <th><a href="" ng-click="predicate = 'date';        reverse=!reverse">Date</a></th>
+      <th><a href="" ng-click="predicate = 'payee.name';  reverse=!reverse">Payee</a></th>
+      <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Credit</a></th>
+      <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Debit</a></th>
+      <th><a href="" ng-click="predicate = 'balance';      reverse=!reverse">Balance</a></th>
     </tr>
-    <tr ng-repeat="transaction in transactions">
+    <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse">
       <td>{{transaction.date | date}} </td>
-      <td><payee payeeid="transaction.payee_id" />           </td>
+      <td><payee ng-model="transaction.payee" payeeid="transaction.payee_id" /></td>
       <td>
         <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}   </span>
         <transfer source="transaction.source" />

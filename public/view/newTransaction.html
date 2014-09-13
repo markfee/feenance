@@ -29,5 +29,6 @@
       <button type="submit" ng-click="add(transaction)">SAVE</button>
     </div>
   </form>
+  <div ng-show="success">{{success}}</div>
   <json-view ng-model="transaction" title="transaction"></json-view>
 </div>

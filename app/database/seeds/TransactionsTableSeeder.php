@@ -11,6 +11,8 @@ class TransactionsTableSeeder extends Seeder {
     DB::unprepared('SET @disable_transaction_triggers = 1;');
     foreach($records as $record)
     {
+      if ($record->STATUS != "R")
+        continue;
       $amount = $record->TRANSAMOUNT;
       $credit_account = null;
       $debit_account = null;

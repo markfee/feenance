@@ -61,7 +61,7 @@ class TransactionsTest extends TestCase {
     $response = $this->call('POST', $this->API_ROOT, $newTransaction);
     $this->assertExpectedStatus(Response::HTTP_CREATED);
 
-    $this->assertNRecordsResponse($response, 2
+    $jsonResponse = $this->assertNRecordsResponse($response, 2
       , [
         "id",
         "date",

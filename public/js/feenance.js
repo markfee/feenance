@@ -2,10 +2,17 @@ var feenance = angular.module("feenance", ['ngResource', 'ngRoute', 'ui.bootstra
 
 feenance.controller('FeenanceController', function($scope) {
   $scope.debug = false;
+
   $scope.$on('accountUpdated', function(something, account) {
     console.log("accountUpdated in FeenanceController");
     $scope.$broadcast('setAccount', account);
   });
+
+  $scope.$on('newTransactions', function($event, $transactions) {
+    console.log("newTransactions in FeenanceController");
+    $scope.$broadcast('addTransactions', $transactions);
+  });
+
 
   $scope.toggleDebug = function() {
     $scope.debug = !$scope.debug;

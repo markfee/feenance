@@ -38,7 +38,6 @@ class StandingOrdersTableSeeder extends Seeder {
           $categoryId = $category->id;
         }
       } catch(Exception $ex) {
-        echo $record->SUBCATEGID;
       }
       /*
       BDID: "1",

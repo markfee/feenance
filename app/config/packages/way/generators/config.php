@@ -31,11 +31,11 @@ return [
     */
     'model_target_path'   => app_path('models'),
 
-    'controller_target_path'   => app_path('controllers'),
+    'controller_target_path'   => app_path('controllers/api'),
 
     'migration_target_path'   => app_path('database/migrations'),
 
-    'seed_target_path'   => app_path('database/seeds'),
+    'seed_target_path'   => app_path('database/seeds/testing'),
 
     'view_target_path'   => app_path('views')
 

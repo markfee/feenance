@@ -8,6 +8,6 @@ class Map extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = ["payee_id", "account_id", "category_id"];
 
 }

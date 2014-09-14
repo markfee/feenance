@@ -10,6 +10,7 @@ use Illuminate\Database\QueryException;
 use \Exception;
 use \Input;
 use \Validator;
+use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 
 class BankStringsController extends BaseController {
 
@@ -23,8 +24,8 @@ class BankStringsController extends BaseController {
    */
   public function index()
   {
-      $bankstrings = BankString::paginate();
-      return Respond::Paginated($bankstrings, $this->transformCollection($bankstrings->all()));
+      $bankStrings = BankString::paginate();
+      return Respond::Paginated($bankStrings, $this->transformCollection($bankStrings->all()));
   }
 
   /**
@@ -39,8 +40,8 @@ class BankStringsController extends BaseController {
       return $this->search($id);
     }
     try {
-      $bankstring = BankString::findOrFail($id);
-      return Respond::Raw($this->transform($bankstring));
+      $bankString = BankString::findOrFail($id);
+      return Respond::Raw($this->transform($bankString));
     } catch (ModelNotFoundException $e) {
       return Respond::NotFound($e->getMessage());
     }
@@ -53,11 +54,11 @@ class BankStringsController extends BaseController {
    * @return Response
    */
   public function search($name)  {
-    $bankstring = BankString::where("name", "LIKE", "{$name}%")->orWhere("name", "like", "%{$name}%")->orderBy("name")->paginate();
-    if ($bankstring->count() == 0) {
+    $bankString = BankString::where("name", "LIKE", "{$name}%")->orWhere("name", "like", "%{$name}%")->orderBy("name")->paginate();
+    if ($bankString->count() == 0) {
       return Respond::NotFound();
     }
-    return Respond::Paginated($bankstring, $this->transformCollection($bankstring->all()));
+    return Respond::Paginated($bankString, $this->transformCollection($bankString->all()));
   }
 
   /**
@@ -66,19 +67,35 @@ class BankStringsController extends BaseController {
    * @param  string $name
    * @return Response
    */
-  public function searchExact($name)  {
+  public function searchExact($account_id, $name) {
     try {
-      $bankString = $this->searchExactOrFail($name);
+      $bankString = $this->searchExactOrFail($account_id, $name);
       return Respond::Raw($this->transform($bankString));
     } catch (ModelNotFoundException $e) {
       return Respond::NotFound($e->getMessage());
     }
   }
 
-  private function searchExactOrFail($name)  {
-    return BankString::where("name", "=", "{$name}")->firstOrFail();
+  private function searchExactOrFail($account_id, $name)  {
+    return BankString::where("name", "=", "{$name}")->where("account_id", "=", $account_id)->firstOrFail();
   }
 
+  /**
+   * Search for bankstring with name == $name
+   *
+   * @param  string $name
+   * @return Response
+   */
+  public function findOrCreate($account_id, $name)  {
+    try {
+      $bankString = $this->searchExactOrFail($account_id, $name);
+      return Respond::Raw($this->transform($bankString));
+    } catch (ModelNotFoundException $e) {
+      $bankString = BankString::create( [ "account_id" => $account_id, "name" => $name ] );
+      Respond::setStatusCode(ResponseCodes::HTTP_CREATED);
+      return Respond::Raw($this->transform($bankString));
+    }
+  }
 
 
 
@@ -96,9 +113,9 @@ class BankStringsController extends BaseController {
 			return Respond::ValidationFailed();
 		}
 
-		$bankstring = BankString::create($data);
+    $bankString = BankString::create($data);
 
-		return Respond::Raw($this->transform($bankstring));
+		return Respond::Raw($this->transform($bankString));
 	}
 
 	/**
@@ -109,7 +126,7 @@ class BankStringsController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$bankstring = BankString::findOrFail($id);
+		$bankString = BankString::findOrFail($id);
 
 		$validator = Validator::make($data = Input::all(), BankString::$rules);
 
@@ -118,8 +135,8 @@ class BankStringsController extends BaseController {
       return Respond::ValidationFailed();
 		}
 
-		$bankstring->update($data);
-    return Respond::Raw($this->transform($bankstring));
+		$bankString->update($data);
+    return Respond::Raw($this->transform($bankString));
 	}
 
 	/**

@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Response;
 use Carbon\Carbon;
+use \SplFileObject;
+use \api\TransactionsController;
+
 class TransactionsTest extends TestCase {
   private $API_ROOT  = "api/v1/transactions";
 
@@ -78,5 +81,16 @@ class TransactionsTest extends TestCase {
     );
   }
 
+  public function test_import_csv() {
+    $this->seed('AccountsTableSeeder');
+    $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Transactions/test_statement.csv", "r");
+    $controller = new TransactionsController();
+    $controller->uploadFile(1, $file);
+
+    $response = $controller->index();
+    $this->assertEquals($response->getData()->paginator->total, 25);
+
+    dd($response->getData());
+  }
 };
 

@@ -22,6 +22,12 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     return $this->assertResponseStatus($status);
   }
 
+  public function setExpectedStatus($status) {
+    $this->expected_status = $status;
+    return $this;
+  }
+
+
   public function seed($seederName) {
     Eloquent::unguard();
     $seeder = new DatabaseSeeder();

@@ -11,7 +11,10 @@ use \Input;
 use \Validator;
 use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 use \DB;
-
+use \SplFileObject;
+use Illuminate\Support\MessageBag;
+use \BankString;
+use \Carbon\Carbon;
 class TransactionsController extends BaseController {
 
   /**
@@ -119,22 +122,54 @@ class TransactionsController extends BaseController {
   /**
    * Upload a file to the server for import.
    *
-   * @param  int  $id
    * @return Response
    */
   public function upload() {
-    $file = Input::file('file');
+    $file       = Input::file('file');
+    $account_id = Input::get("account_id");
     $SplFileObject = $file->openFile('r');
-    $SplFileObject->next();
-    while(!$SplFileObject->eof()){
-      $line = $SplFileObject->getCurrentLine();
-      print "<br>{$line}";
-      $SplFileObject->next();
-    }
-
-    dd($file);
+    $this->uploadFile($account_id, $SplFileObject);
   }
 
+  /**
+   * Upload a file to the server for import.
+   *
+   * @param  SplFileObject $SplFileObject
+   * @return Response
+   */
+  public function uploadFile($account_id, $SplFileObject) {
+    try {
+      $count = 0;
+      $header = $SplFileObject->getCurrentLine();
+      $collection=[];
+      print "\n";
+      while(!$SplFileObject->eof()){
+        $line = array_map("trim", explode(",", $SplFileObject->getCurrentLine()));
+        if (count($line) ==4) {
+          print_r($line);
+          $bank_string = BankString::findOrCreate($account_id, $line[1])->with("map")->first();
+
+          $transaction = Transaction::create([
+              "date"        => Carbon::createFromFormat("d/m/Y",$line[0] )
+            , "amount"      =>  $line[2]
+            , "account_id"  =>  $account_id
+            , "reconciled"  =>  false
+            , "payee_id"    => $bank_string->map ? $bank_string->map->payee_id : null
+            , "category_id" => $bank_string->map ? $bank_string->map->category_id : null
+            , "notes"       => "imported from bank statement"
+          ]);
+        }
+        $SplFileObject->next();
+        $count++;
+      }
+    } catch(Exception $ex) {
+      $messageBag = new MessageBag();
+      $messageBag->add("badFormat", "Unable to process uploaded csv file");
+      $messageBag->add($ex->getCode(), $ex->getMessage());
+
+      return dd(Respond::WithErrors($messageBag));
+    }
+  }
 
 
 	/**

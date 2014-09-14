@@ -14,13 +14,13 @@ class CreateTransfersTable extends Migration {
 	{
 		Schema::create('transfers', function(Blueprint $table)
 		{
+      // These are source and destination transactions NOT acccounts.
+      // This table links two transactions together as a transfer.
 			$table->integer('source')->unsigned();
 			$table->integer('destination')->unsigned();
       $table->foreign('source')->references('id')->on('transactions')->onDelete('cascade')->unique();
       $table->foreign('destination')->references('id')->on('transactions')->onDelete('cascade')->unique();
       $table->primary(['source', 'destination']);
-//      $table->index('source')->unique();
-//      $table->index('dest')->unique();
 
     });
 	}

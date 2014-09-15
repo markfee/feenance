@@ -11,7 +11,7 @@ class TransactionsTest extends TestCase {
   public function test_index_returns_some_records() {
     $this->seed('AccountsTableSeeder');
     $this->seed('TransactionsTableSeeder');
-    $response = $this->call('GET', $this->API_ROOT );
+    $response = $this->call('GET', $this->API_ROOT , [], [], array('HTTP_ACCEPT' => 'application/json') );
 //    dd($response);
     $json = $this->assertValidJsonResponse($response, ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
   }
@@ -28,7 +28,7 @@ class TransactionsTest extends TestCase {
       "notes"             =>  "this is a test"
     ];
 
-    $response = $this->call('POST', $this->API_ROOT, $newTransaction);
+    $response = $this->call('POST', $this->API_ROOT, $newTransaction, [], array('HTTP_ACCEPT' => 'application/json') );
     $this->assertExpectedStatus(Response::HTTP_CREATED);
     $this->assertValidSingleRecordJsonResponse($response
     , [
@@ -61,7 +61,7 @@ class TransactionsTest extends TestCase {
       "notes"             =>  "this is a test"
     ];
 
-    $response = $this->call('POST', $this->API_ROOT, $newTransaction);
+    $response = $this->call('POST', $this->API_ROOT, $newTransaction, [], array('HTTP_ACCEPT' => 'application/json') );
     $this->assertExpectedStatus(Response::HTTP_CREATED);
 
     $jsonResponse = $this->assertNRecordsResponse($response, 2
@@ -85,9 +85,18 @@ class TransactionsTest extends TestCase {
     $this->seed('AccountsTableSeeder');
     $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Transactions/test_statement.csv", "r");
     $controller = new TransactionsController();
+
+    $fakeRedir = \Mockery::mock('Illuminate\Http\RedirectResponse');
+    Redirect::shouldReceive('back')->once()->andReturn($fakeRedir);
+    $fakeRedir->shouldReceive('withMessage')->once()->andReturnSelf();
+    $fakeRedir->shouldReceive('withErrors')->once()->andReturnSelf();
+    $fakeRedir->shouldReceive('withInput')->once()->andReturnSelf();
+    $fakeRedir->shouldReceive('getData')->once()->andReturnSelf();
+
     $controller->uploadFile(1, $file);
 
     $response = $controller->index();
+    $this->assertEquals($fakeRedir,$response);
     $this->assertEquals($response->getData()->paginator->total, 25);
 
     dd($response->getData());

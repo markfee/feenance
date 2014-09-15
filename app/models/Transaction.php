@@ -11,21 +11,6 @@ class Transaction extends Eloquent {
   , "account_id"  => "required|integer"
   ];
 
-/*
- * id: "1085",
-date: "2014-12-27T00:00:00+0000",
-amount: -90,
-account_id: "2",
-balance: 3754.66,
-reconciled: "0",
-payee_id: "84",
-category_id: "64",
-notes: null,
-source: null,
-destination: null*/
-
-
-
   public function balance() {
     return $this->hasOne('Balance');
   }

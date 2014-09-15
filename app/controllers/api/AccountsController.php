@@ -10,6 +10,7 @@ class AccountsController extends BaseController {
 
   public function index()
   {
+//    dd(\URL::previous());
     $records = Account::orderBy("open", "DESC")->paginate();
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }

@@ -3,6 +3,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.selected   = null;
   $scope.selectedId = null;
   $scope.title = "Account";
+  $scope.name = "account_id";
   $scope.emitMessage = "accountUpdated";
   $scope.optional = false;
 
@@ -52,7 +53,8 @@ feenance.directive('accountSelector', function() {
  , transclude: true
  ,  scope: {
       selected: "=ngModel"
-      , accountId: "=" // remember account_id in markup accountId in directive / controller
+     , accountId: "=" // remember account_id in markup accountId in directive / controller
+     , name: "@"
     }
  , templateUrl: 'view/accountSelector.html'
     , link: function (scope, element, attr) {

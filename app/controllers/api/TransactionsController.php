@@ -125,6 +125,7 @@ class TransactionsController extends BaseController {
    * @return Response
    */
   public function upload() {
+    dd(Input::all());
     $file       = Input::file('file');
     $account_id = Input::get("account_id");
     $SplFileObject = $file->openFile('r');

@@ -1,6 +1,9 @@
 <div>
   <div class="row">
-    <label class="col-sm-3" >{{title}}:</label>
+    <div class="col-sm-3" >
+      <label >{{title}}:</label>
+      <input name="{{name}}" type="number" ng-model="selected.id" ng-show="false">
+    </div>
     <div class="col-sm-9" >
       <select ng-model="selected" ng-options="account.name for account in accounts" ng-change="change()"> </select>
     </div>

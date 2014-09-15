@@ -125,11 +125,23 @@ class TransactionsController extends BaseController {
    * @return Response
    */
   public function upload() {
-    dd(Input::all());
-    $file       = Input::file('file');
-    $account_id = Input::get("account_id");
-    $SplFileObject = $file->openFile('r');
-    $this->uploadFile($account_id, $SplFileObject);
+    try {
+      $file       = Input::file('file');
+      $account_id = Input::get("account_id");
+      if ( empty($file) || empty($account_id) ) {
+        return Respond::ValidationFailed("Invalid file uploaded");
+      }
+
+      $SplFileObject = $file->openFile('r');
+      $this->uploadFile($account_id, $SplFileObject);
+    } catch (Exception $ex) {
+      $messageBag = new MessageBag();
+      $messageBag->add("badFormat", "Unable to process uploaded csv file");
+      $messageBag->add($ex->getCode(), $ex->getMessage());
+
+      return Respond::WithErrors($messageBag);
+
+    }
   }
 
   /**
@@ -143,11 +155,11 @@ class TransactionsController extends BaseController {
       $count = 0;
       $header = $SplFileObject->getCurrentLine();
       $collection=[];
-      print "\n";
+//      print "\n";
       while(!$SplFileObject->eof()){
         $line = array_map("trim", explode(",", $SplFileObject->getCurrentLine()));
         if (count($line) ==4) {
-          print_r($line);
+//          print_r($line);
           $bank_string = BankString::findOrCreate($account_id, $line[1])->with("map")->first();
 
           $transaction = Transaction::create([

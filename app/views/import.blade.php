@@ -1,7 +1,7 @@
 @extends('layouts.default')
 @section('content')
 <div>
-
+  <?php print_r(Session::get('message')); ?>
   {{ Form::open( array('action' => 'api\TransactionsController@upload', 'class'=>'form-horizontal', 'files' => true)) }}
     <account-selector ng-model="account" account-id="2" name="account_id"> </account-selector>
     {{Form::file('file')}}

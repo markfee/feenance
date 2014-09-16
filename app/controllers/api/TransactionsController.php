@@ -33,10 +33,11 @@ class TransactionsController extends BaseController {
 	 */
 	public function index($account_id = null)
 	{
+    $with = ["balance", "source", "destination", "bankTransaction"];
     if (!empty($account_id)) {
-      $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->paginate(100);
+      $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->with($with)->paginate(100);
     } else {
-      $records = Transaction::orderBy('date', "DESC")->paginate(100);
+      $records = Transaction::orderBy('date', "DESC")->with($with)->paginate(100);
     }
 //    dd($records->all());
     return Respond::Paginated($records, $this->transformCollection($records->all()));
@@ -153,12 +154,24 @@ class TransactionsController extends BaseController {
    */
   public function uploadFile($account_id, $SplFileObject) {
     try {
-      $count = 0;
       $header = $SplFileObject->getCurrentLine();
       $collection=[];
       Transaction::disableBalanceTrigger();
-      while(!$SplFileObject->eof()){
-        $line = array_map("trim", explode(",", $SplFileObject->getCurrentLine()));
+
+
+      // TODO -- READ FILE INTO ARRAY, REVERSE SORT, ARRAY_MAP_IMPORT
+      $count = 0;
+      $file = [];
+      while(!$SplFileObject->eof()) {
+        $file[$count] = $SplFileObject->getCurrentLine();
+        $SplFileObject->next();
+        print "\n$count";
+        $count++;
+      }
+      while($count > 0) {
+        $count--;
+        print "\n$count";
+        $line = array_map("trim", explode(",", $file[$count]));
         if (count($line) ==4) {
           $bank_string = BankString::findOrCreate($account_id, $line[1])->with("map")->first();
 
@@ -172,10 +185,12 @@ class TransactionsController extends BaseController {
             , "notes"       => "imported from bank statement"
           ]);
 
-//          $bankTransaction = BankTransaction::create([          ]);
+          $bankTransaction = BankTransaction::create([
+            "transaction_id"  =>  $transaction->id,
+            "bank_string_id"  =>  $bank_string->id,
+            "balance"         =>  $line[3] * 100
+          ]);
         }
-        $SplFileObject->next();
-        $count++;
       }
       Transaction::enableBalanceTrigger(true);
     } catch(Exception $ex) {
@@ -183,7 +198,8 @@ class TransactionsController extends BaseController {
       $messageBag = new MessageBag();
       $messageBag->add("badFormat", "Unable to process uploaded csv file");
       $messageBag->add($ex->getCode(), $ex->getMessage());
-      return dd(Respond::WithErrors($messageBag));
+      print $ex->getMessage();
+      return Respond::WithErrors($messageBag);
     }
   }
 

@@ -29,6 +29,7 @@ class TransactionTransformer extends Transformer {
       "notes"             => $record->notes?:null ,
       "source"            => $record->source?$record->source->source:null ,
       "destination"       => $record->destination?$record->destination->destination:null ,
+      "bank_balance"  => $record->bank_transaction ? 0.01 * $record->bank_transaction->balance : null,
       ];
   }
 

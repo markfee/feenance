@@ -82,24 +82,12 @@ class TransactionsTest extends TestCase {
   }
 
   public function test_import_csv() {
-    $this->seed('AccountsTableSeeder');
     $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Transactions/test_statement.csv", "r");
     $controller = new TransactionsController();
-
-    $fakeRedir = \Mockery::mock('Illuminate\Http\RedirectResponse');
-    Redirect::shouldReceive('back')->once()->andReturn($fakeRedir);
-    $fakeRedir->shouldReceive('withMessage')->once()->andReturnSelf();
-    $fakeRedir->shouldReceive('withErrors')->once()->andReturnSelf();
-    $fakeRedir->shouldReceive('withInput')->once()->andReturnSelf();
-    $fakeRedir->shouldReceive('getData')->once()->andReturnSelf();
-
     $controller->uploadFile(1, $file);
 
-    $response = $controller->index();
-    $this->assertEquals($fakeRedir,$response);
+    $response = $this->call('GET', $this->API_ROOT , [], [], array('HTTP_ACCEPT' => 'application/json') );
     $this->assertEquals($response->getData()->paginator->total, 25);
-
-    dd($response->getData());
   }
 };
 

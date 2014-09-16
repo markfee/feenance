@@ -21,4 +21,8 @@ class BankString extends \Eloquent {
     return $this->hasOne('Map', "id");
   }
 
+  public function bankTransaction() {
+    return $this->hasMany('BankTransaction');
+  }
+
 }

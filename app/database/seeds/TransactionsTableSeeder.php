@@ -11,6 +11,7 @@ class TransactionsTableSeeder extends Seeder {
     DB::unprepared('SET @disable_transaction_triggers = 1;');
     foreach($records as $record)
     {
+
       if ($record->STATUS != "R")
         continue;
       $amount = $record->TRANSAMOUNT;
@@ -25,7 +26,7 @@ class TransactionsTableSeeder extends Seeder {
         $category = Category::where("mmex_subcatid", "=", $record->SUBCATEGID)->firstOrFail();
         $categoryId = $category->id;
       }
-
+//      print "\nrecord->ACCOUNTID: {$record->ACCOUNTID}";
       $src = Transaction::create([
         "date"              => $record->TRANSDATE,
         "amount"            => $amount * 100,
@@ -35,7 +36,9 @@ class TransactionsTableSeeder extends Seeder {
         "category_id"       => $categoryId == "-1"      ? null : $categoryId,
         "notes"             => $record->NOTES,
       ]);
+
       if ($record->TOACCOUNTID != "-1") { // transfer
+//        print "\nrecord->TOACCOUNTID : {$record->ACCOUNTID}";
         $destination = Transaction::create([
           "date"              => $record->TRANSDATE,
           "amount"            => $amount * -100,

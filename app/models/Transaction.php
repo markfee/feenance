@@ -11,6 +11,21 @@ class Transaction extends Eloquent {
   , "account_id"  => "required|integer"
   ];
 
+  public static function disableBalanceTrigger() {
+    if (DB::connection()->getDriverName() == "sqlite")
+      return; // This won't work and isn't necessary with SQLITE
+    DB::unprepared('SET @disable_transaction_triggers = 1;');
+  }
+
+  public static function enableBalanceTrigger($refresh = false) {
+    if (DB::connection()->getDriverName() == "sqlite")
+      return; // This won't work and isn't necessary with SQLITE
+    DB::unprepared('SET @disable_transaction_triggers = NULL;');
+    if ($refresh) {
+      DB::unprepared('call refresh_balances();');
+    }
+  }
+
   public function balance() {
     return $this->hasOne('Balance');
   }
@@ -23,6 +38,10 @@ class Transaction extends Eloquent {
   public function source() {
     // If this is the destination the transfer->source is the source
     return $this->hasOne('Transfer', 'destination');
+  }
+
+  public function bankTransaction() {
+    return $this->hasOne('BankTransaction');
   }
 
 

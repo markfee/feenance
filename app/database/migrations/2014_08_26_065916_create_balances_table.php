@@ -23,17 +23,21 @@ class CreateBalancesTable extends Migration {
 
     if (!App::runningUnitTests()) {
       DB::unprepared('
+
         DROP PROCEDURE IF EXISTS refresh_balances;
         DROP PROCEDURE IF EXISTS refresh_balances_for_account;
         DROP PROCEDURE IF EXISTS refresh_balances_from_date;
+
         CREATE PROCEDURE refresh_balances ()
         BEGIN
           CALL refresh_balances_from_date(NULL, NULL);
         END;
+
         CREATE PROCEDURE refresh_balances_for_account (IN in_account_id INT)
         BEGIN
           CALL refresh_balances_from_date(in_account_id, NULL);
         END;
+
         CREATE PROCEDURE refresh_balances_from_date (IN in_account_id INT, IN in_from_date DATETIME)
         BEGIN
           DELETE balances

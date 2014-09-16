@@ -23,7 +23,7 @@
         <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}   </span>
         <transfer source="transaction.source" />
       </td>
-      <td>{{transaction.balance | currency: "£" }}</td>
+      <td>{{transaction.balance | currency: "£" }} ({{transaction.bank_balance | currency: "£" }})</td>
       <td>
         <a href="" ng-click="toggleReconciled(transaction)">
         <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>

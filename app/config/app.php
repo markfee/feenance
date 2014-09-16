@@ -124,6 +124,8 @@ return array(
     'Way\Generators\GeneratorsServiceProvider',
     'Markfee\Responder\ResponderServiceProvider',
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+    'Clockwork\Support\Laravel\ClockworkServiceProvider',
+
 	),
 
 	/*

@@ -11,11 +11,13 @@ namespace Misc\Transformers;
 
 class BankStringTransformer extends Transformer {
 
-  public function transform($record) {
-    return [
-      "id"                => (int)$record->id,
-      "account_id"        => (int)$record->account_id,
-      "name"              => $record->name,
-      ];
+  public static function transform($record) {
+    if ($record)
+      return [
+        "id"                => (int)$record->id,
+        "account_id"        => (int)$record->account_id,
+        "map_id"          => $record->map_id,
+        "name"              => $record->name,
+        ];
   }
 }

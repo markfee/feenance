@@ -11,7 +11,7 @@ namespace Misc\Transformers;
 
 class MapTransformer extends Transformer {
 
-  public function transform($record) {
+  public static function transform($record) {
     return [
       "id"                => (int)$record->id,
       "name"              => $record->name,

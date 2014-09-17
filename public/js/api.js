@@ -28,7 +28,15 @@ feenance.factory('CategoriesApi', function($resource) {
 feenance.factory('TransactionsApi', function($resource) {
   return $resource(   $API_ROOT + "transactions/:id",   {}
     ,   {
-       'update':   { method:'PUT'                    }
+      'update':   { method:'PUT'                    }
+    }
+  );
+});
+
+feenance.factory('MapsApi', function($resource) {
+  return $resource(   $API_ROOT + "maps/:id",   {}
+    ,   {
+      'update':   { method:'PUT'                    }
     }
   );
 });

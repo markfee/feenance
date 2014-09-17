@@ -10,6 +10,7 @@ feenance.controller('CategoryController', function($scope, $http, CategoriesApi)
       $scope.selected = record;
       $scope.editing = false;
       $scope.selected_id = $scope.selected.id;
+      $scope.$emit('categoryUpdated', record);
     });
   };
 

@@ -31,6 +31,8 @@ Route::group(['prefix' =>  'api/v1/'], function() {
   Route::resource('transactions', $NAMESPACE.'TransactionsController');
   Route::resource('payees', $NAMESPACE.'PayeesController');
   Route::resource('categories', $NAMESPACE.'CategoriesController');
+  Route::resource('maps', $NAMESPACE.'MapsController');
+  Route::resource('bank_strings', $NAMESPACE.'BankStringsController');
 });
 
 Route::group(['prefix' =>  'api/v1/mmex'], function() {

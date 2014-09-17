@@ -1,0 +1,27 @@
+<div>
+  <h3>New Map</h3>
+  <form novalidate role="form" class="form-horizontal">
+
+
+    <account-selector ng-model="map.account" linked-account="true">
+      Account
+    </account-selector>
+
+    <account-selector ng-model="map.transfer" emit-message="transferUpdated" optional="true">
+      Transfer
+    </account-selector>
+
+    <payee-selector ng-model="map.payee" >        </payee-selector>
+
+    <category-selector ng-model="map.category" >  </category-selector>
+
+    <div class="form-group">
+      <button ng-click="reset()">RESET</button>
+      <button type="submit" ng-click="add(map)">SAVE</button>
+    </div>
+
+  </form>
+
+  <div ng-show="success">{{success}}</div>
+  <json-view ng-model="map" title="map"></json-view>
+</div>

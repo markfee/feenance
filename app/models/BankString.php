@@ -11,10 +11,17 @@ class BankString extends \Eloquent {
 	protected $fillable = ["account_id", "name"];
 
   public static function findOrCreate($account_id, $name) {
-    if ($bankString = BankString::where("name", "=", "{$name}")->where("account_id", "=", $account_id)->first()) {
-      return $bankString;
+    $bank_string = BankString::where("name", "=", "{$name}")->where("account_id", "=", $account_id);
+    if ($bank_string->count() > 0) {
+      print "FOUND:    ({$account_id}, {$name})";
+      return $bank_string;
     }
-    return BankString::create( [ "account_id" => $account_id, "name" => $name ] );
+    print "\nCREATING: (id: ??? account_id: {$account_id}, name: {$name})";
+    $newRecord = BankString::create( [ "account_id" => $account_id, "name" => $name ] );
+    print "\nCREATED:  (id: {$newRecord->id} account_id: {$newRecord->account_id}, name: {$newRecord->name})";
+    if ($newRecord->name != $name)
+      dd($newRecord);
+    return BankString::where("id", "=", "{$newRecord->id}");
   }
 
   public function map() {

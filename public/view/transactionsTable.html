@@ -14,7 +14,9 @@
     </tr>
     <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse">
       <td>{{transaction.date | date}} </td>
-      <td><payee ng-model="transaction.payee" payeeid="transaction.payee_id" /></td>
+      <td> <payee ng-model="transaction.payee" payeeid="transaction.payee_id" />
+        ({{transaction.bank_transaction.bank_string}})
+      </td>
       <td>
         <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}   </span>
         <transfer destination="transaction.destination" />
@@ -23,7 +25,7 @@
         <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}   </span>
         <transfer source="transaction.source" />
       </td>
-      <td>{{transaction.balance | currency: "£" }} ({{transaction.bank_balance | currency: "£" }})</td>
+      <td>{{transaction.balance | currency: "£" }} ({{transaction.bank_transaction.balance | currency: "£" }})</td>
       <td>
         <a href="" ng-click="toggleReconciled(transaction)">
         <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>

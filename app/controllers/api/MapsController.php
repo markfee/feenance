@@ -73,10 +73,14 @@ class MapsController extends BaseController {
 		if ($validator->fails())		{
 			return Respond::ValidationFailed();
 		}
-
-		$map = Map::create($data);
-
-		return Respond::Raw($this->transform($map));
+    try {
+      $map = Map::create($data);
+      return Respond::Raw($this->transform($map));
+    } catch (QueryException $e) {
+    return Respond::QueryException($e);
+    } catch (Exception $e) {
+      return Respond::InternalError($e->getMessage());
+    }
 	}
 
 	/**

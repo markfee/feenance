@@ -11,7 +11,7 @@ namespace Misc\Transformers;
 
 class CategoryTransformer extends Transformer {
 
-  public function transform($record) {
+  public static function transform($record) {
     return [
       "id"            => (int)$record->id,
       "fullName"      => $record->parent_id ? $record->parent->name . ": " . $record->name : $record->name,

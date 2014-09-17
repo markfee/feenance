@@ -33,7 +33,7 @@ class TransactionsController extends BaseController {
 	 */
 	public function index($account_id = null)
 	{
-    $with = ["balance", "source", "destination", "bankTransaction"];
+    $with = ["balance", "source", "destination", "bankTransaction.bank_string"];
     if (!empty($account_id)) {
       $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->with($with)->paginate(100);
     } else {
@@ -158,22 +158,23 @@ class TransactionsController extends BaseController {
       $collection=[];
       Transaction::disableBalanceTrigger();
 
-
+      print "<pre>";
       // TODO -- READ FILE INTO ARRAY, REVERSE SORT, ARRAY_MAP_IMPORT
       $count = 0;
       $file = [];
       while(!$SplFileObject->eof()) {
         $file[$count] = $SplFileObject->getCurrentLine();
         $SplFileObject->next();
-        print "\n$count";
+//        print "\n$count";
         $count++;
       }
       while($count > 0) {
         $count--;
-        print "\n$count";
         $line = array_map("trim", explode(",", $file[$count]));
         if (count($line) ==4) {
-          $bank_string = BankString::findOrCreate($account_id, $line[1])->with("map")->first();
+          $name = trim($line[1], '"');
+          $bank_string = BankString::findOrCreate($account_id, $name)->with("map")->first();
+          print "\nReturned: (id: {$bank_string->id} account_id: {$bank_string->account_id}, name: {$bank_string->name})";
 
           $transaction = Transaction::create([
               "date"        => Carbon::createFromFormat("d/m/Y",$line[0] )
@@ -201,6 +202,8 @@ class TransactionsController extends BaseController {
       print $ex->getMessage();
       return Respond::WithErrors($messageBag);
     }
+    print "</pre>";
+
   }
 
 

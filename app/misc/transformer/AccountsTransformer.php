@@ -15,7 +15,7 @@ class AccountsTransformer extends Transformer {
     return $account ? ["acount_id" => $account, "amount" => $amount] : null;
   }
 
-  public function transform($record) {
+  public static function transform($record) {
     return [
       "id"                => (int)$record->id,
       "name"              => $record->name,

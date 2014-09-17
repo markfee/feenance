@@ -9,6 +9,7 @@
       </div>
     </div>
     <div class = "col-lg-4">
+      <new-map accountId=""></new-map>
       <new-transaction accountId=""></new-transaction>
     </div>
   </div>

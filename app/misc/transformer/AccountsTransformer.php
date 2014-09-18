@@ -16,7 +16,7 @@ class AccountsTransformer extends Transformer {
   }
 
   public static function transform($record) {
-    return [
+    return $record ? [
       "id"                => (int)$record->id,
       "name"              => $record->name,
       "bank"              => $record->bank,
@@ -25,6 +25,6 @@ class AccountsTransformer extends Transformer {
       "open"              => (boolean)$record->open,
       "opening_balance"   => 0.01 * $record->opening_balance,
       "notes"             => $record->notes?:null ,
-      ];
+      ] : null;
   }
 }

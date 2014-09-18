@@ -18,12 +18,12 @@ class CreateMapsTable extends Migration {
       $table->integer('payee_id')->unsigned();
       $table->integer('category_id')->unsigned();
       $table->integer('account_id')->unsigned();
-      $table->integer('destination')->unsigned()->nullable();
+      $table->integer('transfer_id')->unsigned()->nullable();
 
       $table->foreign('payee_id')->references('id')->on('payees')->onDelete('cascade');
       $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
       $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-      $table->foreign('destination')->references('id')->on('accounts')->onDelete('cascade');
+      $table->foreign('transfer_id')->references('id')->on('accounts')->onDelete('cascade');
 
 
 			$table->timestamps();

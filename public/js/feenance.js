@@ -3,14 +3,25 @@ var feenance = angular.module("feenance", ['ngResource', 'ngRoute', 'ui.bootstra
 feenance.controller('FeenanceController', function($scope) {
   $scope.debug = false;
 
-  $scope.$on('accountUpdated', function(something, account) {
-    console.log("accountUpdated in FeenanceController");
+  $scope.$on('updatedAccount', function($event, account) {
+    console.log("received accountUpdated in FeenanceController");
+    console.log("broadcasting setAccount");
     $scope.$broadcast('setAccount', account);
+  });
+
+  $scope.$on('updatedTransfer', function($event, account) {
+    console.log("received updatedTransfer in FeenanceController");
+    console.log("broadcasting setTransfer");
+    $scope.$broadcast('setTransfer', account);
   });
 
   $scope.$on('newTransactions', function($event, $transactions) {
     console.log("newTransactions in FeenanceController");
     $scope.$broadcast('addTransactions', $transactions);
+  });
+
+  $scope.$on('selectTransaction', function($event, $transaction) {
+    $scope.$broadcast('editTransaction', $transaction);
   });
 
 

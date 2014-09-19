@@ -18,6 +18,11 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
     $scope.$emit('payeeUpdated', $item);
   };
 
+  $scope.$on('setPayee', function (event, payee_id) {
+    $scope.select(payee_id);
+  });
+
+
   $scope.lookupRecords = function($viewValue) {
     return $http.get($API_ROOT + "payees/"+$viewValue).then(function(response) {
       return response.data.data;

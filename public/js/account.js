@@ -2,9 +2,10 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.accounts   = {};
   $scope.selected   = null;
   $scope.selectedId = null;
+  $scope.initialSelect = null;
   $scope.title = "Account";
   $scope.name = "account_id";
-  $scope.emitMessage = "accountUpdated";
+  $scope.emitMessage = "Account";
   $scope.optional = false;
 
   var records = AccountsApi.get( {}, function () {
@@ -13,8 +14,8 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
       $scope.accounts.splice(0, 0, { "id":null, name:""});
       $scope.selected = records.data[0];
     }
-    if ($scope.selectedId) {
-      $scope.select($scope.selectedId);
+    if ($scope.initialSelect) {
+      $scope.select($scope.initialSelect);
     }
   });
 
@@ -24,18 +25,44 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     if ($scope.title == undefined)  $scope.title = "Account";
   });
 
-  $scope.$on('setAccount', function (something, $newAccount) {
-    if ($scope.linkedAccount){
+  $scope.$on('setAccount', function (event, $newAccount) {
+    if ($scope.emitMessage != "Account") {
+      return;
+    }
+    if ($newAccount.id == undefined) {
+      console.log("received: setAccount "+$newAccount+" in " + $scope.title);
+      $scope.select($newAccount);
+    }
+    else {
+      console.log("received: setAccount "+$newAccount.id+" in " + $scope.title);
       $scope.select($newAccount.id);
     }
   });
 
+  $scope.$on('setTransfer', function (event, $newAccount) {
+    if ($scope.emitMessage != "Transfer") {
+      return;
+    }
+    console.log("received: setTransfer in " + $scope.title);
+    if ($newAccount.id == undefined) {
+      $scope.select($newAccount);
+    }
+    else {
+      $scope.select($newAccount.id);
+    }
+  });
+
+
+
   $scope.select = function(id) {
+    var $changed = ($scope.selectedId != id);
     $scope.selectedId = id;
     angular.forEach($scope.accounts, function(account, key) {
       if (account.id == id) {
         $scope.selected =   records.data[key];
-        $scope.change();
+        if ($changed) {
+          $scope.change();
+        }
         return;
       }
     });
@@ -43,7 +70,10 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 
   $scope.change = function() {
     $scope.selectedId = $scope.selected.id;
-    $scope.$emit($scope.emitMessage, $scope.selected);
+    var message = "updated"+$scope.emitMessage;
+    console.log("emitting: " +  message + " from " + $scope.title);
+
+    $scope.$emit(message, $scope.selected);
   };
 });
 
@@ -58,11 +88,11 @@ feenance.directive('accountSelector', function() {
     }
  , templateUrl: 'view/accountSelector.html'
     , link: function (scope, element, attr) {
-      scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
-      scope.linkedAccount = attr.linkedAccount ? true : false;
+     scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
       scope.optional = attr.optional ? true : false;
       if (scope.accountId) {
-        scope.select(scope.accountId);
+        scope.initialSelect = scope.accountId;
+//        scope.select(scope.accountId);
       }
     }
     , controller: "AccountController"

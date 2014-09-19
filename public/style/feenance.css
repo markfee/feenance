@@ -1,0 +1,11 @@
+.bank_string {
+    color: lightgrey;
+}
+
+.bank_string:hover {
+    color: black;
+}
+
+tr.transaction {
+    border-bottom-color: deeppink;
+}

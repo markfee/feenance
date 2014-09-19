@@ -6,17 +6,23 @@
   <table class="table table-striped">
     <tr>
       <th><a href="" ng-click="predicate = 'date';        reverse=!reverse">Date</a></th>
+<!--      <th><a href="" ng-click="predicate = 'bank_transaction.bank_string';  reverse=!reverse">Bank String</a></th>-->
       <th><a href="" ng-click="predicate = 'payee.name';  reverse=!reverse">Payee</a></th>
       <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Credit</a></th>
       <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Debit</a></th>
       <th><a href="" ng-click="predicate = 'balance';      reverse=!reverse">Balance</a></th>
       <th><a href="" ng-click="predicate = 'reconciled';      reverse=!reverse" title="Reconciled">R</a></th>
     </tr>
-    <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse">
+    <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
       <td>{{transaction.date | date}} </td>
-      <td> <payee ng-model="transaction.payee" payeeid="transaction.payee_id" />
-        ({{transaction.bank_transaction.bank_string}})
+
+<!--      <td> {{transaction.bank_transaction.bank_string}}      </td>-->
+      <td>
+        <payee ng-model="transaction.payee" payeeid="transaction.payee_id" />
+        <span ng-show="transaction.bank_transaction.bank_string" class="bank_string">({{transaction.bank_transaction.bank_string}})</span>
+
       </td>
+
       <td>
         <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}   </span>
         <transfer destination="transaction.destination" />
@@ -25,10 +31,19 @@
         <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}   </span>
         <transfer source="transaction.source" />
       </td>
-      <td>{{transaction.balance | currency: "£" }} ({{transaction.bank_transaction.balance | currency: "£" }})</td>
+      <td>{{transaction.balance | currency: "£" }}
+        <span ng-show="transaction.bank_transaction.balance && transaction.bank_transaction.balance !=transaction.balance">
+          ({{transaction.bank_transaction.balance | currency: "£" }})
+        </span>
+      </td>
       <td>
         <a href="" ng-click="toggleReconciled(transaction)">
-        <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>
+          <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>
+        </a>
+        <!--TODO: WHY WILL THIS ONLY SELECT ACCOUNT IF selectTransaction RUN TWICE-->
+        <a href=""
+           ng-click="selectTransaction(transaction);selectTransaction(transaction)">
+          <i ng-class="showEdit||transaction.edit ? 'fa fa-edit fa-lg' : 'fa fa-square-o fa-lg' "> </i>
         </a>
       </td>
     </tr>

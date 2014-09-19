@@ -39,7 +39,8 @@ feenance.controller('MapController', function($scope, MapsApi) {
         // Make sure that an array of newMaps is emitted - even if it's just one.
         $maps = (response.data ? response.data :  [response]);
         $scope.$emit("newMap", $maps);
-        $scope.reset();
+//        $scope.reset();
+        $scope.map = $maps[0];
       } , function(response) {
         $scope.success = response.data.errors.error[0];
       }

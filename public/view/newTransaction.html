@@ -10,11 +10,8 @@
       <div class="col-sm-9"><input id="transaction_date"   type="date" ng-model="transaction.date"></div>
     </div>
 
-    <account-selector ng-model="transaction.account" linked-account="true">
-      Account
-    </account-selector>
-
-    <account-selector ng-model="transaction.transfer" emit-message="transferUpdated" optional="true">
+    <account-selector ng-model="transaction.account" linked-account="true"></account-selector>
+    <account-selector ng-model="transaction.transfer" emit-message="Transfer" optional="true">
       Transfer
     </account-selector>
 

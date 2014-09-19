@@ -19,8 +19,8 @@ feenance.controller('CategoryController', function($scope, $http, CategoriesApi)
     $scope.$emit('categoryUpdated', $item);
   };
 
-  $scope.$on('setCategory', function (something, item) {
-    $scope.select(item);
+  $scope.$on('setCategory', function (something, category_id) {
+    $scope.select(category_id);
   });
 
   $scope.lookupRecords = function($viewValue) {

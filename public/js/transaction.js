@@ -16,6 +16,28 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
   $scope.success        = null;
   $scope.reset();
 
+  $scope.setTransaction = function(transaction_id) {
+    var transaction = TransactionsApi.get({id:transaction_id}, function() {
+      $scope.transaction = transaction;
+      $scope.transaction.account      = null;
+      $scope.transaction.transfer     = null;
+      $scope.transaction.payee        = null;
+
+      $scope.transaction.date         =  transaction.date.substr(0,10);
+      if (transaction.account_id) {
+        $scope.$broadcast('setAccount', transaction.account_id);
+      }
+      if (transaction.category_id)
+        $scope.$broadcast('setCategory', transaction.category_id);
+      if (transaction.payee_id)
+        $scope.$broadcast('setPayee', transaction.payee_id);
+    });
+  };
+
+  $scope.$on('editTransaction', function (event, transaction) {
+    $scope.setTransaction(transaction.id);
+  });
+
   $scope.$on('payeeUpdated', function (something, item) {
     $scope.$broadcast('setCategory', item.category_id);
     $scope.transaction.payee_id = (item.id) ? item.id : null;
@@ -33,7 +55,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
 
   $scope.$on('transferUpdated', function ($event, item) {
     $event.stopPropagation();
-    console.log("accountUpdated in TransactionController" + item.id);
+    console.log("transferUpdated in TransactionController" + item.id);
     $scope.transaction.transfer_id = (item.id) ? item.id : null;
   });
 
@@ -43,8 +65,9 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
         // Make sure that an array of newTransactions is emitted - even if it's just one.
         $transactions = (response.data ? response.data :  [response]);
         $scope.$emit("newTransactions", $transactions);
-        $scope.reset();
-    } , function(response) {
+        $scope.setTransaction = $transactions[0];
+//        $scope.reset();
+      } , function(response) {
         $scope.success = response.data.errors.error[0];
       }
     );
@@ -63,6 +86,16 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
       }
     });
   });
+
+  $scope.selectTransaction = function($transaction) {
+    if ($scope.editingTransaction != undefined) {
+      $scope.editingTransaction.edit = false;
+    }
+    $transaction.edit = true;
+    $scope.editingTransaction = $transaction;
+
+    $scope.$emit("selectTransaction", $transaction);
+  }
 
   $scope.toggleReconciled = function(transaction) {
     var reconciled = transaction.reconciled;

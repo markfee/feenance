@@ -2,10 +2,11 @@
   <div class="row">
     <div class="col-sm-3" >
       <label >{{title}}:</label>
-      <input name="{{name}}" type="number" ng-model="selected.id" ng-show="false">
+      <input name="{{name}}" type="number" ng-model="selected.id" ng-show="true">
     </div>
     <div class="col-sm-9" >
       <select ng-model="selected" ng-options="account.name for account in accounts" ng-change="change()"> </select>
     </div>
   </div>
+  <json-view ng-model="selected" title="account"></json-view>
 </div>

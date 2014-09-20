@@ -32,6 +32,4 @@ class BankStringsTest extends TestCase {
 
   }
 
-
-
 }

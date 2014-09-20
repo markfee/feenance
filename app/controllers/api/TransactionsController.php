@@ -1,6 +1,7 @@
 <?php
 namespace api;
 
+use Misc\Transformers\BankTransactionTransformer;
 use \Transaction;
 use Markfee\Responder\Respond;
 use Misc\Transformers\TransactionTransformer;
@@ -25,23 +26,36 @@ class TransactionsController extends BaseController {
     return $this->transformer ?: new TransactionTransformer;
   }
 
-
-	/**
-	 * Display a listing of transactions
-	 *
-	 * @return Response
-	 */
-	public function index($account_id = null)
-	{
-    $with = ["balance", "source", "destination", "bankTransaction.bank_string"];
+  /**
+   * Display a listing of transactions
+   *
+   * @return Response
+   */
+  public function index($account_id = null)
+  {
+    $with = ["balance", "source", "destination", "bankString"];
     if (!empty($account_id)) {
       $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
     } else {
       $records = Transaction::orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
     }
-//    dd($records->all());
     return Respond::Paginated($records, $this->transformCollection($records->all()));
-	}
+  }
+
+  /**
+   * Display a listing of transactions
+   *
+   * @return Response
+   */
+  public function bank_strings($bank_string_id)
+  {
+//    $with = ["balance", "source", "destination", "bankTransaction.bank_string"];
+//    $records = Transaction::where("bankTransaction.bank_string.id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
+    $records = BankTransaction::where("bank_string_id", "=", $bank_string_id)->paginate(100);
+//    dd($records);
+    $transformer = new BankTransactionTransformer();
+    return Respond::Paginated($records, $transformer->transformCollection($records->all()));
+  }
 
   /**
    * Display the specified transaction.
@@ -156,7 +170,7 @@ class TransactionsController extends BaseController {
     try {
       $header = $SplFileObject->getCurrentLine();
       $collection=[];
-      Transaction::disableBalanceTrigger();
+      Transaction::startImport();
 
       print "<pre>";
       // TODO -- READ FILE INTO ARRAY, REVERSE SORT, ARRAY_MAP_IMPORT
@@ -173,7 +187,7 @@ class TransactionsController extends BaseController {
         $line = array_map("trim", explode(",", $file[$count]));
         if (count($line) ==4) {
           $name = trim($line[1], '"');
-          $bank_string = BankString::findOrCreate($account_id, $name)->with("map")->first();
+          $bank_string = BankString::findOrCreate($account_id, $name)->first();
           print "\nReturned: (id: {$bank_string->id} account_id: {$bank_string->account_id}, name: {$bank_string->name})";
 
           $transaction = Transaction::create([
@@ -181,21 +195,23 @@ class TransactionsController extends BaseController {
             , "amount"      =>  $line[2] * 100
             , "account_id"  =>  $account_id
             , "reconciled"  =>  false
-            , "payee_id"    => $bank_string->map ? $bank_string->map->payee_id : null
-            , "category_id" => $bank_string->map ? $bank_string->map->category_id : null
+//            , "payee_id"    => $bank_string->map ? $bank_string->map->payee_id : null
+//            , "category_id" => $bank_string->map ? $bank_string->map->category_id : null
             , "notes"       => "imported from bank statement"
           ]);
 
-          $bankTransaction = BankTransaction::create([
-            "transaction_id"  =>  $transaction->id,
-            "bank_string_id"  =>  $bank_string->id,
-            "balance"         =>  $line[3] * 100
-          ]);
+          $transaction->bank_string_id  =  $bank_string->id;
+          $transaction->bank_balance    =  $line[3] * 100;
+          $transaction->save();
+
         }
       }
-      Transaction::enableBalanceTrigger(true);
+      Transaction::finishImport(true);
     } catch(Exception $ex) {
-      Transaction::enableBalanceTrigger(false);
+
+      dd($ex->getMessage());
+
+      Transaction::finishImport(false);
       $messageBag = new MessageBag();
       $messageBag->add("badFormat", "Unable to process uploaded csv file");
       $messageBag->add($ex->getCode(), $ex->getMessage());

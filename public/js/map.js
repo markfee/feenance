@@ -12,15 +12,15 @@ feenance.controller('MapController', function($scope, MapsApi) {
   $scope.success        = null;
   $scope.reset();
 
-  $scope.$on('accountUpdated', function ($event, item) {
+  $scope.$on('updatedAccount', function ($event, item) {
     $event.stopPropagation();
-    console.log("accountUpdated in MapController" + item.id);
+    console.log("updatedAccount in MapController" + item.id);
     $scope.map.account_id = (item.id) ? item.id : null;
   });
 
-  $scope.$on('transferUpdated', function ($event, item) {
+  $scope.$on('updatedTransfer', function ($event, item) {
     $event.stopPropagation();
-    console.log("accountUpdated in MapController" + item.id);
+    console.log("updatedAccount in MapController" + item.id);
     $scope.map.transfer_id = (item.id) ? item.id : null;
   });
 

@@ -47,26 +47,27 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
     $scope.transaction.category_id = (item.id) ? item.id : null;
   });
 
-  $scope.$on('accountUpdated', function ($event, item) {
+  $scope.$on('updatedAccount', function ($event, item) {
     $event.stopPropagation();
-    console.log("accountUpdated in TransactionController" + item.id);
+    console.log("updatedAccount in TransactionController" + item.id);
     $scope.transaction.account_id = (item.id) ? item.id : null;
   });
 
-  $scope.$on('transferUpdated', function ($event, item) {
+  $scope.$on('updatedTransfer', function ($event, item) {
     $event.stopPropagation();
-    console.log("transferUpdated in TransactionController" + item.id);
+    console.log("updatedTransfer in TransactionController" + item.id);
     $scope.transaction.transfer_id = (item.id) ? item.id : null;
   });
 
   $scope.add = function(transaction) {
-    $scope.transaction.$save( function(response) {
+
+    var isNew = ($scope.transaction.id == undefined);
+      $scope.transaction.$save( function(response) {
         $scope.success = "Saved Successfully";
         // Make sure that an array of newTransactions is emitted - even if it's just one.
         $transactions = (response.data ? response.data :  [response]);
         $scope.$emit("newTransactions", $transactions);
         $scope.setTransaction = $transactions[0];
-//        $scope.reset();
       } , function(response) {
         $scope.success = response.data.errors.error[0];
       }

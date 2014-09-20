@@ -17,8 +17,8 @@ class BankTransactionTransformer extends Transformer {
         "transaction_id"  => $record->transaction_id,
         "bank_string_id"  => $record->bank_string_id,
         "balance"         => 0.01 * $record->balance,
-        "map_id"          =>  $record->bank_string->map_id,
-        "bank_string"     =>  $record->bank_string->name,
+        "map_id"          =>  $record->bank_string ? $record->bank_string->map_id : null,
+        "bank_string"     =>  $record->bank_string ? $record->bank_string->name : null,
 //        "bank_string_"    => BankStringTransformer::transform($record->bank_string),
       ];
   }

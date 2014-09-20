@@ -36,7 +36,8 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
 
   $scope.setTransaction = function(transaction_id) {
     __setTransaction(transaction_id);
-    __setTransaction(transaction_id);
+  //  if (!$scope.transaction.account)
+      __setTransaction(transaction_id);
   }
 
 
@@ -103,7 +104,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
 
 feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi) {
   $scope.transactions = null;
-  $scope.predicate    = "date";
+  $scope.predicate    = ["date", "id"];
   $scope.reverse      = true;
 
   $scope.$on('addTransactions', function($event, $transactions) {

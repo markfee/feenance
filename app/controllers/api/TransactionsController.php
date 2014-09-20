@@ -35,9 +35,9 @@ class TransactionsController extends BaseController {
 	{
     $with = ["balance", "source", "destination", "bankTransaction.bank_string"];
     if (!empty($account_id)) {
-      $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->with($with)->paginate(100);
+      $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
     } else {
-      $records = Transaction::orderBy('date', "DESC")->with($with)->paginate(100);
+      $records = Transaction::orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
     }
 //    dd($records->all());
     return Respond::Paginated($records, $this->transformCollection($records->all()));

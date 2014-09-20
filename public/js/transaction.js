@@ -16,7 +16,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
   $scope.success        = null;
   $scope.reset();
 
-  $scope.setTransaction = function(transaction_id) {
+  var __setTransaction = function(transaction_id) {
     var transaction = TransactionsApi.get({id:transaction_id}, function() {
       $scope.transaction = transaction;
       $scope.transaction.account      = null;
@@ -33,6 +33,12 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
         $scope.$broadcast('setPayee', transaction.payee_id);
     });
   };
+
+  $scope.setTransaction = function(transaction_id) {
+    __setTransaction(transaction_id);
+    __setTransaction(transaction_id);
+  }
+
 
   $scope.$on('editTransaction', function (event, transaction) {
     $scope.setTransaction(transaction.id);
@@ -60,19 +66,39 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
   });
 
   $scope.add = function(transaction) {
-
-    var isNew = ($scope.transaction.id == undefined);
-      $scope.transaction.$save( function(response) {
+    if ($scope.transaction.id != undefined) {
+      alert("Attempt to Save Existing Transaction");
+      return;
+    }
+    $scope.transaction.$save( function(response) {
         $scope.success = "Saved Successfully";
-        // Make sure that an array of newTransactions is emitted - even if it's just one.
+        // Make sure that an array of refreshTransactions is emitted - even if it's just one.
         $transactions = (response.data ? response.data :  [response]);
-        $scope.$emit("newTransactions", $transactions);
-        $scope.setTransaction = $transactions[0];
+        $scope.$emit("refreshTransactions", $transactions);
+        $scope.setTransaction($transactions[0].id);
       } , function(response) {
         $scope.success = response.data.errors.error[0];
       }
     );
   }
+
+  $scope.update = function(transaction) {
+    if ($scope.transaction.id == undefined) {
+      alert("Attempt to update new Transaction");
+      return;
+    }
+    $scope.transaction.$update( function(response) {
+        $scope.success = "Saved Successfully";
+        $transactions = (response.data ? response.data :  [response]);
+        $scope.$emit("refreshTransactions", $transactions);
+        $scope.setTransaction($transactions[0].id);
+      } , function(response) {
+        $scope.success = response.data.errors.error[0];
+      }
+    );
+  }
+
+
 });
 
 feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi) {

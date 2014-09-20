@@ -15,9 +15,10 @@ feenance.controller('FeenanceController', function($scope) {
     $scope.$broadcast('setTransfer', account);
   });
 
-  $scope.$on('newTransactions', function($event, $transactions) {
-    console.log("newTransactions in FeenanceController");
-    $scope.$broadcast('addTransactions', $transactions);
+  $scope.$on('refreshTransactions', function($event, $transactions) {
+    console.log("refreshTransactions in FeenanceController");
+//    $scope.$broadcast('addTransactions', $transactions);
+    $scope.$broadcast('setAccount', $scope.account);
   });
 
   $scope.$on('selectTransaction', function($event, $transaction) {

@@ -16,7 +16,6 @@ class BankStringTransformer extends Transformer {
       return [
         "id"                => (int)$record->id,
         "account_id"        => (int)$record->account_id,
-        "map_id"          => $record->map_id,
         "name"              => $record->name,
         ];
   }

@@ -24,10 +24,6 @@ class BankString extends \Eloquent {
     return BankString::where("id", "=", "{$newRecord->id}");
   }
 
-  public function map() {
-    return $this->hasOne('Map', "id");
-  }
-
   public function bankTransaction() {
     return $this->hasMany('BankTransaction');
   }

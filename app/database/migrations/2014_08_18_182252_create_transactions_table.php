@@ -22,6 +22,9 @@ class CreateTransactionsTable extends Migration {
       $table->integer('payee_id')->unsigned()->nullable();
       $table->integer('category_id')->unsigned()->nullable();
 			$table->string('notes')->nullable();
+
+      $table->integer('bank_string_id')->unsigned()->nullable();
+      $table->integer('bank_balance')->nullable();
 			$table->timestamps();
 
       $table->foreign('account_id')->references('id')->on('accounts');

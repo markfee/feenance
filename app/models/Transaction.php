@@ -1,9 +1,7 @@
 <?php
 
 class Transaction extends Eloquent {
-  protected $fillable = [
-    "date", "amount", "account_id", "reconciled", "payee_id", "category_id", "notes"
-  ];
+  protected $fillable = [ "date", "amount", "account_id", "reconciled", "payee_id", "category_id", "notes"];
   protected $dates = ["date"];
   static public $rules = [
     "date"        => "required|date"
@@ -11,13 +9,13 @@ class Transaction extends Eloquent {
   , "account_id"  => "required|integer"
   ];
 
-  public static function disableBalanceTrigger() {
+  public static function startImport() {
     if (DB::connection()->getDriverName() == "sqlite")
       return; // This won't work and isn't necessary with SQLITE
     DB::unprepared('SET @disable_transaction_triggers = 1;');
   }
 
-  public static function enableBalanceTrigger($refresh = false) {
+  public static function finishImport($refresh = false) {
     if (DB::connection()->getDriverName() == "sqlite")
       return; // This won't work and isn't necessary with SQLITE
     DB::unprepared('SET @disable_transaction_triggers = NULL;');
@@ -40,8 +38,9 @@ class Transaction extends Eloquent {
     return $this->hasOne('Transfer', 'destination');
   }
 
-  public function bankTransaction() {
-    return $this->hasOne('BankTransaction');
+  public function bankString() {
+    // If this is the destination the transfer->source is the source
+    return $this->hasOne('BankString', "id", "bank_string_id");
   }
 
 

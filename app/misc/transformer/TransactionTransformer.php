@@ -29,12 +29,11 @@ class TransactionTransformer extends Transformer {
       "notes"             => $record->notes?:null ,
       "source"            => $record->source?$record->source->source:null ,
       "destination"       => $record->destination?$record->destination->destination:null ,
-/*
-      "bank_balance"      => $record->bank_transaction ? 0.01 * $record->bank_transaction->balance : null,
-      "bank_string"       => $record->bank_transaction ? $record->bank_transaction->bank_string : null,
-      "bank_string_id"    => $record->bank_transaction ? $record->bank_transaction->bank_string_id : null,
-*/
-      "bank_transaction"            => BankTransactionTransformer::transform($record->bankTransaction),
+
+      "bank_balance"      => $record->bank_balance ? 0.01 * $record->bank_balance : null,
+      "bank_string_id"    => $record->bank_string_id ? (int) $record->bank_string_id : null,
+
+      "bank_string"       => $record->bank_string_id ? $record->bank_string->name : null,
 
       ];
   }

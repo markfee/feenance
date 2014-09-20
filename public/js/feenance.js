@@ -4,7 +4,7 @@ feenance.controller('FeenanceController', function($scope) {
   $scope.debug = false;
 
   $scope.$on('updatedAccount', function($event, account) {
-    console.log("received accountUpdated in FeenanceController");
+    console.log("received updatedAccount in FeenanceController");
     console.log("broadcasting setAccount");
     $scope.$broadcast('setAccount', account);
   });

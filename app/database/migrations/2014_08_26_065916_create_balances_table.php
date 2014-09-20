@@ -58,7 +58,7 @@ class CreateBalancesTable extends Migration {
            LEFT JOIN transactions prior
               ON    prior.account_id = tran.account_id
               AND ( prior.date < tran.date
-                OR (prior.date <=> tran.date AND prior.id <= tran.id)
+                OR (prior.date = tran.date AND prior.id <= tran.id)
               )
            LEFT JOIN balances balance_exists
             ON tran.id = balance_exists.transaction_id

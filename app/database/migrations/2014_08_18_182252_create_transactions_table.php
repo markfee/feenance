@@ -35,10 +35,10 @@ class CreateTransactionsTable extends Migration {
         CREATE TRIGGER transaction_update_balance AFTER UPDATE ON transactions FOR EACH ROW
         BEGIN
           IF @disable_transaction_triggers IS NULL THEN
-            IF NOT (NEW.account_id <=> OLD.account_id) THEN
+            IF NOT (NEW.account_id = OLD.account_id) THEN
               CALL refresh_balances_for_account(OLD.account_id);
               CALL refresh_balances_for_account(NEW.account_id);
-            ELSEIF NOT (NEW.amount <=> OLD.amount) OR NOT (NEW.date <=> OLD.date) THEN
+            ELSEIF NOT (NEW.amount = OLD.amount) OR NOT (NEW.date = OLD.date) THEN
               SET @date = LEAST(NEW.date, OLD.date);
               CALL refresh_balances_from_date(OLD.account_id, @date);
             END IF;

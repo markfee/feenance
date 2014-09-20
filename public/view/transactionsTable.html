@@ -5,7 +5,7 @@
   <h3>{{account.name}}</h3>
   <table class="table table-striped">
     <tr>
-      <th><a href="" ng-click="predicate = 'date';        reverse=!reverse">Date</a></th>
+      <th><a href="" ng-click="predicate = ['date', 'id'];        reverse=!reverse">Date</a></th>
 <!--      <th><a href="" ng-click="predicate = 'bank_transaction.bank_string';  reverse=!reverse">Bank String</a></th>-->
       <th><a href="" ng-click="predicate = 'payee.name';  reverse=!reverse">Payee</a></th>
       <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Credit</a></th>
@@ -14,8 +14,7 @@
       <th><a href="" ng-click="predicate = 'reconciled';      reverse=!reverse" title="Reconciled">R</a></th>
     </tr>
     <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
-      <td>{{transaction.date | date}} </td>
-
+      <td title="transaction #{{transaction.id}}">{{transaction.date | date:'dd/MM/yy'}}</td>
 <!--      <td> {{transaction.bank_transaction.bank_string}}      </td>-->
       <td>
         <payee ng-model="transaction.payee" payeeid="transaction.payee_id" />

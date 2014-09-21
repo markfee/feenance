@@ -35,6 +35,7 @@ Route::group(['prefix' =>  'api/v1/'], function() {
   Route::resource('bank_strings', $NAMESPACE.'BankStringsController');
 
   Route::get('bank_strings/{id}/transactions',    $NAMESPACE.'TransactionsController@bank_strings');
+  Route::post('bank_strings/{id}/transactions',    $NAMESPACE.'TransactionsController@bank_strings_update');
 });
 
 Route::group(['prefix' =>  'api/v1/mmex'], function() {

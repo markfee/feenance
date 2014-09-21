@@ -16,7 +16,9 @@
       <td title="transaction #{{transaction.id}}">{{transaction.date | date:'dd/MM/yy'}}</td>
       <td>
         <payee ng-model="transaction.payee" payeeid="transaction.payee_id" />
-        <span ng-show="transaction.bank_string" class="bank_string">({{transaction.bank_string}})</span>
+        <a href=""
+           ng-click="onClickBankString(transaction.bank_string_id)"
+           ng-show="transaction.bank_string" class="bank_string">({{transaction.bank_string}})</a>
 
       </td>
 

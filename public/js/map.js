@@ -1,16 +1,30 @@
-feenance.controller('MapController', function($scope, MapsApi) {
-  $scope.reset = function() {
-    $scope.map = new MapsApi();
-    $scope.map.category_id  = null;
-    $scope.map.account_id   = null;
-    $scope.map.transfer_id  = null;
-    $scope.map.payee_id     = null;
-    $scope.map.account      = null;
-    $scope.map.transfer     = null;
-    $scope.map.payee        = null;
-  };
+feenance.controller('MapController', function($scope, BankStringsApi) {
+
+  $scope.$on('editMap', function($event, bank_string_id) {
+//    alert(bank_string_id);
+    $scope.map.bank_string_id   = null;
+    $scope.map.bank_string      = null;
+    $scope.map.category_id      = null;
+    $scope.map.account_id       = null;
+    $scope.map.transfer_id      = null;
+    $scope.map.payee_id         = null;
+    $scope.map.account          = null;
+    $scope.map.transfer         = null;
+    $scope.map.payee            = null;
+
+     var map = new BankStringsApi.transactions({id:bank_string_id}, function() {
+       $scope.map = map.data[0];
+
+       if ($scope.map.category_id)
+         $scope.$broadcast('setCategory', $scope.map.category_id);
+       if ($scope.map.payee_id)
+         $scope.$broadcast('setPayee', $scope.map.payee_id);
+
+
+    });
+  });
   $scope.success        = null;
-  $scope.reset();
+//  $scope.init();
 
   $scope.$on('updatedAccount', function ($event, item) {
     $event.stopPropagation();
@@ -33,7 +47,7 @@ feenance.controller('MapController', function($scope, MapsApi) {
     $scope.map.category_id = (item.id) ? item.id : null;
   });
 
-  $scope.add = function(map) {
+  $scope.add = function() {
     $scope.map.$save( function(response) {
         $scope.success = "Saved Successfully";
         // Make sure that an array of newMaps is emitted - even if it's just one.

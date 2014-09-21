@@ -115,6 +115,12 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
     });
   });
 
+  $scope.onClickBankString = function(bank_string_id) {
+//    alert(bank_string_id);
+    $scope.$emit("BankStringClicked", bank_string_id);
+  };
+
+
   $scope.selectTransaction = function($transaction) {
     if ($scope.editingTransaction != undefined) {
       $scope.editingTransaction.edit = false;

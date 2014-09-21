@@ -1,7 +1,8 @@
-<div>
-  <h3>New Map</h3>
-  <form novalidate role="form" class="form-horizontal">
+<div ng-show="map.bank_string_id">
+  <h3>Bulk update: </h3>
+  <p>{{map.bank_string}}</p>
 
+  <form novalidate role="form" class="form-horizontal">
 
     <account-selector ng-model="map.account" linked-account="true">
       Account

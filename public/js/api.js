@@ -2,9 +2,9 @@ $API_ROOT = "http://feenance/api/v1/";
 
 feenance.factory('AccountsApi', function($resource) {
   return $resource(   $API_ROOT + "accounts/:id/:collection",   {id:"@id"}
-    ,   {
-      'transactions':  { method:'GET', params: {collection: "transactions" } }
-      , 'update':   { method:'PUT'                    }
+    , {
+      'transactions': { method:'GET', params: {collection: "transactions" } },
+        'update':       { method:'PUT'                    }
     }
   );
 });
@@ -33,10 +33,13 @@ feenance.factory('TransactionsApi', function($resource) {
   );
 });
 
-feenance.factory('MapsApi', function($resource) {
-  return $resource(   $API_ROOT + "maps/:id",   {id:"@id"}
+feenance.factory('BankStringsApi', function($resource) {
+  return $resource(   $API_ROOT + "bank_strings/:id/:collection",   {id:"@id"}
     ,   {
-      'update':   { method:'PUT'                    }
+      'update':       { method:'PUT'                    },
+      'transactions': { method:'GET',   params: {collection: "transactions" } },
+      'map':          { method:'POST',  params: {collection: "transactions" } }
+
     }
   );
 });

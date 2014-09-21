@@ -79,10 +79,18 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     return $jsonResponse;
   }
 
+  protected function assertMultipleUpdate($response, $expectedCount) {
+    $this->expects_pagination = false;
+    $jsonResponse = $this->assertValidJsonResponse($response);
+    $this->assertEquals($expectedCount, $jsonResponse->data,  "Are there exactly {$expectedCount} data items? Actual result: " . $jsonResponse->data);
+    return $jsonResponse;
+  }
+
+
   protected function assertNRecordsResponse($response, $expectedCount, Array $expectedFields = null, Array $unexpectedFields = null) {
     $this->expects_pagination = false;
     $jsonResponse = $this->assertValidJsonResponse($response, $expectedFields, $unexpectedFields);
-    $this->assertEquals(true, count($jsonResponse->data) == $expectedCount,  "Are there exactly {$expectedCount} data items?");
+    $this->assertEquals(true, count($jsonResponse->data) == $expectedCount,  "Are there exactly {$expectedCount} data items? Actual result: " . count($jsonResponse->data));
     return $jsonResponse;
   }
 

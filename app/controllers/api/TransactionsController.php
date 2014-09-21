@@ -49,13 +49,24 @@ class TransactionsController extends BaseController {
    */
   public function bank_strings($bank_string_id)
   {
-//    $with = ["balance", "source", "destination", "bankTransaction.bank_string"];
-//    $records = Transaction::where("bankTransaction.bank_string.id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
-    $records = BankTransaction::where("bank_string_id", "=", $bank_string_id)->paginate(100);
+    $with = ["balance", "source", "destination", "bankString"];
+    $records = Transaction::where("bank_string_id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
 //    dd($records);
-    $transformer = new BankTransactionTransformer();
-    return Respond::Paginated($records, $transformer->transformCollection($records->all()));
+    return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
+
+  public function bank_strings_update($bank_string_id) {
+//    return $this->bank_strings($bank_string_id);
+    $queryBuilder = Transaction::where("bank_string_id", "=", $bank_string_id)
+      ->whereNull("payee_id", 'and')
+      ->whereNull("category_id", 'and')
+      ->orderBy('date', "DESC")->orderBy('id', "DESC");
+
+    $recordCount = $queryBuilder->update(Input::only(["payee_id", "category_id"]));
+
+    return Respond::Updated($recordCount);
+  }
+
 
   /**
    * Display the specified transaction.
@@ -168,12 +179,12 @@ class TransactionsController extends BaseController {
    */
   public function uploadFile($account_id, $SplFileObject) {
     try {
+      // TODO - UNCOMMENT THESE PRINTS AND CREATE A LOG
       $header = $SplFileObject->getCurrentLine();
       $collection=[];
       Transaction::startImport();
 
-      print "<pre>";
-      // TODO -- READ FILE INTO ARRAY, REVERSE SORT, ARRAY_MAP_IMPORT
+//      print "<pre>";
       $count = 0;
       $file = [];
       while(!$SplFileObject->eof()) {
@@ -188,7 +199,7 @@ class TransactionsController extends BaseController {
         if (count($line) ==4) {
           $name = trim($line[1], '"');
           $bank_string = BankString::findOrCreate($account_id, $name)->first();
-          print "\nReturned: (id: {$bank_string->id} account_id: {$bank_string->account_id}, name: {$bank_string->name})";
+//          print "\nReturned: (id: {$bank_string->id} account_id: {$bank_string->account_id}, name: {$bank_string->name})";
 
           $transaction = Transaction::create([
               "date"        => Carbon::createFromFormat("d/m/Y",$line[0] )
@@ -215,10 +226,10 @@ class TransactionsController extends BaseController {
       $messageBag = new MessageBag();
       $messageBag->add("badFormat", "Unable to process uploaded csv file");
       $messageBag->add($ex->getCode(), $ex->getMessage());
-      print $ex->getMessage();
+//      print $ex->getMessage();
       return Respond::WithErrors($messageBag);
     }
-    print "</pre>";
+//    print "</pre>";
 
   }
 

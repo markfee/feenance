@@ -25,6 +25,9 @@ feenance.controller('FeenanceController', function($scope) {
     $scope.$broadcast('editTransaction', $transaction);
   });
 
+  $scope.$on('BankStringClicked', function($event, bank_string_id) {
+    $scope.$broadcast('editMap', bank_string_id);
+  });
 
   $scope.toggleDebug = function() {
     $scope.debug = !$scope.debug;

@@ -3,9 +3,49 @@
     <div class="col-sm-3" >
       <label >{{title}}:</label>
       <input name="{{name}}" type="number" ng-model="selected.id" ng-show="false">
+
     </div>
     <div class="col-sm-9" >
-      <select ng-model="selected" ng-options="account.name for account in accounts" ng-change="change()"> </select>
+
+      <select ng-model="selected" ng-options="account.name for account in accounts" ng-change="change()" ng-show="!editing"> </select>
+
+      <div ng-show="editing">
+        <br/>Name             <input type="text"      ng-model="selected.name" >
+        <br/>Opening Balance  <input type="text"      ng-model="selected.opening_balance" >
+        <br/>Sort Code        <input type="text"      ng-model="selected.sort_code" >
+        <br/>Account Number   <input type="text"      ng-model="selected.acc_number" >
+        <br/>Notes            <input type="text"      ng-model="selected.notes" >
+        <br/>Open             <input type="checkbox"  ng-model="selected.open" >
+      </div>
+
+      <!--ADD NEW-->
+      <button class="btn btn-default btn-sm"
+              ng-click="selected = null; editing=true"
+              ng-show="!editing">
+        <i class="fa fa-plus-circle fa-sm"> </i>
+      </button>
+
+      <!--EDIT-->
+      <button class="btn btn-default btn-sm"
+              ng-click="editing=true"
+              ng-show="!editing">
+        <i class="fa fa-edit fa-sm"> </i>
+      </button>
+
+      <!--SAVE-->
+      <button class="btn btn-default btn-sm"
+              ng-click="save()"
+              ng-show="editing" >
+        <i class="fa fa-save fa-lg">        </i>
+      </button>
+
+      <!--UNDO-->
+      <button class="btn btn-default btn-sm"
+              ng-click="editing=false; creating=false"
+              ng-show="editing" >
+        <i class="fa fa-undo fa-sm">        </i>
+      </button>
+
     </div>
   </div>
   <json-view ng-model="selected" title="account"></json-view>

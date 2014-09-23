@@ -8,4 +8,4 @@ composer.lock
 .env.php
 .DS_Store
 Thumbs.db
-
+app/database/production.sqlite

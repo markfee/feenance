@@ -1,6 +1,6 @@
 ## Laravel PHP Framework
 
-[![markfee/feenance]](https://github.com/markfee/feenance)
+[markfee/feenance](https://github.com/markfee/feenance)
 
 Feenance is a web based finance manager.
 
@@ -14,4 +14,4 @@ Documentation can be found on the  [Feenance wiki](https://github.com/markfee/fe
 
 ### License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+Feenance is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)

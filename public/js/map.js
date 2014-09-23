@@ -1,7 +1,6 @@
 feenance.controller('MapController', function($scope, BankStringsApi) {
 
-  $scope.$on('editMap', function($event, bank_string_id) {
-//    alert(bank_string_id);
+  $scope.reset = function() {
     $scope.map.bank_string_id   = null;
     $scope.map.bank_string      = null;
     $scope.map.category_id      = null;
@@ -11,7 +10,10 @@ feenance.controller('MapController', function($scope, BankStringsApi) {
     $scope.map.account          = null;
     $scope.map.transfer         = null;
     $scope.map.payee            = null;
+  }
 
+  $scope.$on('editMap', function($event, bank_string_id) {
+    $scope.reset();
      var map = new BankStringsApi.transactions({id:bank_string_id}, function() {
        $scope.map = map.data[0];
 
@@ -19,12 +21,10 @@ feenance.controller('MapController', function($scope, BankStringsApi) {
          $scope.$broadcast('setCategory', $scope.map.category_id);
        if ($scope.map.payee_id)
          $scope.$broadcast('setPayee', $scope.map.payee_id);
-
-
     });
   });
   $scope.success        = null;
-//  $scope.init();
+
 
   $scope.$on('updatedAccount', function ($event, item) {
     $event.stopPropagation();
@@ -47,18 +47,13 @@ feenance.controller('MapController', function($scope, BankStringsApi) {
     $scope.map.category_id = (item.id) ? item.id : null;
   });
 
-  $scope.add = function() {
-    $scope.map.$save( function(response) {
-        $scope.success = "Saved Successfully";
-        // Make sure that an array of newMaps is emitted - even if it's just one.
-        $maps = (response.data ? response.data :  [response]);
-        $scope.$emit("newMap", $maps);
-//        $scope.reset();
-        $scope.map = $maps[0];
-      } , function(response) {
-        $scope.success = response.data.errors.error[0];
-      }
-    );
+  $scope.mapUpdate = function(bank_string_id) {
+
+    BankStringsApi.map({id:bank_string_id}, $scope.map, function(response) {
+      alert(response.data + " records updated");
+      $scope.$emit("refreshTransactions");
+      $scope.reset();
+    });
   }
 
 

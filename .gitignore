@@ -9,3 +9,4 @@ composer.lock
 .DS_Store
 Thumbs.db
 app/database/production.sqlite
+runtests

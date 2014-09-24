@@ -1,5 +1,6 @@
-feenance.controller('TransactionController', function($scope, TransactionsApi, AccountsApi) {
+feenance.controller('TransactionController', function($scope, TransactionsApi) {
   // Set the default for the Form!
+  $scope.page = 1;
   $scope.reset = function() {
     $scope.transaction = new TransactionsApi();
     $scope.transaction.reconciled   = true;
@@ -12,6 +13,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
     $scope.transaction.account      = null;
     $scope.transaction.transfer     = null;
     $scope.transaction.payee        = null;
+    $scope.page = 1;
   };
   $scope.success        = null;
   $scope.reset();
@@ -142,14 +144,24 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
     });
 
   };
-  $scope.$on('setAccount', function (something, $newAccount) {
+
+  $scope.newPage = function () {
+    $scope.onSetAccount($scope.account);
+  };
+
+  $scope.onSetAccount = function ($newAccount) {
     if ($newAccount.id) {
       $scope.account = $newAccount;
-      var records = AccountsApi.transactions( {id:$newAccount.id  },function () {
+      var records = AccountsApi.transactions( {id:$newAccount.id, page:$scope.page  },function () {
         $scope.transactions = records.data;
         $scope.accountId = $newAccount.id;
+        $scope.paginator = records.paginator;
       });
     }
+  }
+
+  $scope.$on('setAccount', function ($event, $newAccount) {
+    $scope.onSetAccount($newAccount);
   });
 });
 
@@ -169,7 +181,7 @@ feenance.directive('newTransaction', function(AccountsApi) {
   };
 });
 
-feenance.directive('transactionUploader', function(AccountsApi) {
+feenance.directive('transactionUploader', function() {
   return {
     restrict: 'E',
     scope: {

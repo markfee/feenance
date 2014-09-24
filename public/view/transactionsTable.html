@@ -3,6 +3,7 @@
 
 <div data-ng-controller="TransactionsController" ng-show="transactions" >
   <h3>{{account.name}}</h3>
+  <select ng-model="page" ng-options="n for n in [] | range:1:paginator.last_page" ng-change="newPage()"></select>
   <table class="table table-striped">
     <tr>
       <th><a href="" ng-click="predicate = ['date', 'id'];        reverse=!reverse">Date</a></th>

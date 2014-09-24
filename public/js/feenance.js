@@ -1,5 +1,16 @@
 var feenance = angular.module("feenance", ['ngResource', 'ngRoute', 'ui.bootstrap']);
 
+
+feenance.filter('range', function() {
+  return function(input, min, max) {
+    min = parseInt(min);
+    max = parseInt(max);
+    for (var i=min; i<=max; i++)
+      input.push(i);
+    return input;
+  };
+});
+
 feenance.controller('FeenanceController', function($scope) {
   $scope.debug = false;
 

@@ -19,6 +19,21 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     }
   });
 
+  $scope.new = function() {
+    $scope.selected = new AccountsApi();
+    $scope.editing=true;
+  };
+
+  $scope.save = function () {
+    $scope.selected.$save(function(response) {
+      $scope.selected = response;
+      alert(response.id);
+      $scope.select(response.id);
+//      $scope.editing = false;
+//      $scope.selected_id = $scope.selected.id;
+    });
+  };
+
 
   $transclude(function(clone,scope) {
     $scope.title = clone.html();

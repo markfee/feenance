@@ -4,6 +4,11 @@ use \Account;
 use Markfee\Responder\Respond;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Misc\Transformers\AccountsTransformer;
+use Illuminate\Database\QueryException;
+use \Exception;
+use \Input;
+use \Validator;
+
 class AccountsController extends BaseController {
 
   protected function getTransformer() {    return $this->transformer ?: new AccountsTransformer;  }
@@ -25,6 +30,57 @@ class AccountsController extends BaseController {
     }
   }
 
+  /**
+   * Add a new Account
+   *
+   * @return Respond
+   */
+  public function store()
+  {
+    $validator = Validator::make($data = Input::all(), Account::$rules);
 
+    if ($validator->fails())		{
+      return Respond::ValidationFailed();
+    }
 
+    $account = Account::create($data);
+    return Respond::Raw($this->transform($account));
+  }
+
+  /**
+   * Update a specific account.
+   *
+   * @param  int  $id
+   * @return Response
+   */
+  public function update($id)
+  {
+    $account = Account::findOrFail($id);
+    $validator = Validator::make($data = Input::all(), Account::$rules);
+    if ($validator->fails()) {
+      return Respond::ValidationFailed();
+    }
+
+    $account->update($data);
+    return Respond::Raw($this->transform($account));
+  }
+
+  /**
+   * delete a specific account.
+   *
+   * @param  int  $id
+   * @return Response
+   */
+  public function destroy($id)	{
+    try {
+      if (! Account::destroy($id) ) {
+        return Respond::NotFound();
+      }
+    } catch (QueryException $e) {
+      return Respond::QueryException($e);
+    } catch (Exception $e) {
+      return Respond::InternalError($e->getMessage());
+    }
+    return Respond::Success();
+  }
 }

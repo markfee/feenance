@@ -195,7 +195,7 @@ class TransactionsController extends BaseController {
       }
       while($count > 0) {
         $count--;
-        $line = array_map("trim", explode(",", $file[$count]));
+        $line = array_map("trim", str_getcsv($file[$count], ",", '"'));
         if (count($line) ==4) {
           $name = trim($line[1], '"');
           $bank_string = BankString::findOrCreate($account_id, $name)->first();

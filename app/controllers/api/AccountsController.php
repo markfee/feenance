@@ -1,6 +1,6 @@
 <?php
 namespace Feenance\Api;
-use \Account;
+use Feenance\Model\Account;
 use Markfee\Responder\Respond;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Feenance\Misc\Transformers\AccountsTransformer;

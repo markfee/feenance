@@ -1,12 +1,16 @@
 <?php
 
+namespace Feenance\Model;
+use DB;
+use Eloquent;
+
 class Transaction extends Eloquent {
-  protected $fillable = [ "date", "amount", "account_id", "reconciled", "payee_id", "category_id", "notes", "bank_string_id"];
+  protected $fillable = ["date", "amount", "account_id", "reconciled", "payee_id", "category_id", "notes", "bank_string_id"];
   protected $dates = ["date"];
   static public $rules = [
-    "date"        => "required|date"
-  , "amount"      => "required|integer|not_in:0"
-  , "account_id"  => "required|integer"
+    "date" => "required|date"
+    , "amount" => "required|integer|not_in:0"
+    , "account_id" => "required|integer"
   ];
 
   public static function startImport() {
@@ -25,32 +29,32 @@ class Transaction extends Eloquent {
   }
 
   public function balance() {
-    return $this->hasOne('Balance');
+    return $this->hasOne('Feenance\Model\Balance');
   }
 
   public function destination() {
     // If this is the source the transfer->destination is the destination
-    return $this->hasOne('Transfer', 'source');
+    return $this->hasOne('Feenance\Model\Transfer', 'source');
   }
 
   public function source() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Transfer', 'destination');
+    return $this->hasOne('Feenance\Model\Transfer', 'destination');
   }
 
   public function bankString() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('BankString', "id", "bank_string_id");
+    return $this->hasOne('Feenance\Model\BankString', "id", "bank_string_id");
   }
 
   public function payee() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Payee', "id", "payee_id");
+    return $this->hasOne('Feenance\Model\Payee', "id", "payee_id");
   }
 
   public function category() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Category', "id", "category_id");
+    return $this->hasOne('Feenance\Model\Category', "id", "category_id");
   }
 
 

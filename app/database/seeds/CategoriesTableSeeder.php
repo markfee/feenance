@@ -13,7 +13,7 @@ class CategoriesTableSeeder extends Seeder {
 
     foreach($records as $record)
     {
-      Category::create([
+      \Feenance\Model\Category::create([
         "id" => $record->CATEGID,
         "name" => $record->CATEGNAME
       ]);
@@ -23,7 +23,7 @@ class CategoriesTableSeeder extends Seeder {
 
     foreach($records as $record)
     {
-      Category::create([
+      \Feenance\Model\Category::create([
         "parent_id"     => $record->CATEGID,
         "name"         => $record->SUBCATEGNAME,
         "mmex_subcatid" => $record->SUBCATEGID,

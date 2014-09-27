@@ -2,7 +2,7 @@
 
 namespace Feenance\Api;
 
-use \StandingOrder;
+use Feenance\Model\StandingOrder;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\StandingOrderTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

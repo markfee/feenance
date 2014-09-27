@@ -1,14 +1,15 @@
 <?php
 
+namespace Feenance\Model;
 class BankString extends \Eloquent {
 
-	// Add your validation rules here
-	public static $rules = [
-		// 'name' => 'required'
-	];
+  // Add your validation rules here
+  public static $rules = [
+    // 'name' => 'required'
+  ];
 
-	// Don't forget to fill this array
-	protected $fillable = ["account_id", "name"];
+  // Don't forget to fill this array
+  protected $fillable = ["account_id", "name"];
 
   public static function findOrCreate($account_id, $name) {
     // TODO - UNCOMMENT THESE PRINTS AND CREATE A LOG
@@ -18,7 +19,7 @@ class BankString extends \Eloquent {
       return $bank_string;
     }
 //    print "\nCREATING: (id: ??? account_id: {$account_id}, name: {$name})";
-    $newRecord = BankString::create( [ "account_id" => $account_id, "name" => $name ] );
+    $newRecord = BankString::create(["account_id" => $account_id, "name" => $name]);
 //    print "\nCREATED:  (id: {$newRecord->id} account_id: {$newRecord->account_id}, name: {$newRecord->name})";
     if ($newRecord->name != $name)
       dd($newRecord);
@@ -26,7 +27,7 @@ class BankString extends \Eloquent {
   }
 
   public function bankTransaction() {
-    return $this->hasMany('BankTransaction');
+    return $this->hasMany('Feenance\Model\BankTransaction');
   }
 
 }

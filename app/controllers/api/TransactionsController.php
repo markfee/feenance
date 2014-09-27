@@ -2,7 +2,7 @@
 namespace Feenance\Api;
 
 use Feenance\Misc\Transformers\BankTransactionTransformer;
-use \Transaction;
+use Feenance\Model\Transaction;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\TransactionTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 use \DB;
 use \SplFileObject;
 use Illuminate\Support\MessageBag;
-use \BankString;
+use Feenance\Model\BankString;
 use \Carbon\Carbon;
 use \BankTransaction;
 class TransactionsController extends BaseController {
@@ -116,7 +116,7 @@ class TransactionsController extends BaseController {
 
       $source       = Transaction::create($data);
       $destination  = Transaction::create($transfer);
-      $transfer = new \Transfer();
+      $transfer = new \Feenance\Model\Transfer();
       $transfer->source = $source->id;
       $transfer->destination = $destination->id;
       $transfer->save();

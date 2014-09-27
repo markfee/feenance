@@ -2,6 +2,10 @@
 
 use Faker\Factory as Faker;
 use Carbon\Carbon;
+use Feenance\Model\Account;
+use Feenance\Model\Balance;
+use Feenance\Model\Transaction;
+use Feenance\Model\Transfer;
 
 class testTransactionsTableSeeder extends Seeder {
 

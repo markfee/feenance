@@ -4,7 +4,7 @@ use Illuminate\Http\Response;
 use Carbon\Carbon;
 use \SplFileObject;
 use Feenance\Api\TransactionsController;
-use \Transaction;
+use Feenance\Model\Transaction;
 
 class TransactionsTest extends TestCase {
   private $API_ROOT  = "api/v1/transactions";
@@ -95,8 +95,8 @@ class TransactionsTest extends TestCase {
    * bank_string_id to be updated, provided they do not already have some different map data applied.
    */
   public function test_map_update() {
-    \BankString::create(["account_id" =>1, "name"  => "This will be updated"]);
-    \BankString::create(["account_id" =>1, "name"  => "This will not be updated"]);
+    \Feenance\Model\BankString::create(["account_id" =>1, "name"  => "This will be updated"]);
+    \Feenance\Model\BankString::create(["account_id" =>1, "name"  => "This will not be updated"]);
     $transactionModel = new Transaction;
     $transactionModel->fillable([ "date", "amount", "account_id", "reconciled", "payee_id", "category_id", "notes", "bank_string_id"]);
 

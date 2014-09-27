@@ -2,7 +2,7 @@
 
 namespace Feenance\Api;
 
-use \Category;
+use Feenance\Model\Category;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\CategoryTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

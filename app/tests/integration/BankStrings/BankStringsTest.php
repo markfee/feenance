@@ -1,5 +1,6 @@
 <?php
 
+use Feenance\Model\BankString;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use Feenance\Api\BankStringsController;

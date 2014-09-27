@@ -1,8 +1,10 @@
 <?php
 
+namespace Feenance\Model;
 class StandingOrder extends \Eloquent {
   protected $fillable = [];
   protected $dates = ['previous_date', 'next_date', 'finish_date', 'created_at', 'updated_at'];
+
   /*
     id: "1",
     previous_date: "2014-11-01 00:00:00",
@@ -25,17 +27,17 @@ class StandingOrder extends \Eloquent {
 
   public function payee() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Payee', "id", "payee_id");
+    return $this->hasOne('Feenance\Model\Payee', "id", "payee_id");
   }
 
   public function category() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Category', "id", "category_id");
+    return $this->hasOne('Feenance\Model\Category', "id", "category_id");
   }
 
   public function incrementUnit() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Increment', "id", "increment_id");
+    return $this->hasOne('Feenance\Model\Increment', "id", "increment_id");
   }
 
 

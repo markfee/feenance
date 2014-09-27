@@ -24,19 +24,27 @@ Route::get('/import', function()
 
 Route::group(['prefix' =>  'api/v1/'], function() {
   $NAMESPACE = 'api\\';
-  Route::get('accounts/{id}/transactions/',    $NAMESPACE.'TransactionsController@index');
-  Route::get('accounts/upload/',          $NAMESPACE.'TransactionsController@upload');
-  Route::post('accounts/upload/',          $NAMESPACE.'TransactionsController@upload');
-  Route::resource('accounts', $NAMESPACE.'AccountsController');
-  Route::resource('transactions', $NAMESPACE.'TransactionsController');
-  Route::resource('payees', $NAMESPACE.'PayeesController');
-  Route::resource('categories', $NAMESPACE.'CategoriesController');
-  Route::resource('maps', $NAMESPACE.'MapsController');
-  Route::resource('bank_strings', $NAMESPACE.'BankStringsController');
-  Route::resource('standing_orders', $NAMESPACE.'StandingOrdersController');
+  Route::get('accounts/{id}/transactions',    $NAMESPACE.'TransactionsController@index');
+  Route::get('accounts/upload',               $NAMESPACE.'TransactionsController@upload');
+  Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');
+  Route::resource('accounts',                 $NAMESPACE.'AccountsController');
+  Route::resource('transactions',             $NAMESPACE.'TransactionsController');
+  Route::resource('payees',                   $NAMESPACE.'PayeesController');
+  Route::resource('categories',               $NAMESPACE.'CategoriesController');
+  Route::resource('maps',                     $NAMESPACE.'MapsController');
 
-  Route::get('bank_strings/{id}/transactions',    $NAMESPACE.'TransactionsController@bank_strings');
-  Route::post('bank_strings/{id}/transactions',    $NAMESPACE.'TransactionsController@bank_strings_update');
+  Route::resource('bank_strings',               $NAMESPACE.'BankStringsController');
+  Route::get('bank_strings/{id}/transactions',  $NAMESPACE.'TransactionsController@bank_strings');
+  Route::post('bank_strings/{id}/transactions', $NAMESPACE.'TransactionsController@bank_strings_update');
+
+  Route::resource('standing_orders',                        $NAMESPACE.'StandingOrdersController');
+  // Generate transactions for a specific standing_order for a period (default == the next month)
+  Route::get('standing_orders/{id}/transactions/{period}',  $NAMESPACE.'StandingOrdersController@generate');
+  Route::get('standing_orders/{id}/transactions',           $NAMESPACE.'StandingOrdersController@generate');
+  // Generate transactions for all standing_orders for a period (default == the next month)
+  Route::get('standing_orders/transactions/{period}',       $NAMESPACE.'StandingOrdersController@generate');
+  Route::get('standing_orders/transactions',                $NAMESPACE.'StandingOrdersController@generate');
+
 });
 
 Route::group(['prefix' =>  'api/v1/mmex'], function() {

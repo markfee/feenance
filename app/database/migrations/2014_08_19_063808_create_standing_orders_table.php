@@ -16,7 +16,6 @@ class CreateStandingOrdersTable extends Migration {
       $table->char('id', 1);
       $table->string('amount'); // eg day, month, year
       $table->primary('id');
-
     });
 
     Schema::create('standing_orders', function(Blueprint $table)
@@ -27,9 +26,9 @@ class CreateStandingOrdersTable extends Migration {
       $table->datetime('finish_date')->nullable();
       $table->smallInteger('increment')->unsigned();
       $table->char('increment_id');
-      $table->string('exceptions')->nullable();   // eg month:february;month:march
-      $table->integer('amount')->unsigned();      // always positive - the debit or credit account determines the sign.
-      $table->boolean('next_bank_day')->default(true);      // skip to the next valid bank day
+      $table->string('exceptions')->nullable();         // eg month:february;month:march
+      $table->integer('amount')->unsigned();            // always positive - the debit or credit account determines the sign.
+      $table->boolean('next_bank_day')->default(true);  // skip to the next valid bank day
       $table->integer('credit_account_id')->unsigned()->nullable();
       $table->integer('debit_account_id')->unsigned()->nullable();
       $table->integer('payee_id')->unsigned()->nullable();

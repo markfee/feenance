@@ -33,5 +33,10 @@ class StandingOrder extends \Eloquent {
     return $this->hasOne('Category', "id", "category_id");
   }
 
+  public function incrementUnit() {
+    // If this is the destination the transfer->source is the source
+    return $this->hasOne('Increment', "id", "increment_id");
+  }
+
 
 }

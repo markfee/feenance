@@ -1,6 +1,7 @@
 <?php
 
 class Increment extends \Eloquent {
-	protected $fillable = [];
+  protected $table = "increments";
+  protected $fillable = [];
   public $timestamps = false;
 }

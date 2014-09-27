@@ -6,10 +6,10 @@
  * Time: 16:27
  */
 
-namespace MMEX;
+namespace Feenance\MMEX;
 
 
-class Payee extends MMEX {
+class Payee extends Feenance\MMEX {
   protected $fillable = [];
   protected $table = 'PAYEE_V1';
 }

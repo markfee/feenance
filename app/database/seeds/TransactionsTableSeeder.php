@@ -1,6 +1,6 @@
 <?php
 
-use MMEX\Transaction as mmexTransaction;
+use Feenance\MMEX\Transaction as mmexTransaction;
 
 class TransactionsTableSeeder extends Seeder {
 

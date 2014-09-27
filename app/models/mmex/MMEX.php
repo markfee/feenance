@@ -6,7 +6,7 @@
  * Time: 16:28
  */
 
-namespace MMEX;
+namespace Feenance\MMEX;
 
 
 class MMEX  extends \Eloquent {

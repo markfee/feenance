@@ -2,8 +2,8 @@
 
 // Composer: "fzaninotto/faker": "v1.3.0"
 // use Faker\Factory as Faker;
-use MMEX\Category as mmexCategory;
-use MMEX\SubCategory as mmexSubCategory;
+use Feenance\MMEX\Category as mmexCategory;
+use Feenance\MMEX\SubCategory as mmexSubCategory;
 
 class CategoriesTableSeeder extends Seeder {
 

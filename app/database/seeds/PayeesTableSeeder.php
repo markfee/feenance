@@ -1,6 +1,6 @@
 <?php
 
-use MMEX\Payee as mmexPayee;
+use Feenance\MMEX\Payee as mmexPayee;
 
 class PayeesTableSeeder extends Seeder {
 

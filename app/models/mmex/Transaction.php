@@ -6,10 +6,10 @@
  * Time: 16:27
  */
 
-namespace MMEX;
+namespace Feenance\MMEX;
 
 
-class Transaction extends MMEX {
+class Transaction extends Feenance\MMEX {
   protected $fillable = [];
   protected $table = 'CHECKINGACCOUNT_V1';
 }

@@ -1,6 +1,6 @@
 <?php
 
-use MMEX\StandingOrder as mmexStandingOrder;
+use Feenance\MMEX\StandingOrder as mmexStandingOrder;
 
 class StandingOrdersTableSeeder extends Seeder {
 

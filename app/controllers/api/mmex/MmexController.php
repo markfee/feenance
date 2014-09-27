@@ -1,6 +1,6 @@
 <?php
 
-namespace MMEX;
+namespace Feenance\MMEX;
 
 class MmexController extends \api\BaseController {
 

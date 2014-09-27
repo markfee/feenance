@@ -48,7 +48,7 @@ Route::group(['prefix' =>  'api/v1/'], function() {
 });
 
 Route::group(['prefix' =>  'api/v1/mmex'], function() {
-  $NAMESPACE = 'MMEX\\';
+  $NAMESPACE = 'Feenance\\MMEX\\';
 
   Route::get('accounts',          $NAMESPACE.'MmexController@accounts');
   Route::get('categories',        $NAMESPACE.'MmexController@categories');

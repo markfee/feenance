@@ -6,10 +6,10 @@
  * Time: 16:27
  */
 
-namespace MMEX;
+namespace Feenance\MMEX;
 
 
-class StandingOrder extends MMEX {
+class StandingOrder extends Feenance\MMEX {
   protected $fillable = [];
   protected $table = 'BILLSDEPOSITS_V1';
 }

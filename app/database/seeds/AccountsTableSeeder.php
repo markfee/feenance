@@ -1,6 +1,6 @@
 <?php
 
-use MMEX\Accounts as mmexAccount;
+use Feenance\MMEX\Accounts as mmexAccount;
 
 class AccountsTableSeeder extends Seeder {
 

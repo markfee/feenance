@@ -6,10 +6,10 @@
  * Time: 16:27
  */
 
-namespace MMEX;
+namespace Feenance\MMEX;
 
 
-class SubCategory extends MMEX {
+class SubCategory extends Feenance\MMEX {
   protected $fillable = [];
   protected $table = 'SubCategory_V1';
 }

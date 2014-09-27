@@ -34,6 +34,8 @@ class TransactionTransformer extends Transformer {
       "bank_string_id"    => $record->bank_string_id ? (int) $record->bank_string_id : null,
 
       "bank_string"       => $record->bank_string_id ? $record->bank_string->name : null,
+      "payee"             => $record->payee_id ? PayeeTransformer::transform($record->payee) : null,
+      "category"          => $record->category_id ? CategoryTransformer::transform($record->category) : null,
 
       ];
   }

@@ -33,6 +33,7 @@ Route::group(['prefix' =>  'api/v1/'], function() {
   Route::resource('categories', $NAMESPACE.'CategoriesController');
   Route::resource('maps', $NAMESPACE.'MapsController');
   Route::resource('bank_strings', $NAMESPACE.'BankStringsController');
+  Route::resource('standing_orders', $NAMESPACE.'StandingOrdersController');
 
   Route::get('bank_strings/{id}/transactions',    $NAMESPACE.'TransactionsController@bank_strings');
   Route::post('bank_strings/{id}/transactions',    $NAMESPACE.'TransactionsController@bank_strings_update');

@@ -43,5 +43,15 @@ class Transaction extends Eloquent {
     return $this->hasOne('BankString', "id", "bank_string_id");
   }
 
+  public function payee() {
+    // If this is the destination the transfer->source is the source
+    return $this->hasOne('Payee', "id", "payee_id");
+  }
+
+  public function category() {
+    // If this is the destination the transfer->source is the source
+    return $this->hasOne('Category', "id", "category_id");
+  }
+
 
 }

@@ -9,6 +9,13 @@
 namespace Misc\Transformers;
 
 
-class StandingOrderTransformer {
-
-} 
+class StandingOrderTransformer extends Transformer {
+  public static function transform($record) {
+    return $record;
+    return [
+      "id"                => (int)$record->id,
+      "name"              => $record->name,
+      "category_id"       => $record->category_id ? (int)$record->category_id : null,
+    ];
+  }
+}

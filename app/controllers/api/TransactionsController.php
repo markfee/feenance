@@ -33,7 +33,7 @@ class TransactionsController extends BaseController {
    */
   public function index($account_id = null)
   {
-    $with = ["balance", "source", "destination", "bankString"];
+    $with = ["balance", "source", "destination", "bankString", "payee", "category"];
     if (!empty($account_id)) {
       $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
     } else {

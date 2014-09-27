@@ -4,7 +4,7 @@ namespace api;
 
 use \Category;
 use Markfee\Responder\Respond;
-use Misc\Transformers\CategoryTransformer;
+use Feenance\Misc\Transformers\CategoryTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use \Exception;

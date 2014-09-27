@@ -4,7 +4,7 @@ namespace api;
 
 use \Payee;
 use Markfee\Responder\Respond;
-use Misc\Transformers\PayeeTransformer;
+use Feenance\Misc\Transformers\PayeeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use \Exception;

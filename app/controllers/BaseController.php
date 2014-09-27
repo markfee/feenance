@@ -1,6 +1,6 @@
 <?php
 namespace api;
-use Misc\Transformers\Transformer;
+use Feenance\Misc\Transformers\Transformer;
 use \Event;
 class BaseController extends \Controller {
 

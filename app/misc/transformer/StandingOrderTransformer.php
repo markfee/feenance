@@ -6,7 +6,7 @@
  * Time: 06:36
  */
 
-namespace Misc\Transformers;
+namespace Feenance\Misc\Transformers;
 
 
 class StandingOrderTransformer extends Transformer {

@@ -3,7 +3,7 @@ namespace api;
 use \Account;
 use Markfee\Responder\Respond;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Misc\Transformers\AccountsTransformer;
+use Feenance\Misc\Transformers\AccountsTransformer;
 use Illuminate\Database\QueryException;
 use \Exception;
 use \Input;

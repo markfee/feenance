@@ -4,7 +4,7 @@ namespace api;
 
 use \StandingOrder;
 use Markfee\Responder\Respond;
-use Misc\Transformers\StandingOrderTransformer;
+use Feenance\Misc\Transformers\StandingOrderTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use \Exception;

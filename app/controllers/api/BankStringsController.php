@@ -4,7 +4,7 @@ namespace api;
 
 use \BankString;
 use Markfee\Responder\Respond;
-use Misc\Transformers\BankStringTransformer;
+use Feenance\Misc\Transformers\BankStringTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use \Exception;

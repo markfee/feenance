@@ -4,7 +4,7 @@ namespace api;
 
 use \Map;
 use Markfee\Responder\Respond;
-use Misc\Transformers\MapTransformer;
+use Feenance\Misc\Transformers\MapTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use \Exception;

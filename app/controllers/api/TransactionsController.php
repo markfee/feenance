@@ -1,10 +1,10 @@
 <?php
 namespace api;
 
-use Misc\Transformers\BankTransactionTransformer;
+use Feenance\Misc\Transformers\BankTransactionTransformer;
 use \Transaction;
 use Markfee\Responder\Respond;
-use Misc\Transformers\TransactionTransformer;
+use Feenance\Misc\Transformers\TransactionTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use \Exception;

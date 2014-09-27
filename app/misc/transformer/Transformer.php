@@ -1,4 +1,4 @@
-<?php namespace Misc\Transformers;
+<?php namespace Feenance\Misc\Transformers;
 
 abstract class Transformer {
 

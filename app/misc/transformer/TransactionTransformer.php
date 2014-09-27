@@ -6,7 +6,7 @@
  * Time: 07:40
  */
 
-namespace Misc\Transformers;
+namespace Feenance\Misc\Transformers;
 use \Carbon\Carbon;
 use Mockery\CountValidator\Exception;
 

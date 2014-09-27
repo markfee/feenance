@@ -6,7 +6,7 @@
  * Time: 08:48
  */
 
-namespace feenance\tests\integration\StandingOrders;
+namespace Feenace\tests\integration\StandingOrders;
 
 
 class StandingOrdersTest {

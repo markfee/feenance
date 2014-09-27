@@ -1,6 +1,6 @@
 <?php
 
-namespace api;
+namespace Feenance\Api;
 
 use \StandingOrder;
 use Markfee\Responder\Respond;

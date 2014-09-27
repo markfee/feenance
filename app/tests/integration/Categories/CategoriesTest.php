@@ -5,7 +5,7 @@
  * Date: 07/09/14
  * Time: 07:44
  */
-use api\CategoriesController;
+use Feenance\Api\CategoriesController;
 
 class CategoriesTest extends TestCase {
   private $API_ROOT  = "api/v1/categories";

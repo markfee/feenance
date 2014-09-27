@@ -1,5 +1,5 @@
 <?php
-namespace api;
+namespace Feenance\Api;
 
 use Feenance\Misc\Transformers\BankTransactionTransformer;
 use \Transaction;

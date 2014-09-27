@@ -3,7 +3,7 @@
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use \SplFileObject;
-use \api\TransactionsController;
+use Feenance\Api\TransactionsController;
 use \Transaction;
 
 class TransactionsTest extends TestCase {

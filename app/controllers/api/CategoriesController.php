@@ -1,6 +1,6 @@
 <?php
 
-namespace api;
+namespace Feenance\Api;
 
 use \Category;
 use Markfee\Responder\Respond;

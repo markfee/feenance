@@ -1,6 +1,6 @@
 <?php
 
-namespace api;
+namespace Feenance\Api;
 
 use \Payee;
 use Markfee\Responder\Respond;

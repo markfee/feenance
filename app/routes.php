@@ -23,7 +23,7 @@ Route::get('/import', function()
 
 
 Route::group(['prefix' =>  'api/v1/'], function() {
-  $NAMESPACE = 'api\\';
+  $NAMESPACE = 'Feenance\\Api\\';
   Route::get('accounts/{id}/transactions',    $NAMESPACE.'TransactionsController@index');
   Route::get('accounts/upload',               $NAMESPACE.'TransactionsController@upload');
   Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');

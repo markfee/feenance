@@ -1,6 +1,6 @@
 <?php
 
-namespace api;
+namespace Feenance\Api;
 
 use \Map;
 use Markfee\Responder\Respond;

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Response;
 use Carbon\Carbon;
-use api\BankStringsController;
+use Feenance\Api\BankStringsController;
 
 class BankStringsTest extends TestCase {
 

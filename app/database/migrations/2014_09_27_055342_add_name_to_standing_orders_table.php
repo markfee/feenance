@@ -14,7 +14,7 @@ class AddNameToStandingOrdersTable extends Migration {
 	{
     Schema::table('standing_orders', function($table)
     {
-      $table->string('name');
+      $table->string('name')->nullable();
     });
   }
 

@@ -37,6 +37,10 @@ class StandingOrder extends \Eloquent {
     return $this->hasOne('Feenance\Model\Unit', "id", "unit_id");
   }
 
+  public function getFrequencyAttribute() {
+    return $this->increment == 1 ? $this->unit->singular : "Every " . $this->increment . " " . $this->unit->plural;
+  }
+
   public function account() {
     return $this->hasOne('Feenance\Model\Account', "id", "account_id");
   }

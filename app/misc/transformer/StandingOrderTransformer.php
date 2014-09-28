@@ -19,7 +19,7 @@ class StandingOrderTransformer extends Transformer {
       "next_date"         => $record->next_date->toISO8601String(),
       "finish_date"       => $record->finish_date ? $record->finish_date->toISO8601String() : null,
       "increment"         => (int) $record->increment,
-      "increment_unit"    => $record->incrementUnit,
+      "unit"              => $record->unit,
       "exceptions"        => $record->exceptions,
       "amount"            => 0.01 * $record->amount,
       "skip_to_bank_day"  => (boolean)$record->next_bank_day,

@@ -33,8 +33,8 @@ class StandingOrder extends \Eloquent {
     return $this->hasOne('Feenance\Model\Category', "id", "category_id");
   }
 
-  public function incrementUnit() {
-    return $this->hasOne('Feenance\Model\Increment', "id", "increment_id");
+  public function unit() {
+    return $this->hasOne('Feenance\Model\Unit', "id", "unit_id");
   }
 
   public function account() {

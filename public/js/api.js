@@ -1,10 +1,17 @@
 $API_ROOT = "http://feenance/api/v1/";
 
 feenance.factory('AccountsApi', function($resource) {
-  return $resource(   $API_ROOT + "accounts/:id/:collection",   {id:"@id"}
-    , {
+  return $resource(   $API_ROOT + "accounts/:id/:collection/:period",   {id:"@id"}, {
+      'transactions':   { method:'GET', params: {collection: "transactions" } },
+      'update':       { method:'PUT'                    }
+    }
+  );
+});
+
+feenance.factory('StandingOrdersApi', function($resource) {
+  return $resource(   $API_ROOT + "standing_orders/:id/:collection", { id:"@id"}, {
       'transactions': { method:'GET', params: {collection: "transactions" } },
-        'update':       { method:'PUT'                    }
+      'update':       { method:'PUT'                    }
     }
   );
 });

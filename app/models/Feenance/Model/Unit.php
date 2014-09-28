@@ -1,8 +1,8 @@
 <?php
 
 namespace Feenance\Model;
-class Increment extends \Eloquent {
-  protected $table = "increments";
+class Unit extends \Eloquent {
+//  protected $table = "units";
   protected $fillable = [];
   public $timestamps = false;
 }

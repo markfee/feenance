@@ -2,16 +2,16 @@
 
 use Feenance\MMEX\StandingOrder as mmexStandingOrder;
 use Feenance\Model\Category;
-use Feenance\Model\Increment;
+use Feenance\Model\Unit;
 
 class StandingOrdersTableSeeder extends Seeder {
 
 	public function run()
 	{
-    Increment::create(["id"=>"d", "unit"=>"Day",    "singular"=>"Daily",    "plural"=>"Days"    ] );
-    Increment::create(["id"=>"w", "unit"=>"Week",   "singular"=>"Weekly",   "plural"=>"Weeks"   ] );
-    Increment::create(["id"=>"m", "unit"=>"Month",  "singular"=>"Monthly",  "plural"=>"Months"   ] );
-    Increment::create(["id"=>"y", "unit"=>"Year",   "singular"=>"Yearly",   "plural"=>"Years"   ] );
+    Unit::create(["id"=>"d", "unit"=>"Day",    "singular"=>"Daily",    "plural"=>"Days"    ] );
+    Unit::create(["id"=>"w", "unit"=>"Week",   "singular"=>"Weekly",   "plural"=>"Weeks"   ] );
+    Unit::create(["id"=>"m", "unit"=>"Month",  "singular"=>"Monthly",  "plural"=>"Months"   ] );
+    Unit::create(["id"=>"y", "unit"=>"Year",   "singular"=>"Yearly",   "plural"=>"Years"   ] );
 
     $records = mmexStandingOrder::all();
     foreach($records as $record)
@@ -74,7 +74,7 @@ class StandingOrdersTableSeeder extends Seeder {
         "previous_date"     => $record->TRANSDATE,
         "next_date"         => $record->NEXTOCCURRENCEDATE,
         "increment"         => $REPEATS[$record->REPEATS][0],
-        "increment_id"      => $REPEATS[$record->REPEATS][1],
+        "unit_id"           => $REPEATS[$record->REPEATS][1],
         "amount"            => $amount * 100,
         "account_id"              => $record->ACCOUNTID,
         "destination_account_id"  => $record->TOACCOUNTID == "-1" ? null : $record->TOACCOUNTID,

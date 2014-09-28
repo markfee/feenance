@@ -12,7 +12,7 @@ class CreateStandingOrdersTable extends Migration {
 	 */
 	public function up()
 	{
-    Schema::create('increments', function(Blueprint $table) {
+    Schema::create('units', function(Blueprint $table) {
       $table->char('id', 1);
       $table->string('unit');     // eg day, month, year
       $table->string('singular'); // eg daily, monthly, yearly
@@ -28,7 +28,7 @@ class CreateStandingOrdersTable extends Migration {
       $table->datetime('next_date');
       $table->datetime('finish_date')->nullable();
       $table->smallInteger('increment')->unsigned();
-      $table->char('increment_id');
+      $table->char('unit_id');
       $table->string('exceptions')->nullable();         // eg month:february;month:march
       $table->integer('amount');            // always positive - the debit or credit account determines the sign.
       $table->boolean('next_bank_day')->default(true);  // skip to the next valid bank day
@@ -44,7 +44,7 @@ class CreateStandingOrdersTable extends Migration {
       $table->foreign('destination_account_id')->references('id')->on('accounts');
       $table->foreign('payee_id')->references('id')->on('payees');
       $table->foreign('category_id')->references('id')->on('categories');
-      $table->foreign('increment_id')->references('id')->on('increments');
+      $table->foreign('unit_id')->references('id')->on('units');
 		});
 	}
 

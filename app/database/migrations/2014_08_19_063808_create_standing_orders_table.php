@@ -56,8 +56,8 @@ class CreateStandingOrdersTable extends Migration {
 	 */
 	public function down()
 	{
-    Schema::drop('standing_orders');
-    Schema::drop('increments');
+    Schema::dropIfExists('standing_orders');
+    Schema::dropIfExists('units');
 	}
 
 }

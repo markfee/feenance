@@ -8,10 +8,10 @@ class StandingOrdersTableSeeder extends Seeder {
 
 	public function run()
 	{
-    Unit::create(["id"=>"d", "unit"=>"Day",    "singular"=>"Daily",    "plural"=>"Days"    ] );
-    Unit::create(["id"=>"w", "unit"=>"Week",   "singular"=>"Weekly",   "plural"=>"Weeks"   ] );
-    Unit::create(["id"=>"m", "unit"=>"Month",  "singular"=>"Monthly",  "plural"=>"Months"   ] );
-    Unit::create(["id"=>"y", "unit"=>"Year",   "singular"=>"Yearly",   "plural"=>"Years"   ] );
+    Unit::create(["id"=>"d", "unit"=>"day",    "singular"=>"daily",    "plural"=>"days"    ] );
+    Unit::create(["id"=>"w", "unit"=>"week",   "singular"=>"weekly",   "plural"=>"weeks"   ] );
+    Unit::create(["id"=>"m", "unit"=>"month",  "singular"=>"monthly",  "plural"=>"months"   ] );
+    Unit::create(["id"=>"y", "unit"=>"year",   "singular"=>"yearly",   "plural"=>"years"   ] );
 
     $records = mmexStandingOrder::all();
     foreach($records as $record)

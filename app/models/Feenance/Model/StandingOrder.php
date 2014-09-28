@@ -38,7 +38,7 @@ class StandingOrder extends \Eloquent {
   }
 
   public function getFrequencyAttribute() {
-    return $this->increment == 1 ? $this->unit->singular : "Every " . $this->increment . " " . $this->unit->plural;
+    return $this->increment == 1 ? $this->unit->singular : "every " . $this->increment . " " . $this->unit->plural;
   }
 
   public function account() {

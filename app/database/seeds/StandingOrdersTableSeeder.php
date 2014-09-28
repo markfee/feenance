@@ -83,6 +83,7 @@ class StandingOrdersTableSeeder extends Seeder {
         "notes"             => $record->NOTES,
 			]);
 		}
+    DB::unprepared("UPDATE standing_orders SET next_date = DATE_SUB(next_date, INTERVAL 3 MONTH) WHERE unit_id <> 'y';");
 	}
 
 }

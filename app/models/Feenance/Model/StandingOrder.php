@@ -26,18 +26,23 @@ class StandingOrder extends \Eloquent {
 
 
   public function payee() {
-    // If this is the destination the transfer->source is the source
     return $this->hasOne('Feenance\Model\Payee', "id", "payee_id");
   }
 
   public function category() {
-    // If this is the destination the transfer->source is the source
     return $this->hasOne('Feenance\Model\Category', "id", "category_id");
   }
 
   public function incrementUnit() {
-    // If this is the destination the transfer->source is the source
     return $this->hasOne('Feenance\Model\Increment', "id", "increment_id");
+  }
+
+  public function account() {
+    return $this->hasOne('Feenance\Model\Account', "id", "account_id");
+  }
+
+  public function destination() {
+    return $this->hasOne('Feenance\Model\Account', "id", "destination_account_id");
   }
 
 

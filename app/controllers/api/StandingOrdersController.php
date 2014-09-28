@@ -23,7 +23,7 @@ class StandingOrdersController extends BaseController {
    */
   public function index()
   {
-      $standingorders = StandingOrder::with("payee", "category.parent", "incrementUnit")->paginate();
+      $standingorders = StandingOrder::with("payee", "category.parent", "incrementUnit", "account", "destination")->paginate(100);
       return Respond::Paginated($standingorders, $this->transformCollection($standingorders->all()));
   }
 

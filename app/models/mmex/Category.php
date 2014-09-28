@@ -9,7 +9,7 @@
 namespace Feenance\MMEX;
 
 
-class Category extends Feenance\MMEX {
+class Category extends MMEX {
   protected $fillable = [];
   protected $table = 'Category_V1';
 }

@@ -8,10 +8,10 @@ class StandingOrdersTableSeeder extends Seeder {
 
 	public function run()
 	{
-    Increment::create(["id"=>"d", "amount"=>"Days"]);
-    Increment::create(["id"=>"w", "amount"=>"Weeks"]);
-    Increment::create(["id"=>"m", "amount"=>"Months"]);
-    Increment::create(["id"=>"y", "amount"=>"Years"]);
+    Increment::create(["id"=>"d", "unit"=>"Day",    "singular"=>"Daily",    "plural"=>"Days"    ] );
+    Increment::create(["id"=>"w", "unit"=>"Week",   "singular"=>"Weekly",   "plural"=>"Weeks"   ] );
+    Increment::create(["id"=>"m", "unit"=>"Month",  "singular"=>"Monthly",  "plural"=>"Months"   ] );
+    Increment::create(["id"=>"y", "unit"=>"Year",   "singular"=>"Yearly",   "plural"=>"Years"   ] );
 
     $records = mmexStandingOrder::all();
     foreach($records as $record)
@@ -23,15 +23,22 @@ class StandingOrdersTableSeeder extends Seeder {
       $REPEATS["207"] = [1, "y"];
 
       $amount = $record->TRANSAMOUNT;
-      $credit_account = null;
       $debit_account = null;
+
+      if ($record->TRANSCODE == "Withdrawal" || ($record->TOACCOUNTID != "-1") ) {
+        $amount *= -1;
+      }
       if ($record->TOACCOUNTID != "-1") { // transfer
+        $debit_account = $record->TOACCOUNTID;
+      }
+/*      if ($record->TOACCOUNTID != "-1") { // transfer
         $credit_account = ($amount < 0 ? $record->ACCOUNTID : $record->TOACCOUNTID);
         $debit_account  = ($amount > 0 ? $record->ACCOUNTID : $record->TOACCOUNTID);
       } else {
         $credit_account = ($record->TRANSCODE == "Deposit"    ? $record->ACCOUNTID : null);
         $debit_account  = ($record->TRANSCODE == "Withdrawal" ? $record->ACCOUNTID : null);
       }
+*/
 
       $categoryId = $record->CATEGID;
       try{
@@ -68,9 +75,9 @@ class StandingOrdersTableSeeder extends Seeder {
         "next_date"         => $record->NEXTOCCURRENCEDATE,
         "increment"         => $REPEATS[$record->REPEATS][0],
         "increment_id"      => $REPEATS[$record->REPEATS][1],
-        "amount"            => $record->TRANSAMOUNT,
-        "credit_account_id" => $credit_account,
-        "debit_account_id"  => $debit_account,
+        "amount"            => $amount * 100,
+        "account_id"              => $record->ACCOUNTID,
+        "destination_account_id"  => $record->TOACCOUNTID == "-1" ? null : $record->TOACCOUNTID,
         "payee_id"          => $record->PAYEEID == "-1" ? null : $record->PAYEEID,
         "category_id"       => $categoryId == "-1"      ? null : $categoryId,
         "notes"             => $record->NOTES,

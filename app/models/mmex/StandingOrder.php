@@ -9,7 +9,7 @@
 namespace Feenance\MMEX;
 
 
-class StandingOrder extends Feenance\MMEX {
+class StandingOrder extends MMEX {
   protected $fillable = [];
   protected $table = 'BILLSDEPOSITS_V1';
 }

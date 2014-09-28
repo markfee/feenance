@@ -10,6 +10,7 @@ namespace Feenance\Misc\Transformers;
 
 
 class StandingOrderTransformer extends Transformer {
+
   public static function transform($record) {
     return [
       "id"                => (int) $record->id,
@@ -22,8 +23,13 @@ class StandingOrderTransformer extends Transformer {
       "exceptions"        => $record->exceptions,
       "amount"            => 0.01 * $record->amount,
       "skip_to_bank_day"  => (boolean)$record->next_bank_day,
-      "credit_account_id" => $record->credit_account_id ? (int) $record->credit_account_id  : null,
-      "debit_account_id"  => $record->debit_account_id  ? (int) $record->debit_account_id   : null,
+
+      "account_id"        => $record->account_id,
+      "destination_id"        => $record->destination_account_id,
+
+      "account"    => AccountsTransformer::transform($record->account),
+      "destination"     => AccountsTransformer::transform($record->destination),
+
       "notes"             => $record->notes?:null ,
       "payee"             => $record->payee_id ?    PayeeTransformer::transform($record->payee) : null,
 //      "category"          => $record->category,

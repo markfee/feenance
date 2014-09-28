@@ -17,8 +17,6 @@ class TransactionsTableSeeder extends Seeder {
       if ($record->STATUS != "R")
         continue;
       $amount = $record->TRANSAMOUNT;
-      $credit_account = null;
-      $debit_account = null;
       if ($record->TRANSCODE == "Withdrawal" || ($record->TOACCOUNTID != "-1") ) {
         $amount *= -1;
       }

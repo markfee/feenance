@@ -9,7 +9,7 @@
 namespace Feenance\MMEX;
 
 
-class Payee extends Feenance\MMEX {
+class Payee extends MMEX {
   protected $fillable = [];
   protected $table = 'PAYEE_V1';
 }

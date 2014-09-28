@@ -9,7 +9,7 @@
 namespace Feenance\MMEX;
 
 
-class Transaction extends Feenance\MMEX {
+class Transaction extends MMEX {
   protected $fillable = [];
   protected $table = 'CHECKINGACCOUNT_V1';
 }

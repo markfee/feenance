@@ -11,18 +11,13 @@
 |
 */
 
-Route::get('/', function()
+Route::get('/',                 function()  {  return View::make('home');  });
+Route::get('/import',           function()  {  return View::make('import'); });
+Route::get('/standing_orders',  function()  {  return View::make('standing_orders'); });
+
+
+Route::group(['prefix' =>  'api/v1/'], function()
 {
-  return View::make('home');
-});
-
-Route::get('/import', function()
-{
-  return View::make('import');
-});
-
-
-Route::group(['prefix' =>  'api/v1/'], function() {
   $NAMESPACE = 'Feenance\\Api\\';
   Route::get('accounts/{id}/transactions',    $NAMESPACE.'TransactionsController@index');
   Route::get('accounts/upload',               $NAMESPACE.'TransactionsController@upload');
@@ -47,7 +42,8 @@ Route::group(['prefix' =>  'api/v1/'], function() {
 
 });
 
-Route::group(['prefix' =>  'api/v1/mmex'], function() {
+Route::group(['prefix' =>  'api/v1/mmex'], function()
+{
   $NAMESPACE = 'Feenance\\MMEX\\';
 
   Route::get('accounts',          $NAMESPACE.'MmexController@accounts');

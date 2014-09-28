@@ -24,6 +24,7 @@
 {{ HTML::script('js/transaction.js') }}
 {{ HTML::script('js/map.js') }}
 {{ HTML::script('js/debug.js') }}
+{{ HTML::script('js/standing_order.js') }}
 
 
 <!--

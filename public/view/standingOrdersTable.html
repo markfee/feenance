@@ -1,48 +1,15 @@
-<!--
-{
-  id: 1,
-  name: "",
-  previous_date: "2014-11-01T00:00:00+0000",
-  next_date: "2015-01-01T00:00:00+0000",
-  finish_date: null,
-  increment: 1,
-  increment_unit: {
-    id: "m",
-    amount: "Months"
-  },
-  exceptions: null,
-  amount: 18,
-  skip_to_bank_day: true,
-  credit_account_id: 2,
-  debit_account_id: null,
-  notes: null,
-  payee: {
-  id: 1,
-    name: "Fera",
-    category_id: 51
-  },
-  category: {
-  id: 51,
-  fullName: "Income: Salary",
-  name: "Salary",
-  parent_id: 13
-}
--->
-
-
-
 <table class="table table-striped">
 
   <thead>
   <tr>
     <th>Account</th>
     <th>Name</th>
-    <th>Next Date</th>
-    <th>Frequency</th>
-    <th>Credit</th>
-    <th>Debit</th>
-    <th>Payee</th>
-    <th>Category</th>
+    <th><a href="" ng-click="predicate = ['next_date'];        reverse=!reverse">Next Date</a></th>
+    <th><a href="" ng-click="predicate = 'days';  reverse=!reverse">Frequency</a></th>
+    <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Credit</a></th>
+    <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Debit</a></th>
+    <th><a href="" ng-click="predicate = 'payee.name';  reverse=!reverse">Payee</a></th>
+    <th><a href="" ng-click="predicate = 'category.fullName';  reverse=!reverse">Category</a></th>
   </tr>
   </thead>
 

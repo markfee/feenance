@@ -21,6 +21,7 @@ class StandingOrderTransformer extends Transformer {
       "increment"         => (int) $record->increment,
       "unit"              => $record->unit,
       "frequency"         => $record->frequency,
+      "days"              => $record->days,
       "exceptions"        => $record->exceptions,
       "amount"            => 0.01 * $record->amount,
       "skip_to_bank_day"  => (boolean)$record->next_bank_day,

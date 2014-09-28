@@ -17,6 +17,7 @@ class CreateStandingOrdersTable extends Migration {
       $table->string('unit');     // eg day, month, year
       $table->string('singular'); // eg daily, monthly, yearly
       $table->string('plural');   // eg days, months, years
+      $table->integer('days');      // length of period in days
       $table->primary('id');
     });
 

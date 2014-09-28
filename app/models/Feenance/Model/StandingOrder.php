@@ -41,6 +41,10 @@ class StandingOrder extends \Eloquent {
     return $this->increment == 1 ? $this->unit->singular : "every " . $this->increment . " " . $this->unit->plural;
   }
 
+  public function getDaysAttribute() {
+    return $this->increment  * $this->unit->days;
+  }
+
   public function account() {
     return $this->hasOne('Feenance\Model\Account', "id", "account_id");
   }

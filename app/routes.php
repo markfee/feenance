@@ -23,6 +23,9 @@ Route::group(['prefix' =>  'api/v1/'], function()
   Route::get('accounts/upload',               $NAMESPACE.'TransactionsController@upload');
   Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');
   Route::resource('accounts',                 $NAMESPACE.'AccountsController');
+
+  Route::get('transactions/month',             $NAMESPACE.'TransactionsController@month_totals');
+
   Route::resource('transactions',             $NAMESPACE.'TransactionsController');
   Route::resource('payees',                   $NAMESPACE.'PayeesController');
   Route::resource('categories',               $NAMESPACE.'CategoriesController');

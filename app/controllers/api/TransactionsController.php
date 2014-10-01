@@ -47,6 +47,42 @@ class TransactionsController extends BaseController {
    *
    * @return Response
    */
+  public function month_totals($startDate = null, $endDate = null)
+  {
+    $query = DB::table("transactions")
+      ->groupBy("year")
+      ->groupBy("month")
+      ->orderBy("year")
+      ->orderBy("month")
+      ->get([
+      DB::raw('YEAR(date) year'),
+      DB::raw('MONTH(date) month'),
+      DB::raw('SUM(IF(amount <= 0, null, 		amount)) total_credit'),
+      DB::raw('SUM(IF(amount >= 0, null, -1 * 	amount)) total_debit'),
+      DB::raw('SUM(amount) net_total')]);
+    return Respond::Raw($query);
+/*
+    SELECT
+      --	transaction.category_id,
+    YEAR(transaction.date) year,
+    MONTH(transaction.date) month,
+    SUM(IF(transaction.amount <= 0, null, 		transaction.amount)) total_credit,
+    SUM(IF(transaction.amount >= 0, null, -1 * 	transaction.amount)) total_debit,
+    SUM(transaction.amount) net_total
+    FROM transactions transaction
+    GROUP BY year, month
+    --	, category_id
+    ORDER BY year DESC, month DESC;*/
+
+  }
+
+
+
+  /**
+   * Display a listing of transactions
+   *
+   * @return Response
+   */
   public function bank_strings($bank_string_id)
   {
     $with = ["balance", "source", "destination", "bankString"];

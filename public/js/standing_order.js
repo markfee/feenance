@@ -8,6 +8,14 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
       $scope.standingOrders = standingOrders.data;
     }
   );
+  $scope.sort = function(predicate) {
+    if ($scope.predicate == predicate) {
+      $scope.reverse=!$scope.reverse;
+    } else {
+      $scope.predicate = predicate;
+      $scope.reverse=false;
+    }
+  };
 });
 
 feenance.directive('standingOrdersTable', function() {

@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="feenance">
+<html ng-app="feenance" data-ng-controller="FeenanceController">
 <head>
   @include('includes.head')
 </head>

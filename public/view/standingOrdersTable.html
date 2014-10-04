@@ -2,14 +2,14 @@
 
   <thead>
   <tr>
-    <th>Account</th>
-    <th>Name</th>
-    <th><a href="" ng-click="predicate = ['next_date'];        reverse=!reverse">Next Date</a></th>
-    <th><a href="" ng-click="predicate = 'days';  reverse=!reverse">Frequency</a></th>
-    <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Credit</a></th>
-    <th><a href="" ng-click="predicate = 'amount';      reverse=!reverse">Debit</a></th>
-    <th><a href="" ng-click="predicate = 'payee.name';  reverse=!reverse">Payee</a></th>
-    <th><a href="" ng-click="predicate = 'category.fullName';  reverse=!reverse">Category</a></th>
+    <th><a href="" ng-click="sort('account.name');">      Account</a></th>
+    <th><a href="" ng-click="sort('name');">              Name</a></th>
+    <th><a href="" ng-click="sort('next_date');">         Next Date</a></th>
+    <th><a href="" ng-click="sort('days');">              Frequency</a></th>
+    <th><a href="" ng-click="sort('amount');">            Credit</a></th>
+    <th><a href="" ng-click="sort('amount');">            Debit</a></th>
+    <th><a href="" ng-click="sort('payee.name');">        Payee</a></th>
+    <th><a href="" ng-click="sort('category.fullName');"> Category</a></th>
   </tr>
   </thead>
 

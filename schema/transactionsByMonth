@@ -1,0 +1,11 @@
+SELECT 
+--	transaction.category_id, 
+	YEAR(transaction.date) year, 
+	MONTH(transaction.date) month, 
+	SUM(IF(transaction.amount <= 0, null, 		transaction.amount)) total_credit,
+	SUM(IF(transaction.amount >= 0, null, -1 * 	transaction.amount)) total_debit,
+	SUM(transaction.amount) net_total
+	FROM transactions transaction
+	GROUP BY year, month
+--	, category_id
+	ORDER BY year, month;

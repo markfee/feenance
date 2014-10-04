@@ -13,8 +13,12 @@
 
 Route::get('/',                 function()  {  return View::make('home');  });
 Route::get('/import',           function()  {  return View::make('import'); });
+Route::get('/categories',       function()  {  return View::make('categories_report'); });
 Route::get('/standing_orders',  function()  {  return View::make('standing_orders'); });
 
+Route::pattern('id', '[0-9]+');
+Route::pattern('year', '[0-9]{4}');
+Route::pattern('month', '0[1-9]|1[012]|[1-9]');
 
 Route::group(['prefix' =>  'api/v1/'], function()
 {
@@ -24,7 +28,16 @@ Route::group(['prefix' =>  'api/v1/'], function()
   Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');
   Route::resource('accounts',                 $NAMESPACE.'AccountsController');
 
-  Route::get('transactions/month',             $NAMESPACE.'TransactionsController@month_totals');
+  Route::get('transactions/totals',                   $NAMESPACE.'TransactionReportsController@totals_by_year');
+  Route::get('transactions/totals/{year}',            $NAMESPACE.'TransactionReportsController@totals_by_month');
+  Route::get('transactions/totals/categories',        $NAMESPACE.'TransactionReportsController@categories_by_year');
+  Route::get('transactions/totals/categories/{year}/{month?}', $NAMESPACE.'TransactionReportsController@categories_by_month');
+
+/*
+  Route::get('transactions/totals',           $NAMESPACE.'TransactionsController@total');
+  Route::get('transactions/totals/month',     $NAMESPACE.'TransactionsController@month_totals');
+  Route::get('transactions/totals/month',     $NAMESPACE.'TransactionsController@month_totals');
+*/
 
   Route::resource('transactions',             $NAMESPACE.'TransactionsController');
   Route::resource('payees',                   $NAMESPACE.'PayeesController');

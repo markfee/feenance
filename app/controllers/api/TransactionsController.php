@@ -1,9 +1,9 @@
 <?php
 namespace Feenance\Api;
 
-use Feenance\Misc\Transformers\BankTransactionTransformer;
 use Feenance\Model\Transaction;
 use Markfee\Responder\Respond;
+use Feenance\Misc\Transformers\Transformer;
 use Feenance\Misc\Transformers\TransactionTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -16,7 +16,7 @@ use \SplFileObject;
 use Illuminate\Support\MessageBag;
 use Feenance\Model\BankString;
 use \Carbon\Carbon;
-use \BankTransaction;
+
 class TransactionsController extends BaseController {
 
   /**
@@ -29,7 +29,7 @@ class TransactionsController extends BaseController {
   /**
    * Display a listing of transactions
    *
-   * @return Response
+   * @return \Illuminate\Support\Facades\Response
    */
   public function index($account_id = null)
   {
@@ -41,42 +41,6 @@ class TransactionsController extends BaseController {
     }
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
-
-  /**
-   * Display a listing of transactions
-   *
-   * @return Response
-   */
-  public function month_totals($startDate = null, $endDate = null)
-  {
-    $query = DB::table("transactions")
-      ->groupBy("year")
-      ->groupBy("month")
-      ->orderBy("year")
-      ->orderBy("month")
-      ->get([
-      DB::raw('YEAR(date) year'),
-      DB::raw('MONTH(date) month'),
-      DB::raw('SUM(IF(amount <= 0, null, 		amount)) total_credit'),
-      DB::raw('SUM(IF(amount >= 0, null, -1 * 	amount)) total_debit'),
-      DB::raw('SUM(amount) net_total')]);
-    return Respond::Raw($query);
-/*
-    SELECT
-      --	transaction.category_id,
-    YEAR(transaction.date) year,
-    MONTH(transaction.date) month,
-    SUM(IF(transaction.amount <= 0, null, 		transaction.amount)) total_credit,
-    SUM(IF(transaction.amount >= 0, null, -1 * 	transaction.amount)) total_debit,
-    SUM(transaction.amount) net_total
-    FROM transactions transaction
-    GROUP BY year, month
-    --	, category_id
-    ORDER BY year DESC, month DESC;*/
-
-  }
-
-
 
   /**
    * Display a listing of transactions
@@ -288,4 +252,5 @@ class TransactionsController extends BaseController {
     }
     return Respond::Success();
 	}
+
 }

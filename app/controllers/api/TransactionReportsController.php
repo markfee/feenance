@@ -33,9 +33,9 @@ class TransactionReportsController extends BaseController {
     ];
   }
 
-  static function TOTAL_CREDIT()  { return DB::raw('SUM(IF(amount <= 0, null, 		amount)) total_credit'); }
-  static function TOTAL_DEBIT()   { return DB::raw('SUM(IF(amount >= 0, null, -1 * 	amount)) total_debit'); }
-  static function TOTAL_NET()     { return DB::raw('SUM(amount) net_total'); }
+  static function TOTAL_CREDIT()  { return DB::raw('SUM(IF(amount <= 0, null,  0.01 * 	amount)) total_credit'); }
+  static function TOTAL_DEBIT()   { return DB::raw('SUM(IF(amount >= 0, null, -0.01 * 	amount)) total_debit'); }
+  static function TOTAL_NET()     { return DB::raw('0.01 * SUM(amount) net_total'); }
   static function YEAR()          { return DB::raw('YEAR(date) year'); }
   static function MONTH()         { return DB::raw('MONTH(date) month'); }
   static function CATEGORY_ID()   { return DB::raw("IFNULL(category_id, 'UNKNOWN') category_id"); }
@@ -121,16 +121,21 @@ class TransactionReportsController extends BaseController {
 
   public function categories_by_month($year = null, $month = null) {
     $this->filterYear($year);
-    $grandTotal = $this->getResults();
-    $categories = $this->withCategory()->getResults();
-    $months     = $this->withYear($year)->withMonth($month)->getResults();
-    $grandTotal["category"] = Transformer::transformBy( [
-        [$categories, "category", "category_id"]
-      , [$months,   "months", "month"]
+    $this->filterMonth($month);
+    $grandTotal = $this->getResults()[0];
+    $monthSubTotals             = $this->withYear($year)->withMonth($month)->getResults();
+    $categorySubTotals          = $this->withCategory()->getResults();
+    $monthSubTotalsWithCategory = $this->withCategory()->withYear($year)->withMonth($month)->getResults();
+
+    $breakDown = Transformer::transformBy( [
+        [$categorySubTotals, "categories", "category_id"]
+      , [$monthSubTotalsWithCategory,   "months", "month"]
     ] );
+
+    $grandTotal->categories = $breakDown["categories"];
+    $grandTotal->months     = $monthSubTotals;
     return Respond::Raw([
-      "data"          => $grandTotal,
-      "cat"           => $categories
+      "totals"          => $grandTotal
     ]);
  }
 }

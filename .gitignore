@@ -2,6 +2,7 @@
 /*.iml
 /bootstrap/compiled.php
 /vendor
+/workbench
 composer.phar
 composer.lock
 .env.*.php

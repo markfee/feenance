@@ -7,7 +7,7 @@
  */
 
 namespace Feenance\Misc\Transformers;
-
+use Markfee\Responder\Transformer;
 
 class StandingOrderTransformer extends Transformer {
 

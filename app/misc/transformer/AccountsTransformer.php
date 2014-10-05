@@ -7,6 +7,7 @@
  */
 
 namespace Feenance\Misc\Transformers;
+use Markfee\Responder\Transformer;
 
 
 class AccountsTransformer extends Transformer {

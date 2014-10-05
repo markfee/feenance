@@ -7,6 +7,7 @@
  */
 
 namespace Feenance\Misc\Transformers;
+use Markfee\Responder\Transformer;
 use \Carbon\Carbon;
 use Mockery\CountValidator\Exception;
 

@@ -10,7 +10,7 @@ namespace Feenance\Api;
 
 use Feenance\Model\Transaction;
 use Markfee\Responder\Respond;
-use Feenance\Misc\Transformers\Transformer;
+use Markfee\Responder\Transformer;
 use Feenance\Misc\Transformers\TransactionReportTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -46,14 +46,17 @@ class TransactionReportsController extends BaseController {
   }
 
   private function filterYear($year) {
+    static $APPLIED = false; if ($APPLIED) return $this->query; $APPLIED = true;
     return empty($year) ? $this->query : $this->query->where(DB::raw("YEAR(date)"), $year);
   }
 
   private function filterMonth($month) {
+    static $APPLIED = false; if ($APPLIED) return $this->query; $APPLIED = true;
     return empty($month) ? $this->query : $this->query->where(DB::raw("MONTH(date)"), $month);
   }
 
   private function filterCategory($category_id) {
+    static $APPLIED = false; if ($APPLIED) return $this->query; $APPLIED = true;
     return empty($category_id) ? $this->query : $this->query->where('category_id', $category_id);
   }
 
@@ -117,12 +120,17 @@ class TransactionReportsController extends BaseController {
   }
 
   public function categories_by_month($year = null, $month = null) {
+    $this->filterYear($year);
+    $grandTotal = $this->getResults();
+    $categories = $this->withCategory()->getResults();
+    $months     = $this->withYear($year)->withMonth($month)->getResults();
+    $grandTotal["category"] = Transformer::transformBy( [
+        [$categories, "category", "category_id"]
+      , [$months,   "months", "month"]
+    ] );
     return Respond::Raw([
-      "grand_total"   => $this->getResults(),
-      "categories"    => $this->withCategory()->getResults(),
-      "months"        => $this->withYear($year)->withMonth($month)->getResults(),
+      "data"          => $grandTotal,
+      "cat"           => $categories
     ]);
-  }
-
-
+ }
 }

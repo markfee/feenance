@@ -11,7 +11,7 @@ namespace Feenance\Api;
 use Feenance\Model\Transaction;
 use Markfee\Responder\Respond;
 use Markfee\Responder\Transformer;
-use Feenance\Misc\Transformers\TransactionReportTransformer;
+//use Feenance\Misc\Transformers\TransactionReportTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use \Exception;
@@ -25,12 +25,7 @@ class TransactionReportsController extends BaseController {
 
   function __construct() {
     parent::__construct();
-    $this->query = DB::table("transactions");
-    $this->get   = [
-      TransactionReportsController::TOTAL_CREDIT(),
-      TransactionReportsController::TOTAL_DEBIT(),
-      TransactionReportsController::TOTAL_NET(),
-    ];
+    $this->resetQuery();
   }
 
   static function TOTAL_CREDIT()  { return DB::raw('SUM(IF(amount <= 0, null,  0.01 * 	amount)) total_credit'); }
@@ -39,103 +34,113 @@ class TransactionReportsController extends BaseController {
   static function YEAR()          { return DB::raw('YEAR(date) year'); }
   static function MONTH()         { return DB::raw('MONTH(date) month'); }
   static function CATEGORY_ID()   { return DB::raw("IFNULL(category_id, 'UNKNOWN') category_id"); }
+  private $query;
 
+  private function resetQuery() {
+    $this->query = DB::table("transactions");
+    $this->get   = [
+      TransactionReportsController::TOTAL_CREDIT(),
+      TransactionReportsController::TOTAL_DEBIT(),
+      TransactionReportsController::TOTAL_NET(),
+    ];
+    return $this;
+  }
   /* @return Transformer */
+  /*
   protected function getTransformer() {
     return $this->transformer ?: new TransactionReportTransformer;
   }
+*/
 
   private function filterYear($year) {
-    static $APPLIED = false; if ($APPLIED) return $this->query; $APPLIED = true;
-    return empty($year) ? $this->query : $this->query->where(DB::raw("YEAR(date)"), $year);
+    $this->query = empty($year) ? $this->query : $this->query->where(DB::raw("YEAR(date)"), $year);
+    return $this;
   }
 
   private function filterMonth($month) {
-    static $APPLIED = false; if ($APPLIED) return $this->query; $APPLIED = true;
-    return empty($month) ? $this->query : $this->query->where(DB::raw("MONTH(date)"), $month);
+    $this->query = empty($month) ? $this->query : $this->query->where(DB::raw("MONTH(date)"), $month);
+    return $this;
   }
 
   private function filterCategory($category_id) {
-    static $APPLIED = false; if ($APPLIED) return $this->query; $APPLIED = true;
-    return empty($category_id) ? $this->query : $this->query->where('category_id', $category_id);
+    $this->query = empty($category_id) ? $this->query : $this->query->where('category_id', $category_id);
+    return $this;
   }
 
 
   private function withYear($year=null) {
-    static $APPLIED = false; if ($APPLIED) return $this; $APPLIED = true;
-    $this->filterYear($year)->groupBy("year")->orderBy("year");
+    $this->filterYear($year);
+    $this->query->groupBy("year")->orderBy("year");
     $this->get[] = TransactionReportsController::YEAR();
     return $this;
   }
 
   private function withMonth($month=null) {
-    static $APPLIED = false; if ($APPLIED) return $this; $APPLIED = true;
-    $this->filterMonth($month)->groupBy("month")->orderBy("month");
+    $this->filterMonth($month);
+    $this->query->groupBy("month")->orderBy("month");
     $this->get[] = TransactionReportsController::MONTH();
     return $this;
   }
 
   private function withCategory($category_id=null) {
-    static $APPLIED = false; if ($APPLIED) return $this; $APPLIED = true;
-    $this->filterCategory($category_id)->groupBy("category_id")->orderBy("category_id");
+    $this->filterCategory($category_id);
+    $this->query->groupBy("category_id")->orderBy("category_id");
     $this->get[] = TransactionReportsController::CATEGORY_ID();
     return $this;
   }
 
   private function getResults() {
-    $query = clone($this->query); // Allows us to reuse query
-    return $query->get($this->get);
+    $results = $this->query->get($this->get);
+    $this->resetQuery();
+    return $results;
   }
-
-  private function getResultsByYear($year = null) {
-    return $this->withYear($year)->getResults();
-  }
-
-  private function getResultsByMonth($year = null, $month = null) {
-    return $this->withYear($year)->withMonth($month)->getResults();
-  }
-
 
   public function totals_by_year() {
-    return Respond::Raw([
-      "total"   => $this->getResults(),
-      "years"   => $this->getResultsByYear(),
-    ]);
+    $total = $this->getResults()[0];
+    $total->years = $this->withYear()->getResults();
+    return Respond::Raw(["total"   => $total    ]);
   }
 
   public function totals_by_month($year = null, $month = null)
   {
-    return Respond::Raw([
-      "total"   => $this->getResultsByYear($year),
-      "months"  => $this->getResultsByMonth($year),
-    ]);
+    $total          = $this->withYear($year)->getResults()[0];
+    $total->months  = $this->withYear($year)->withMonth($month)->getResults();
+    return Respond::Raw(["total"   => $total    ]);
   }
 
   public function categories_by_year($year=null) {
+    $total                    = $this->filterYear($year)->getResults()[0];
+    $yearSubTotals            = $this->withYear($year)->getResults();
+    $categorySubTotals        = $this->filterYear($year)->withCategory()->getResults();
+    $categoryByYearSubTotals  = $this->withCategory()->withYear($year)->getResults();
+
+    $nested = Transformer::nest( [
+        [$categorySubTotals,        "categories", "category_id"]
+      , [$categoryByYearSubTotals,  "years",      "year"]
+    ] );
+
+    $total->categories = $nested["categories"];
+    $total->years     = $yearSubTotals;
     return Respond::Raw([
-      "grand_total"   => $this->getResults(),
-      "categories"    => $this->withCategory()->getResults(),
-      "years"         => $this->withYear($year)->getResults(),
+      "total"          => $total
     ]);
   }
 
   public function categories_by_month($year = null, $month = null) {
-    $this->filterYear($year);
-    $this->filterMonth($month);
-    $grandTotal = $this->getResults()[0];
+    $total                      = $this->filterYear($year)->filterMonth($month)->getResults()[0];
     $monthSubTotals             = $this->withYear($year)->withMonth($month)->getResults();
-    $categorySubTotals          = $this->withCategory()->getResults();
-    $monthSubTotalsWithCategory = $this->withCategory()->withYear($year)->withMonth($month)->getResults();
+    $categorySubTotals          = $this->filterYear($year)->filterMonth($month)->withCategory()->getResults();
+    $categoryByMonthSubTotals   = $this->withCategory()->withYear($year)->withMonth($month)->getResults();
 
-    $breakDown = Transformer::transformBy( [
+    $nested = Transformer::nest( [
         [$categorySubTotals, "categories", "category_id"]
-      , [$monthSubTotalsWithCategory,   "months", "month"]
+      , [$categoryByMonthSubTotals,   "months", "month"]
     ] );
 
-    $grandTotal->categories = $breakDown["categories"];
-    $grandTotal->months     = $monthSubTotals;
+    $total->categories = $nested["categories"];
+    $total->months     = $monthSubTotals;
     return Respond::Raw([
-      "totals"          => $grandTotal
+      "total"          => $total
     ]);
  }
 }

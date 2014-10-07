@@ -28,4 +28,3 @@ feenance.directive('standingOrdersTable', function() {
     , controller: "StandingOrderController"
   };
 });
-

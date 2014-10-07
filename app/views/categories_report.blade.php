@@ -1,25 +1,21 @@
 @extends('layouts.default')
-@section('content')
-<div>
-
+  @section('content')
   <div>
 
-    <div class = "row">
+    <div>
 
-      <div class = "col-lg-12">
+      <div class = "row">
 
-        <standing-orders-table> Standing Orders Table Here </standing-orders-table>
+        <div class = "col-lg-12">
+
+          <category-report> Category report Here </category-report>
+
+        </div>
 
       </div>
 
     </div>
 
   </div>
-
-</div>
-
-  <p>
-
-  </p>
 
 @stop

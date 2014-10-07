@@ -25,6 +25,7 @@
 {{ HTML::script('js/map.js') }}
 {{ HTML::script('js/debug.js') }}
 {{ HTML::script('js/standing_order.js') }}
+{{ HTML::script('js/category_report.js') }}
 
 
 <!--

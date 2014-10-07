@@ -28,8 +28,8 @@ class TransactionReportsController extends BaseController {
     $this->resetQuery();
   }
 
-  static function TOTAL_CREDIT()  { return DB::raw('SUM(IF(amount <= 0, null,  0.01 * 	amount)) total_credit'); }
-  static function TOTAL_DEBIT()   { return DB::raw('SUM(IF(amount >= 0, null, -0.01 * 	amount)) total_debit'); }
+  static function TOTAL_CREDIT()  { return DB::raw('SUM(IF(amount <= 0, null,  0.01 * 	amount)) credit_total'); }
+  static function TOTAL_DEBIT()   { return DB::raw('SUM(IF(amount >= 0, null, -0.01 * 	amount)) debit_total'); }
   static function TOTAL_NET()     { return DB::raw('0.01 * SUM(amount) net_total'); }
   static function YEAR()          { return DB::raw('YEAR(date) year'); }
   static function MONTH()         { return DB::raw('MONTH(date) month'); }

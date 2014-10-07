@@ -1,0 +1,31 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>
+      Category
+    </th>
+    <th ng-repeat="month in data.months">
+      {{month.month}}
+    </th>
+
+  </tr>
+  </thead>
+  <tr ng-repeat="category in data.categories">
+
+    <th>
+      Category: {{category.category_id}}
+    </th>
+
+    <td ng-repeat="month in data.months">
+      <category-report-cell category_id="category.category_id" month="month.month" > {{category.category_id}}       {{month.month}}  </category-report-cell>
+    </td>
+
+
+  </tr>
+
+  <tbody>
+
+
+  </tbody>
+
+</table>

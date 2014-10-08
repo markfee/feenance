@@ -43,6 +43,11 @@ feenance.controller('CategoryReportController', function($scope, CategoryReportD
     return element.credit_total >  0 ? true : false;
   };
 
+  $scope.debitFilter = function(element) {
+    return element.debit_total >  0 ? true : false;
+  };
+
+
 });
 
 feenance.directive('categoryReport', function() {
@@ -56,18 +61,24 @@ feenance.directive('categoryReport', function() {
   };
 });
 
+//template: '{{cellData.credit_total}} <br/>{{cellData.debit_total}} <br/>{{cellData.net_total}}',
+
+
 feenance.directive('categoryReportCell', function(CategoryReportData) {
   return {
     restrict: 'E',
     scope: {
       categoryId: "=",
-      month: "="
+      month: "=",
+      val: "@"
     },
-    template: '{{cellData.credit_total}} <br/>{{cellData.debit_total}} <br/>{{cellData.net_total}}',
+    template: '{{my_value}}',
     link: function (scope) {
-
       scope.cellData = CategoryReportData.getCatMonth(scope.categoryId, scope.month);
+      scope.my_value = (
+        scope.val == "credit" ? scope.cellData.credit_total
+      : scope.val == "debit"  ? scope.cellData.debit_total
+      : scope.cellData.net_total);
     }
   };
 });
-

@@ -1,36 +1,75 @@
 <table class="table table-striped">
   <thead>
+    <tr>
+      <th>  Category   </th>
+      <th>  Totals    </th>
+      <th ng-repeat="month in data.months">
+        {{month.month}}
+      </th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-repeat="category in categories | filter: creditFilter">
+
+      <th>
+        {{category.category_id}}
+      </th>
+
+      <td>
+        <category-report-cell val="credit" category_id="category.category_id" > </category-report-cell>
+      </td>
+
+      <td ng-repeat="month in data.months">
+        <category-report-cell val="credit" category_id="category.category_id" month="month.month" > </category-report-cell>
+      </td>
+
+    </tr>
+  </tbody>
+
+  <thead>
   <tr>
-    <th>  Category   </th>
+    <th>  Credit   </th>
     <th>  Totals    </th>
     <th ng-repeat="month in data.months">
-      {{month.month}}
+      {{month.credit_total}}
     </th>
 
   </tr>
   </thead>
 
-  <tr ng-repeat="category in categories | filter: creditFilter">
-
-    <th>
-      {{category.category_id}}
-    </th>
-
-    <td>
-      <category-report-cell category_id="category.category_id" >  </category-report-cell>
-    </td>
-
-    <td ng-repeat="month in data.months">
-      <category-report-cell category_id="category.category_id" month="month.month" > </category-report-cell>
-    </td>
-
-
-
-  </tr>
 
   <tbody>
+    <tr ng-repeat="category in categories | filter: debitFilter">
 
+      <th>
+        {{category.category_id}}
+      </th>
 
+      <td>
+        <category-report-cell val="debit" category_id="category.category_id" > </category-report-cell>
+      </td>
+
+      <td ng-repeat="month in data.months">
+        <category-report-cell val="debit" category_id="category.category_id" month="month.month" > </category-report-cell>
+      </td>
+
+    </tr>
   </tbody>
+
+  <thead>
+  <tr>
+    <th>  Debit   </th>
+    <th>  Totals    </th>
+    <th ng-repeat="month in data.months">
+      {{month.debit_total}}
+    </th>
+
+  </tr>
+  </thead>
+
+
+
 
 </table>

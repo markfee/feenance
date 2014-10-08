@@ -10,7 +10,10 @@ feenance.factory('CategoryReportData', function(Notifier, $http) {
 
   function getCatMonth(category_id, month)  {
     try {
-      return data.categories[category_id].months[month];
+      if (month)
+        return data.categories[category_id].months[month];
+      else
+        return data.categories[category_id];
     } catch(e) {
     }
     return {};
@@ -29,8 +32,17 @@ feenance.factory('CategoryReportData', function(Notifier, $http) {
 feenance.controller('CategoryReportController', function($scope, CategoryReportData) {
   $scope.data     = {};
   CategoryReportData.onChange(function(){
+    $scope.categories = [];
     $scope.data = CategoryReportData.get();
+    angular.forEach($scope.data.categories, function(category, key) {
+      $scope.categories.push(category);
+    });
   });
+
+  $scope.creditFilter = function(element) {
+    return element.credit_total >  0 ? true : false;
+  };
+
 });
 
 feenance.directive('categoryReport', function() {
@@ -53,6 +65,7 @@ feenance.directive('categoryReportCell', function(CategoryReportData) {
     },
     template: '{{cellData.credit_total}} <br/>{{cellData.debit_total}} <br/>{{cellData.net_total}}',
     link: function (scope) {
+
       scope.cellData = CategoryReportData.getCatMonth(scope.categoryId, scope.month);
     }
   };

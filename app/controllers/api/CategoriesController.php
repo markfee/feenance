@@ -14,7 +14,7 @@ use \Paginator;
 
 class CategoriesController extends BaseController {
 
-  protected $paginateCount = 10;
+  protected $paginateCount = 17;
 
   /* @return Transformer */
   protected function getTransformer() {    return $this->transformer ?: new CategoryTransformer;    }

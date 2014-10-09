@@ -18,9 +18,9 @@ class BaseController extends \Controller {
     {
       Event::fire('clockwork.controller.end');
     });
-
-    if (\Input::get("perPage")) {
-      $this->paginateCount = \Input::get("perPage");
+    $perPage = \Input::get("perPage");
+    if ($perPage && is_numeric($perPage)) {
+      $this->paginateCount = $perPage;
     }
   }
 

@@ -14,6 +14,8 @@ use \Paginator;
 
 class CategoriesController extends BaseController {
 
+  protected $paginateCount = 10;
+
   /* @return Transformer */
   protected function getTransformer() {    return $this->transformer ?: new CategoryTransformer;    }
 
@@ -24,7 +26,7 @@ class CategoriesController extends BaseController {
    */
   public function index()
   {
-      $categories = Category::with('parent')->paginate();
+      $categories = Category::with('parent')->paginate($this->paginateCount);
       return Respond::Paginated($categories, $this->transformCollection($categories->all()));
   }
 

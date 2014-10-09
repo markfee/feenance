@@ -2,7 +2,11 @@
 namespace Feenance\Api;
 use Feenance\Misc\Transformers\Transformer;
 use \Event;
+use Illuminate\Support\Facades\Input;
+
 class BaseController extends \Controller {
+
+  protected $paginateCount = 20;
 
   public function __construct()  {
     $this->beforeFilter(function()
@@ -14,6 +18,10 @@ class BaseController extends \Controller {
     {
       Event::fire('clockwork.controller.end');
     });
+
+    if (\Input::get("perPage")) {
+      $this->paginateCount = \Input::get("perPage");
+    }
   }
 
 	/**

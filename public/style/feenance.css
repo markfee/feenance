@@ -10,10 +10,6 @@
     color: black;
 }
 
-tr.transaction {
-    border-bottom-color: deeppink;
-}
-
 table.finance th.left {
     text-align: left;
 }

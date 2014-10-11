@@ -21,6 +21,7 @@ class StandingOrderTransformer extends Transformer {
       "increment"         => (int) $record->increment,
       "unit"              => $record->unit,
       "frequency"         => $record->frequency,
+      "addition"         => $record->addition,
       "days"              => $record->days,
       "exceptions"        => $record->exceptions,
       "amount"            => 0.01 * $record->amount,

@@ -50,14 +50,21 @@
     Route::get('bank_strings/{id}/transactions',  $NAMESPACE.'TransactionsController@bank_strings');
     Route::post('bank_strings/{id}/transactions', $NAMESPACE.'TransactionsController@bank_strings_update');
 
+    // TODO CHANGE THESE TO POSTS
+    Route::get('standing_orders/{id}/generate/{endDate?}',    $NAMESPACE.'StandingOrdersController@generate');
+    Route::get('standing_orders/generate/{endDate?}',         $NAMESPACE.'StandingOrdersController@generateAll');
+
     Route::resource('standing_orders',                        $NAMESPACE.'StandingOrdersController');
+
+
+/*
     // Generate transactions for a specific standing_order for a period (default == the next month)
     Route::get('standing_orders/{id}/transactions/{period}',  $NAMESPACE.'StandingOrdersController@generate');
     Route::get('standing_orders/{id}/transactions',           $NAMESPACE.'StandingOrdersController@generate');
     // Generate transactions for all standing_orders for a period (default == the next month)
     Route::get('standing_orders/transactions/{period}',       $NAMESPACE.'StandingOrdersController@generate');
     Route::get('standing_orders/transactions',                $NAMESPACE.'StandingOrdersController@generate');
-
+*/
   });
 
   Route::group(['prefix' =>  'api/v1/mmex'], function()

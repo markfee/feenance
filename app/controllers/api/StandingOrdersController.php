@@ -3,6 +3,7 @@
 namespace Feenance\Api;
 
 use Feenance\Model\StandingOrder;
+use Feenance\Model\Transaction;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\StandingOrderTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -10,6 +11,7 @@ use Illuminate\Database\QueryException;
 use \Exception;
 use \Input;
 use \Validator;
+use \Carbon\Carbon;
 
 class StandingOrdersController extends BaseController {
 
@@ -44,6 +46,98 @@ class StandingOrdersController extends BaseController {
     } catch (ModelNotFoundException $e) {
       return Respond::NotFound($e->getMessage());
     }
+  }
+
+  /**
+   * @param Carbon $date
+   * @param $increment
+   * @param $unit
+   * @return mixed
+   */
+  private function incrementDate($date, $increment, $unit) {
+    switch ($unit->id) {
+      case "m":
+        return $date->addMonths($increment);
+      case "y":
+        return $date->addYears($increment);
+      case "w":
+        return $date->addWeeks($increment);
+      case "d":
+        return $date->addDays($increment);
+      default:
+        return null;
+    }
+  }
+
+  public function generateAll($endDate = null) {
+    if (empty($endDate)) {
+      $endDate = Carbon::now()->addYear();
+    }
+
+    $standingOrders = StandingOrder::all();
+    Transaction::startImport();
+
+    foreach($standingOrders as $standingOrder) {
+      $this->generateTransactions($standingOrder, $endDate);
+    }
+    Transaction::finishImport(true);
+  }
+
+  /**
+   * Generate Transactions for a specific standing order until $endDate
+   *
+   * @param  int    $id
+   * @param  Date   $endDate default = 1 year from now
+   * @return Response
+   */
+  public function generate($id, $endDate = null) {
+
+    if (empty($endDate)) {
+      $endDate = Carbon::now()->addYear();
+    }
+
+    try {
+      $standingOrder = StandingOrder::findOrFail($id);
+    } catch (ModelNotFoundException $e) {
+      return Respond::NotFound($e->getMessage());
+    }
+
+    print "<br/>Start: " . $standingOrder->next_date . "\n";
+    print "<br/>End  : " . $endDate . "\n";
+    print "<br/>" . $standingOrder->frequency . "\n";
+
+
+    Transaction::startImport();
+
+    $this->generateTransactions($standingOrder, $endDate);
+
+    Transaction::finishImport(true);
+
+//    return ($this->show($id));
+  }
+
+  /**
+   * @param $standingOrder
+   * @param $endDate
+   */
+  private function generateTransactions($standingOrder, $endDate) {
+    while ($standingOrder->next_date && $standingOrder->next_date < $endDate) {
+      print "<br/>{$standingOrder->id}: " . $standingOrder->next_date . "\n";
+
+      $transaction = Transaction::create([
+          "date" => $standingOrder->next_date
+        , "amount" => $standingOrder->amount
+        , "account_id" => $standingOrder->account_id
+        , "reconciled" => false
+        , "payee_id" => $standingOrder->payee_id
+        , "category_id" => $standingOrder->category_id
+        , "notes" => "auto generated standing order"
+      ]);
+      $standingOrder->previous_date = $standingOrder->next_date;
+      $standingOrder->next_date = $this->incrementDate($standingOrder->next_date, $standingOrder->increment, $standingOrder->unit);
+    }
+    $standingOrder->save();
+    print "<br/>\n";
   }
 
   /**

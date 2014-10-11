@@ -41,6 +41,11 @@ class StandingOrder extends \Eloquent {
     return $this->increment == 1 ? $this->unit->singular : "every " . $this->increment . " " . $this->unit->plural;
   }
 
+  public function getAdditionAttribute() {
+    return "{$this->increment}" . " " . ($this->increment == 1 ? $this->unit->unit : $this->unit->plural);
+  }
+
+
   public function getDaysAttribute() {
     return $this->increment  * $this->unit->days;
   }

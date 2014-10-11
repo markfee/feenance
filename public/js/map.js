@@ -63,7 +63,7 @@ feenance.directive('newMap', function() {
   return {
     restrict: 'E',
     scope: {    },
-    templateUrl: 'view/newMap.html'
+    templateUrl: '/view/newMap.html'
     , link: function (scope) {
 
     }

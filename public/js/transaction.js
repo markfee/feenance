@@ -169,7 +169,7 @@ feenance.directive('newTransaction', function(AccountsApi) {
   return {
     restrict: 'E',
     scope: {    },
-    templateUrl: 'view/newTransaction.html'
+    templateUrl: '/view/newTransaction.html'
     , link: function (scope) {
       if (scope.accountId) {
         var $account = AccountsApi.get({id:scope.accountId}, function() {
@@ -187,7 +187,7 @@ feenance.directive('transactionUploader', function() {
     scope: {
       uploadFile: "=ngModel"
     },
-    templateUrl: 'view/transactionUploader.html'
+    templateUrl: '/view/transactionUploader.html'
     , link: function (scope) {   }
     , controller: "TransactionController"
   };
@@ -202,7 +202,7 @@ feenance.directive('transfer', function(TransactionsApi, AccountsApi) {
         source: "="
       , destination: "="
     },
-    templateUrl: 'view/transfer.html'
+    templateUrl: '/view/transfer.html'
     , link: function (scope) {
       if (scope.source || scope.destination) {
         var $id = (scope.source == undefined ? scope.destination : scope.source);

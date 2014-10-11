@@ -77,7 +77,7 @@ feenance.directive('categoryReport', function() {
   return {
     restrict: 'E',
     scope: {    },
-    templateUrl: 'view/categoryReport.html'
+    templateUrl: '/view/categoryReport.html'
     , link: function (scope) {
     }
     , controller: "CategoryReportController"

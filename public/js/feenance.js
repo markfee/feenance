@@ -63,6 +63,19 @@ feenance.factory('Notifier', function () {
   };
 });
 
+feenance.factory('Paginator', function () {
+  return {
+    nextPage: function(response) {
+      try {
+        return response.paginator.next;
+      } catch(e) {
+        return;
+      }
+    }
+  };
+});
+
+
 feenance.factory('CurrentAccount', function(Notifier) {
   var account = {};
   function set(newAccount) {

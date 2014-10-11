@@ -1,3 +1,33 @@
+feenance.factory('Categories', function(Notifier, $http, Paginator) {
+  var data        = []; // all of the data returned as an array.
+  var categories  = {}; // the specific categories accessible by id.
+
+  function fetchAll($page) {
+    $http.get($API_ROOT+'categories?page='+$page)
+      .success(function(response) {
+        data = data.concat(response.data);
+        angular.forEach(response.data, function(category, key) {
+          categories[category.id] = category;
+        });
+        var nextPage = Paginator.nextPage(response);
+        if (nextPage) {
+          fetchAll(nextPage);
+        } else {
+          Notifier.notify('Categories', data);
+        }
+      });
+  };
+
+  fetchAll(1);
+  return {
+    data:          function ()    {   return data;            },
+    categories:    function ()    {   return categories;      },
+    getCategory:   function (id)  {   return categories[id];  },
+    onChange: function (callback) { Notifier.onChange('Categories', callback); }
+  }
+});
+
+
 feenance.controller('CategoryController', function($scope, $http, CategoriesApi) {
   // Set the default for the Form!
   $scope.selected = undefined;
@@ -77,14 +107,37 @@ feenance.directive('categorySelector', function() {
     scope:
     {
       selected: "=ngModel"
-    , categoryId: "=" // remember category_id in markup categoryId in directive / controller ???
+      , categoryId: "=" // remember category_id in markup categoryId in directive / controller ???
     }
-  , templateUrl: 'view/categorySelector.html'
-  , link: function (scope, element, attr) {
+    , templateUrl: 'view/categorySelector.html'
+    , link: function (scope, element, attr) {
       if (scope.categoryId) {
         scope.select(scope.categoryId);
       }
     }
-  , controller: "CategoryController"
+    , controller: "CategoryController"
+  };
+});
+
+
+feenance.directive('category', function(Categories) {
+  return {
+    restrict: 'E',
+    scope:
+    {
+      categoryId: "=" // remember category_id in markup categoryId in directive / controller ???
+    }
+    , template: '{{category.fullName}}'
+    , link: function (scope, element, attr) {
+      function getData() {
+        if (scope.categoryId) {
+          scope.category = Categories.getCategory(scope.categoryId);
+        }
+      }
+      getData();
+      Categories.onChange(function() {
+        getData();
+      });
+    }
   };
 });

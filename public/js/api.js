@@ -1,8 +1,8 @@
-$API_ROOT = "http://feenance/api/v1/";
+$API_ROOT = "/api/v1/";
 
 feenance.factory('AccountsApi', function($resource) {
   return $resource(   $API_ROOT + "accounts/:id/:collection/:period",   {id:"@id"}, {
-      'transactions':   { method:'GET', params: {collection: "transactions" } },
+      'transactions': { method:'GET', params: {collection: "transactions" } },
       'update':       { method:'PUT'                    }
     }
   );

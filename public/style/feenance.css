@@ -13,3 +13,11 @@
 tr.transaction {
     border-bottom-color: deeppink;
 }
+
+table.finance th.left {
+    text-align: left;
+}
+
+table.finance td, table.finance th {
+    text-align: right;
+}

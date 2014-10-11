@@ -1,8 +1,8 @@
-<table class="table table-striped">
+<table class="table table-striped finance">
   <thead>
     <tr>
-      <th>  Category   </th>
-      <th>  Totals    </th>
+      <th class="left">   Category   </th>
+      <th>                Totals    </th>
       <th ng-repeat="month in data.months">
         {{month.month}}
       </th>
@@ -11,11 +11,9 @@
   </thead>
 
   <tbody>
-    <tr ng-repeat="category in categories | filter: creditFilter">
+    <tr ng-repeat="category in categories | filter: creditFilter | orderBy:predicate:reverse">
 
-      <th>
-        {{category.category_id}}
-      </th>
+      <th class="left">        <category ngModel="category.fullName" category_id="category.category_id" />      </th>
 
       <td>
         <category-report-cell val="credit" category_id="category.category_id" > </category-report-cell>
@@ -30,10 +28,10 @@
 
   <thead>
   <tr>
-    <th>  Credit   </th>
-    <th>  Totals    </th>
+    <th class="left">  Total credit   </th>
+    <th>  {{ data.credit_total | currency: "£" }}    </th>
     <th ng-repeat="month in data.months">
-      {{month.credit_total}}
+      {{ month.credit_total | currency: "£" }}
     </th>
 
   </tr>
@@ -41,11 +39,9 @@
 
 
   <tbody>
-    <tr ng-repeat="category in categories | filter: debitFilter">
+    <tr ng-repeat="category in categories | filter: debitFilter | orderBy:predicate:reverse">
 
-      <th>
-        {{category.category_id}}
-      </th>
+      <th class="left">        <category ngModel="category.fullName" category_id="category.category_id" />      </th>
 
       <td>
         <category-report-cell val="debit" category_id="category.category_id" > </category-report-cell>
@@ -60,10 +56,10 @@
 
   <thead>
   <tr>
-    <th>  Debit   </th>
-    <th>  Totals    </th>
+    <th class="left">  Total debit   </th>
+    <th>  {{data.debit_total | currency: "£" }}    </th>
     <th ng-repeat="month in data.months">
-      {{month.debit_total}}
+      {{month.debit_total | currency: "£" }}
     </th>
 
   </tr>

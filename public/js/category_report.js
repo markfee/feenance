@@ -1,14 +1,14 @@
 feenance.factory('CategoryReportData', function(Notifier, $http) {
   var data = {};
   function set(year) {
-    $http.get('/api/v1/transactions/totals/categories/' + year)
+    $http.get($API_ROOT+'transactions/totals/categories/' + year)
       .success(function(response) {
         data     = response.total;
         Notifier.notify('CategoryReportData', data);
       });
   };
 
-  function getCatMonth(category_id, month)  {
+  function getCatMonth(category_id, month) {
     try {
       if (month)
         return data.categories[category_id].months[month];
@@ -29,14 +29,27 @@ feenance.factory('CategoryReportData', function(Notifier, $http) {
 });
 
 
-feenance.controller('CategoryReportController', function($scope, CategoryReportData) {
+feenance.controller('CategoryReportController', function($scope, CategoryReportData, Categories) {
   $scope.data     = {};
-  CategoryReportData.onChange(function(){
+
+  CategoryReportData.onChange(function() {
     $scope.categories = [];
     $scope.data = CategoryReportData.get();
     angular.forEach($scope.data.categories, function(category, key) {
       $scope.categories.push(category);
     });
+  });
+
+  function setCategoryDetails() {
+    angular.forEach($scope.categories, function(category, key) {
+      angular.extend(category, Categories.getCategory(category.category_id));
+//      $scope.categories.push(category);
+    });
+
+  }
+
+  Categories.onChange(function() {
+    setCategoryDetails();
   });
 
   $scope.creditFilter = function(element) {
@@ -47,6 +60,16 @@ feenance.controller('CategoryReportController', function($scope, CategoryReportD
     return element.debit_total >  0 ? true : false;
   };
 
+  $scope.predicate    = ["fullName"];
+  $scope.reverse      = false;
+  $scope.sort = function(predicate) {
+    if ($scope.predicate == predicate) {
+      $scope.reverse=!$scope.reverse;
+    } else {
+      $scope.predicate = predicate;
+      $scope.reverse=false;
+    }
+  };
 
 });
 
@@ -72,13 +95,17 @@ feenance.directive('categoryReportCell', function(CategoryReportData) {
       month: "=",
       val: "@"
     },
-    template: '{{my_value}}',
+    template: '<span ng-show="my_value">{{my_value  | currency: "£" }}</span>',
     link: function (scope) {
       scope.cellData = CategoryReportData.getCatMonth(scope.categoryId, scope.month);
-      scope.my_value = (
-        scope.val == "credit" ? scope.cellData.credit_total
-      : scope.val == "debit"  ? scope.cellData.debit_total
-      : scope.cellData.net_total);
+      try {
+        scope.my_value = (
+          scope.val == "credit" ? scope.cellData.credit_total
+        : scope.val == "debit"  ? scope.cellData.debit_total
+        : scope.cellData.net_total);
+      } catch(e) {
+        scope.my_value = "";
+      }
     }
   };
 });

@@ -19,7 +19,7 @@ feenance.factory('CategoryReportData', function(Notifier, $http) {
     return {};
   }
 
-  set(2014);
+//  set(2014);
   return {
     set: set
     , get:          function () {   return data;    }
@@ -73,12 +73,16 @@ feenance.controller('CategoryReportController', function($scope, CategoryReportD
 
 });
 
-feenance.directive('categoryReport', function() {
+feenance.directive('categoryReport', function(CategoryReportData) {
   return {
     restrict: 'E',
-    scope: {    },
+    scope: {
+      year: "="
+    },
     templateUrl: '/view/categoryReport.html'
     , link: function (scope) {
+      if (!scope.year) scope.year = 2014;
+      CategoryReportData.set(scope.year);
     }
     , controller: "CategoryReportController"
   };

@@ -1,7 +1,16 @@
 feenance.factory('CategoryReportData', function(Notifier, $http) {
   var data = {};
-  function set(year) {
-    $http.get($API_ROOT+'transactions/totals/categories/' + year)
+
+  function getReportData(year, month, endYear, endMonth) {
+    var urlParams = '';
+    if (year) {   urlParams += year;
+      if(month) {   urlParams += ("-" + month);
+        if(endYear) {   urlParams += ("/" + endYear);
+          if(endMonth) {   urlParams += ("-" + endMonth); }
+        }
+      }
+    }
+    $http.get($API_ROOT+'transactions/totals/categories/' + urlParams)
       .success(function(response) {
         data     = response.total;
         Notifier.notify('CategoryReportData', data);
@@ -19,9 +28,8 @@ feenance.factory('CategoryReportData', function(Notifier, $http) {
     return {};
   }
 
-//  set(2014);
   return {
-    set: set
+    getReportData: getReportData
     , get:          function () {   return data;    }
     , getCatMonth: getCatMonth
     , onChange: function (callback) { Notifier.onChange('CategoryReportData', callback); }
@@ -76,13 +84,16 @@ feenance.controller('CategoryReportController', function($scope, CategoryReportD
 feenance.directive('categoryReport', function(CategoryReportData) {
   return {
     restrict: 'E',
-    scope: {
-      year: "="
+    scope: { // remember payee_id in markup payeeId in directive / controller ???
+      year: "=",
+      month: "=",
+      endYear: "=",
+      endMonth: "="
     },
     templateUrl: '/view/categoryReport.html'
     , link: function (scope) {
       if (!scope.year) scope.year = 2014;
-      CategoryReportData.set(scope.year);
+      CategoryReportData.getReportData(scope.year, scope.month, scope.endYear, scope.endMonth);
     }
     , controller: "CategoryReportController"
   };

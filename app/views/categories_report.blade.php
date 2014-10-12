@@ -8,7 +8,7 @@
 
         <div class = "col-lg-12">
 
-          <category-report year="{{{$year}}}"> Category report Here </category-report>
+          <category-report year="{{{$year}}}" month="{{{$month}}}" end_year="{{{$endYear}}}" end_month="{{{$endMonth}}}" > Category report Here </category-report>
 
         </div>
 

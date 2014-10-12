@@ -87,8 +87,8 @@ class TransactionReportsController extends BaseController {
     } else {
       $endMonth++;
     }
-    $startDate = Carbon::create($year, $month);
-    $endDate   = Carbon::create($endYear, $endMonth);
+    $startDate = Carbon::create($year, $month, 01, 0);
+    $endDate   = Carbon::create($endYear, $endMonth, 01, 0);
 
     $this->query->where("date", ">=", $startDate)->where("date", "<", $endDate);
     return $this;

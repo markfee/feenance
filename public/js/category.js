@@ -22,7 +22,7 @@ feenance.factory('Categories', function(Notifier, $http, Paginator) {
   return {
     data:          function ()    {   return data;            },
     categories:    function ()    {   return categories;      },
-    getCategory:   function (id)  {   return categories[id];  },
+    getCategory:   function (id)  {   return (id=='UNKNOWN') ? {fullName: 'Not Set'} : categories[id] ;  },
     onChange: function (callback) { Notifier.onChange('Categories', callback); }
   }
 });

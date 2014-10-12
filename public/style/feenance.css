@@ -18,3 +18,9 @@ table.finance td, table.finance th {
     text-align: right;
     font-size: 0.8em;
 }
+
+.unreconciled::before { content: "* "; }
+
+.debit {
+    color: red;
+}

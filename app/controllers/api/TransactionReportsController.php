@@ -28,7 +28,8 @@ class TransactionReportsController extends BaseController {
     $this->resetQuery();
   }
 
-  static function TRANSACTION_COUNT()  { return DB::raw('count(*) transaction_count'); }
+  static function TRANSACTION_COUNT()   { return DB::raw('count(*) transaction_count'); }
+  static function RECONCILED_COUNT()    { return DB::raw('sum(reconciled) reconciled_count'); }
   static function TOTAL_CREDIT()  { return DB::raw('SUM(IF(amount <= 0, null,  0.01 * 	amount)) credit_total'); }
   static function TOTAL_DEBIT()   { return DB::raw('SUM(IF(amount >= 0, null, -0.01 * 	amount)) debit_total'); }
   static function TOTAL_NET()     { return DB::raw('0.01 * SUM(amount) net_total'); }
@@ -42,6 +43,7 @@ class TransactionReportsController extends BaseController {
     $this->query = DB::table("transactions");
     $this->get   = [
       TransactionReportsController::TRANSACTION_COUNT(),
+      TransactionReportsController::RECONCILED_COUNT(),
       TransactionReportsController::TOTAL_CREDIT(),
       TransactionReportsController::TOTAL_DEBIT(),
       TransactionReportsController::TOTAL_NET(),

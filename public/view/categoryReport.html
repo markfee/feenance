@@ -13,14 +13,14 @@
   <tbody>
     <tr ng-repeat="category in categories | filter: creditFilter | orderBy:predicate:reverse">
 
-      <th class="left">        <category ngModel="category.fullName" category_id="category.category_id" />      </th>
+      <th class="left">        <category ngModel="category.fullName" category_id="category.category_id" ></category>      </th>
 
       <td>
         <category-report-cell val="credit" category_id="category.category_id" > </category-report-cell>
       </td>
 
       <td ng-repeat="month in data.months">
-        <category-report-cell val="credit" category_id="category.category_id" month="month.month" > </category-report-cell>
+        <category-report-cell val="credit" category_id="category.category_id" month="month.month" ></category-report-cell>
       </td>
 
     </tr>

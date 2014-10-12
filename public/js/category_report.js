@@ -110,10 +110,12 @@ feenance.directive('categoryReportCell', function(CategoryReportData) {
       month: "=",
       val: "@"
     },
-    template: '<span ng-show="my_value">{{my_value  | currency: "£" }}</span>',
+    template: '<span ng-class="{\'unreconciled\': unreconciled, \'debit\': debit}" ng-show="my_value">{{my_value  | currency: "£" }}  </span>',
     link: function (scope) {
       scope.cellData = CategoryReportData.getCatMonth(scope.categoryId, scope.month);
       try {
+        scope.unreconciled = (scope.cellData.transaction_count != scope.cellData.reconciled_count);
+        scope.debit = (scope.val == "debit");
         scope.my_value = (
           scope.val == "credit" ? scope.cellData.credit_total
         : scope.val == "debit"  ? scope.cellData.debit_total

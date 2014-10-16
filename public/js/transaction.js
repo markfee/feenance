@@ -108,6 +108,21 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   $scope.transactions = null;
   $scope.predicate    = ["date", "id"];
   $scope.reverse      = true;
+  $scope.reconciled_all     = true;
+  $scope.reconciled_only    = false;
+  $scope.unreconciled_only  = false;
+
+  $scope.showReconciled = function(val) {
+    $scope.reconciled_all     = (val == undefined);
+    $scope.reconciled_only    = !$scope.reconciled_all && (val == "reconciled");
+    $scope.unreconciled_only  = !$scope.reconciled_all && (val == "unreconciled");
+  }
+
+  $scope.reconciledFilter = function(element) {
+    return  $scope.reconciled_only   ? element.reconciled >  0 ?  true : false
+      :     $scope.unreconciled_only ? element.reconciled <= 0 ?  true : false
+      : true;
+  };
 
   $scope.$on('addTransactions', function($event, $transactions) {
     angular.forEach($transactions, function($transaction, $key) {
@@ -145,14 +160,20 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
 
   };
 
-  $scope.newPage = function () {
+  $scope.refresh = function () {
     $scope.onSetAccount($scope.account);
   };
 
   $scope.onSetAccount = function ($newAccount) {
     if ($newAccount.id) {
       $scope.account = $newAccount;
-      var records = AccountsApi.transactions( {id:$newAccount.id, page:$scope.page  },function () {
+      var accountsApiParameters =  {id:$newAccount.id, page:$scope.page  };
+      if ($scope.reconciled_only) {
+        accountsApiParameters.filter = "reconciled";
+      } else if ($scope.unreconciled_only) {
+        accountsApiParameters.filter = "unreconciled";
+      }
+      var records = AccountsApi.transactions( accountsApiParameters ,function () {
         $scope.transactions = records.data;
         $scope.accountId = $newAccount.id;
         $scope.paginator = records.paginator;

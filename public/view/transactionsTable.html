@@ -3,7 +3,30 @@
 
 <div data-ng-controller="TransactionsController" ng-show="transactions" >
   <h3>{{account.name}}</h3>
-  <select ng-model="page" ng-options="n for n in [] | range:1:paginator.last_page" ng-change="newPage()"></select>
+  <select ng-model="page" ng-options="n for n in [] | range:1:paginator.last_page" ng-change="refresh()"></select>
+
+  <div class="btn-group" data-toggle="buttons">
+    <label class="btn btn-primary" ng-class="{active:reconciled_all==true}">
+      <input type="radio"  ng-model="reconciled_all"     ng-click="showReconciled()">
+        All
+      </input>
+    </label>
+
+    <label class="btn btn-primary" ng-class="{active:reconciled_only==true}">
+      <input type="radio" class="btn btn-default" ng-model="reconciled_only"    ng-click="showReconciled('reconciled')">
+        Reconciled
+      </input>
+    </label>
+
+    <label class="btn btn-primary" ng-class="{active:unreconciled_only==true}">
+      <input type="radio" class="btn btn-default" ng-model="unreconciled_only"  ng-click="showReconciled('unreconciled')">
+        Unreconciled
+      </input>
+    </label>
+  </div>
+
+  <button type="button" class="btn btn-default" ng-click="refresh()">Refresh</button>
+
   <table class="table table-striped">
     <tr>
       <th><a href="" ng-click="predicate = ['date', 'id'];  reverse=!reverse">Date</a></th>
@@ -14,7 +37,7 @@
       <th><a href="" ng-click="predicate = 'balance';       reverse=!reverse">Balance</a></th>
       <th><a href="" ng-click="predicate = 'reconciled';    reverse=!reverse" title="Reconciled">R</a></th>
     </tr>
-    <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
+    <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse|filter:reconciledFilter" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
       <td title="transaction #{{transaction.id}}">{{transaction.date | date:'dd/MM/yy'}}</td>
       <td>
         <payee ng-model="transaction.payee" payeeid="transaction.payee_id" />

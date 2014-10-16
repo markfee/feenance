@@ -2,6 +2,7 @@
 namespace Feenance\Api;
 
 use Feenance\Model\Transaction;
+use \Feenance\Model\Transfer;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\Transformer;
 use Feenance\Misc\Transformers\TransactionTransformer;
@@ -19,6 +20,8 @@ use \Carbon\Carbon;
 
 class TransactionsController extends BaseController {
 
+  protected $paginateCount = 100; // alter with ?perPage=nnn in url
+
   /**
    * @return Transformer
   */
@@ -29,18 +32,45 @@ class TransactionsController extends BaseController {
   /**
    * Display a listing of transactions
    *
+   * @param null $account_id: integer
    * @return \Illuminate\Support\Facades\Response
    */
   public function index($account_id = null)
   {
     $with = ["balance", "source", "destination", "bankString", "payee", "category.parent"];
     if (!empty($account_id)) {
-      $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
+      $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate($this->paginateCount);
     } else {
-      $records = Transaction::orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
+      $records = Transaction::orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate($this->paginateCount);
     }
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
+
+  /**
+   * Display a listing of transactions
+   * @param $reconciled=true: bool
+   * @param null $account_id
+   * @return \Illuminate\Support\Facades\Response
+   */
+  public function reconciled($reconciled=true, $account_id = null)
+  {
+    $with = ["balance", "source", "destination", "bankString", "payee", "category.parent"];
+    $query = Transaction::where("reconciled", $reconciled);
+    if (!empty($account_id)) {
+      $query->where("account_id", $account_id);
+    }
+    $records = $query->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate($this->paginateCount);
+    return Respond::Paginated($records, $this->transformCollection($records->all()));
+  }
+
+  /**
+   * @param null $account_id
+   * @return mixed
+   */
+  public function unreconciled($account_id = null) {
+    return $this->reconciled(false, $account_id);
+  }
+
 
   /**
    * Display a listing of transactions
@@ -50,7 +80,7 @@ class TransactionsController extends BaseController {
   public function bank_strings($bank_string_id)
   {
     $with = ["balance", "source", "destination", "bankString"];
-    $records = Transaction::where("bank_string_id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate(100);
+    $records = Transaction::where("bank_string_id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate($this->paginateCount);
 //    dd($records);
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
@@ -116,7 +146,7 @@ class TransactionsController extends BaseController {
 
       $source       = Transaction::create($data);
       $destination  = Transaction::create($transfer);
-      $transfer = new \Feenance\Model\Transfer();
+      $transfer = new Transfer();
       $transfer->source = $source->id;
       $transfer->destination = $destination->id;
       $transfer->save();

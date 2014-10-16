@@ -71,6 +71,10 @@ Route::group(['prefix' =>  'api/v1/'], function()
   Route::get('transactions/totals/month',     $NAMESPACE.'TransactionsController@month_totals');
 */
 
+  Route::get('transactions/reconciled',       $NAMESPACE.'TransactionsController@reconciled');
+  Route::get('transactions/unreconciled',     $NAMESPACE.'TransactionsController@unreconciled');
+
+
   Route::resource('transactions',             $NAMESPACE.'TransactionsController');
   Route::resource('payees',                   $NAMESPACE.'PayeesController');
   Route::resource('categories',               $NAMESPACE.'CategoriesController');

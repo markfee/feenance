@@ -48,11 +48,11 @@ class TransactionsController extends BaseController {
 
   /**
    * Display a listing of transactions
-   * @param $reconciled=true: bool
-   * @param null $account_id
+   * @param $reconciled: bool
+   * @param $account_id
    * @return \Illuminate\Support\Facades\Response
    */
-  public function reconciled($reconciled=true, $account_id = null)
+  private function _reconciled($reconciled, $account_id)
   {
     $with = ["balance", "source", "destination", "bankString", "payee", "category.parent"];
     $query = Transaction::where("reconciled", $reconciled);
@@ -67,8 +67,16 @@ class TransactionsController extends BaseController {
    * @param null $account_id
    * @return mixed
    */
+  public function reconciled($account_id = null) {
+    return $this->_reconciled(true, $account_id);
+  }
+
+  /**
+   * @param null $account_id
+   * @return mixed
+   */
   public function unreconciled($account_id = null) {
-    return $this->reconciled(false, $account_id);
+    return $this->_reconciled(false, $account_id);
   }
 
 

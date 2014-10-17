@@ -138,6 +138,19 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   };
 
 
+  $scope.deleteTransaction = function(transaction, $index) {
+
+    TransactionsApi.delete({ id: transaction.id}, function(response) {
+
+      alert("Transaction deleted.");
+      $scope.transactions.splice($index, 1);
+
+    }, function() {
+      alert("Failed to delete the transaction.");
+    });
+
+  };
+
   $scope.selectTransaction = function($transaction) {
     if ($scope.editingTransaction != undefined) {
       $scope.editingTransaction.edit = false;
@@ -146,7 +159,7 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
     $scope.editingTransaction = $transaction;
 
     $scope.$emit("selectTransaction", $transaction);
-  }
+  };
 
   $scope.toggleReconciled = function(transaction) {
     var reconciled = transaction.reconciled;

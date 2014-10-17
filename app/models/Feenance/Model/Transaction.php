@@ -13,13 +13,13 @@ class Transaction extends Eloquent {
     , "account_id" => "required|integer"
   ];
 
-  public static function startImport() {
+  public static function startBulk() {
     if (DB::connection()->getDriverName() == "sqlite")
       return; // This won't work and isn't necessary with SQLITE
     DB::unprepared('SET @disable_transaction_triggers = 1;');
   }
 
-  public static function finishImport($refresh = false) {
+  public static function finishBulk($refresh = false) {
     if (DB::connection()->getDriverName() == "sqlite")
       return; // This won't work and isn't necessary with SQLITE
     DB::unprepared('SET @disable_transaction_triggers = NULL;');

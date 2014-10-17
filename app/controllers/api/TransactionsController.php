@@ -79,6 +79,21 @@ class TransactionsController extends BaseController {
     return $this->_reconciled(false, $account_id);
   }
 
+  /**
+   * @param null $account_id
+   * @return mixed
+   */
+  public function deleteUnreconciled($account_id) {
+//    return $this->unreconciled($account_id);
+
+    Transaction::startBulk();
+    $query = Transaction::where("reconciled", false)->where("account_id", $account_id)->delete();
+    dd($query);
+    Transaction::finishBulk(true);
+  }
+
+
+
 
   /**
    * Display a listing of transactions
@@ -220,7 +235,7 @@ class TransactionsController extends BaseController {
       // TODO - UNCOMMENT THESE PRINTS AND CREATE A LOG
       $header = $SplFileObject->getCurrentLine();
       $collection=[];
-      Transaction::startImport();
+      Transaction::startBulk();
 
 //      print "<pre>";
       $count = 0;
@@ -255,12 +270,12 @@ class TransactionsController extends BaseController {
 
         }
       }
-      Transaction::finishImport(true);
+      Transaction::finishBulk(true);
     } catch(Exception $ex) {
 
       dd($ex->getMessage());
 
-      Transaction::finishImport(false);
+      Transaction::finishBulk(false);
       $messageBag = new MessageBag();
       $messageBag->add("badFormat", "Unable to process uploaded csv file");
       $messageBag->add($ex->getCode(), $ex->getMessage());

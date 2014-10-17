@@ -75,12 +75,12 @@ class StandingOrdersController extends BaseController {
     }
 
     $standingOrders = StandingOrder::all();
-    Transaction::startImport();
+    Transaction::startBulk();
 
     foreach($standingOrders as $standingOrder) {
       $this->generateTransactions($standingOrder, $endDate);
     }
-    Transaction::finishImport(true);
+    Transaction::finishBulk(true);
   }
 
   /**
@@ -107,11 +107,11 @@ class StandingOrdersController extends BaseController {
     print "<br/>" . $standingOrder->frequency . "\n";
 
 
-    Transaction::startImport();
+    Transaction::startBulk();
 
     $this->generateTransactions($standingOrder, $endDate);
 
-    Transaction::finishImport(true);
+    Transaction::finishBulk(true);
 
 //    return ($this->show($id));
   }

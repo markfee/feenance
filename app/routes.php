@@ -53,9 +53,10 @@ Route::get('/standing_orders',  function()  {  return View::make('standing_order
 Route::group(['prefix' =>  'api/v1/'], function()
 {
   $NAMESPACE = 'Feenance\\Api\\';
-  Route::get('accounts/{id}/transactions',                $NAMESPACE.'TransactionsController@index');
-  Route::get('accounts/{id}/transactions/reconciled',     $NAMESPACE.'TransactionsController@reconciled');
-  Route::get('accounts/{id}/transactions/unreconciled',   $NAMESPACE.'TransactionsController@unreconciled');
+  Route::get('accounts/{id}/transactions',                  $NAMESPACE.'TransactionsController@index');
+  Route::get('accounts/{id}/transactions/reconciled',       $NAMESPACE.'TransactionsController@reconciled');
+  Route::get('accounts/{id}/transactions/unreconciled',     $NAMESPACE.'TransactionsController@unreconciled');
+  Route::delete('accounts/{id}/transactions/unreconciled',  $NAMESPACE.'TransactionsController@deleteUnreconciled');
 
   Route::get('accounts/upload',               $NAMESPACE.'TransactionsController@upload');
   Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');

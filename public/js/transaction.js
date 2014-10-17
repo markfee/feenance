@@ -108,8 +108,8 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   $scope.transactions = null;
   $scope.predicate    = ["date", "id"];
   $scope.reverse      = true;
-  $scope.reconciled_all     = true;
-  $scope.reconciled_only    = false;
+  $scope.reconciled_all     = false;
+  $scope.reconciled_only    = true;
   $scope.unreconciled_only  = false;
 
   $scope.showReconciled = function(val) {
@@ -176,6 +176,20 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   $scope.refresh = function () {
     $scope.onSetAccount($scope.account);
   };
+
+  $scope.deleteUnreconciled = function() {
+    if ($scope.account.id) {
+      alert("This will delete all unreconciled transactions for account " + $scope.account.id);
+      AccountsApi.deleteUnreconciled({id:$scope.account.id}, function(response) {
+        alert("did it almost");
+      }, function() {
+        alert("Deletion failed");
+      });
+    } else {
+      alert("No account set for bulk delete ");
+    }
+  };
+
 
   $scope.onSetAccount = function ($newAccount) {
     if ($newAccount.id) {

@@ -19,6 +19,15 @@ table.finance td, table.finance th {
     font-size: 0.8em;
 }
 
+td.currency, th.currency {
+    text-align: right;
+}
+
+td.currency {
+    font-family:"Monospace";
+}
+
+
 .unreconciled::before { content: "* "; }
 
 .debit {

@@ -36,9 +36,9 @@
       <th><a href="" ng-click="predicate = ['date', 'id'];  reverse=!reverse">Date</a></th>
       <th><a href="" ng-click="predicate = 'payee.name';    reverse=!reverse">Payee</a></th>
       <th><a href="" ng-click="predicate = 'category.fullName'; reverse=!reverse">Category</a></th>
-      <th><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Credit</a></th>
-      <th><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Debit</a></th>
-      <th><a href="" ng-click="predicate = 'balance';       reverse=!reverse">Balance</a></th>
+      <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Credit</a></th>
+      <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Debit</a></th>
+      <th class="currency"><a href="" ng-click="predicate = 'balance';       reverse=!reverse">Balance</a></th>
       <th colspan="3"><a href="" ng-click="predicate = 'reconciled';    reverse=!reverse" title="Reconciled">R</a></th>
     </tr>
 
@@ -58,20 +58,18 @@
       </td>
 
 
-      <td>
-        <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}   </span>
+      <td class="currency">
+        <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}</span>
         <transfer destination="transaction.destination" />
       </td>
 
-      <td>
-        <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}   </span>
+      <td class="currency">
+        <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}</span>
         <transfer source="transaction.source" />
       </td>
 
-      <td>{{transaction.balance | currency: "£" }}
-        <span ng-show="transaction.bank_balance && transaction.bank_balance !=transaction.balance">
-          ({{transaction.bank_balance | currency: "£" }})
-        </span>
+      <td class="currency">{{transaction.balance | currency: "£" }}
+        <span ng-show="transaction.bank_balance && transaction.bank_balance !=transaction.balance">({{transaction.bank_balance | currency: "£" }})</span>
       </td>
 
       <td>

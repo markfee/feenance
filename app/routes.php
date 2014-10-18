@@ -57,6 +57,7 @@ Route::group(['prefix' =>  'api/v1/'], function()
   Route::get('accounts/{id}/transactions/reconciled',       $NAMESPACE.'TransactionsController@reconciled');
   Route::get('accounts/{id}/transactions/unreconciled',     $NAMESPACE.'TransactionsController@unreconciled');
   Route::delete('accounts/{id}/transactions/unreconciled',  $NAMESPACE.'TransactionsController@deleteUnreconciled');
+  Route::get('accounts/{id}/transactions/unreconciled/count',     $NAMESPACE.'TransactionsController@unreconciledCount');
 
   Route::get('accounts/upload',               $NAMESPACE.'TransactionsController@upload');
   Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');
@@ -75,8 +76,9 @@ Route::group(['prefix' =>  'api/v1/'], function()
   Route::get('transactions/totals/month',     $NAMESPACE.'TransactionsController@month_totals');
 */
 
-  Route::get('transactions/reconciled',       $NAMESPACE.'TransactionsController@reconciled');
-  Route::get('transactions/unreconciled',     $NAMESPACE.'TransactionsController@unreconciled');
+  Route::get('transactions/reconciled',         $NAMESPACE.'TransactionsController@reconciled');
+  Route::get('transactions/unreconciled',       $NAMESPACE.'TransactionsController@unreconciled');
+  Route::get('transactions/unreconciled/count', $NAMESPACE.'TransactionsController@unreconciledCount');
 
 
   Route::resource('transactions',             $NAMESPACE.'TransactionsController');

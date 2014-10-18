@@ -67,6 +67,20 @@ class TransactionsController extends BaseController {
    * @param null $account_id
    * @return mixed
    */
+  public static function unreconciledCount($account_id = null) {
+    $query = Transaction::where("reconciled", false);
+    if (!empty($account_id)) {
+      $query->where("account_id", $account_id);
+    }
+    return $query->count();
+  }
+
+
+
+  /**
+   * @param null $account_id
+   * @return mixed
+   */
   public function reconciled($account_id = null) {
     return $this->_reconciled(true, $account_id);
   }
@@ -91,8 +105,6 @@ class TransactionsController extends BaseController {
     dd($query);
     Transaction::finishBulk(true);
   }
-
-
 
 
   /**

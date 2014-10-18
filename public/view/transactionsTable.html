@@ -74,20 +74,20 @@
 
       <td>
 
-        <a href="" ng-click="toggleReconciled(transaction)">
+        <a href="" title="Reconciled?" ng-click="toggleReconciled(transaction)">
           <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>
         </a>
       </td>
 
       <td>
         <!--TODO: WHY WILL THIS ONLY SELECT ACCOUNT IF selectTransaction RUN TWICE-->
-        <a href="" ng-click="selectTransaction(transaction)">
+        <a href="" title="Edit" ng-click="selectTransaction(transaction)">
           <i ng-class="showEdit||transaction.edit ? 'fa fa-edit fa-lg' : 'fa fa-square-o fa-lg' "> </i>
         </a>
       </td>
 
       <td>
-        <a href="" title="delete" ng-click="deleteTransaction(transaction, $index)">
+        <a href="" title="Delete" ng-click="deleteTransaction(transaction, $index)">
           <i ng-class="showEdit||transaction.edit ? 'fa fa-minus fa-lg' : 'fa fa-square-o fa-lg' "> </i>
         </a>
       </td>

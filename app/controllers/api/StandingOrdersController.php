@@ -70,6 +70,11 @@ class StandingOrdersController extends BaseController {
   }
 
   public function generateAll($endDate = null) {
+    $unreconciled = TransactionsController::unreconciledCount();
+    if ($unreconciled !== 0) {
+      return Respond::ValidationFailed("You must reconcile all transactions prior to generating standing orders. Unreconciled: " . $unreconciled );
+    }
+
     if (empty($endDate)) {
       $endDate = Carbon::now()->addYear();
     }
@@ -91,6 +96,11 @@ class StandingOrdersController extends BaseController {
    * @return Response
    */
   public function generate($id, $endDate = null) {
+
+    $unreconciled = TransactionsController::unreconciledCount();
+    if ($unreconciled !== 0) {
+      return Respond::ValidationFailed("You must reconcile all transactions prior to generating standing orders. Unreconciled: " . $unreconciled );
+    }
 
     if (empty($endDate)) {
       $endDate = Carbon::now()->addYear();
@@ -136,7 +146,8 @@ class StandingOrdersController extends BaseController {
       $standingOrder->previous_date = $standingOrder->next_date;
       $standingOrder->next_date = $this->incrementDate($standingOrder->next_date, $standingOrder->increment, $standingOrder->unit);
     }
-    $standingOrder->save();
+//    $standingOrder->save(); Don't save the standing order
+    // It will be updated on reconcile rather than generate (otherwise we can't regenerate
     print "<br/>\n";
   }
 

@@ -33,10 +33,12 @@ class CreateStandingOrdersTable extends Migration {
       $table->string('exceptions')->nullable();         // eg month:february;month:march
       $table->integer('amount');            // always positive - the debit or credit account determines the sign.
       $table->boolean('next_bank_day')->default(true);  // skip to the next valid bank day
+      $table->string('modifier')->nullable(); // eg "last day of month" -- see Carbon
       $table->integer('account_id')->unsigned()->nullable();
       $table->integer('destination_account_id')->unsigned()->nullable();
       $table->integer('payee_id')->unsigned()->nullable();
       $table->integer('category_id')->unsigned()->nullable();
+      $table->integer('bank_string_id')->unsigned()->nullable();
       $table->string('notes')->nullable();
 
       $table->timestamps();
@@ -45,6 +47,7 @@ class CreateStandingOrdersTable extends Migration {
       $table->foreign('destination_account_id')->references('id')->on('accounts');
       $table->foreign('payee_id')->references('id')->on('payees');
       $table->foreign('category_id')->references('id')->on('categories');
+      $table->foreign('bank_string_id')->references('id')->on('bank_strings');
       $table->foreign('unit_id')->references('id')->on('units');
 		});
 	}

@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 27/09/14
- * Time: 08:48
- */
+
+namespace Feenance\tests;
 
 namespace Feenace\tests\integration\StandingOrders;
 

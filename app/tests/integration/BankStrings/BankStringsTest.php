@@ -1,5 +1,7 @@
 <?php
 
+namespace Feenance\tests;
+
 use Feenance\Model\BankString;
 use Illuminate\Http\Response;
 use Carbon\Carbon;

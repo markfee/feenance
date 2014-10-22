@@ -1,7 +1,12 @@
 <?php
-use Illuminate\Http\Response;
 
-class TestCase extends Illuminate\Foundation\Testing\TestCase {
+namespace Feenance\tests;
+use \Illuminate\Http\Response;
+use Markfee\Responder\Respond;
+use \Eloquent;
+use \Artisan;
+
+class TestCase extends \Illuminate\Foundation\Testing\TestCase {
   protected $expected_status = Response::HTTP_OK;
   protected $expects_pagination = true;
 
@@ -30,7 +35,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
   public function seed($seederName) {
     Eloquent::unguard();
-    $seeder = new DatabaseSeeder();
+    $seeder = new \DatabaseSeeder();
     $seeder->call("test".$seederName);
     Eloquent::reguard();
   }
@@ -40,7 +45,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
   public function setUp()
   {
     parent::setUp();
-    Markfee\Responder\Respond::Reset();
+    Respond::Reset();
     Artisan::call('migrate');
     Eloquent::reguard();
 

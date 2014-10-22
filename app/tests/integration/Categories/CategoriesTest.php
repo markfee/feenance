@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 07/09/14
- * Time: 07:44
- */
+
+namespace Feenance\tests;
 use Feenance\Api\CategoriesController;
 
 class CategoriesTest extends TestCase {

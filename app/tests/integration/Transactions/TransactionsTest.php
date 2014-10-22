@@ -1,5 +1,6 @@
 <?php
 
+namespace Feenance\tests;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use \SplFileObject;

@@ -6,6 +6,8 @@
  * Time: 10:03
  */
 
+namespace Feenance\tests;
+
 use Illuminate\Http\Response;
 
 class AccountsTest extends TestCase {

@@ -17,33 +17,26 @@ Route::pattern('month', '0[1-9]|1[012]|[1-9]');
 Route::pattern('endYear',  '[0-9]{4}');
 Route::pattern('endMonth', '0[1-9]|1[012]|[1-9]');
 
+use \Markfee\MyCarbon;
+use Feenance\CategoryReportController;
 
 Route::get('/',                   function()  {  return View::make('home');  });
 Route::get('/import',             function()  {  return View::make('import'); });
 
-function category_report($year=null, $month=null, $endYear=null, $endMonth=null) {
-  return View::make('categories_report')
-    ->with("year", $year)
-    ->with("month", $month)
-    ->with("endYear", $endYear)
-    ->with("endMonth", $endMonth)
-    ;
-}
-
 Route::get('/reports/categories/{year?}', function($year=null) {
-  return category_report($year);
+  return CategoryReportController::category_report($year);
 });
 Route::get('/reports/categories/{year}/{month}', function($year, $month) {
-  return category_report($year, $month);
+  return CategoryReportController::category_report($year, $month);
 });
 Route::get('/reports/categories/{year}-{month}', function($year, $month) {
-  return category_report($year, $month);
+  return CategoryReportController::category_report($year, $month);
 });
 Route::get('/reports/categories/{year}-{month}/{endYear}-{endMonth}', function($year, $month, $endYear, $endMonth)  {
-  return category_report($year, $month, $endYear, $endMonth);
+  return CategoryReportController::category_report($year, $month, $endYear, $endMonth);
 });
 Route::get('/reports/categories/{year}/{month}/{endYear}/{endMonth?}', function($year, $month, $endYear, $endMonth=12)  {
-  return category_report($year, $month, $endYear, $endMonth);
+  return CategoryReportController::category_report($year, $month, $endYear, $endMonth);
 });
 
 

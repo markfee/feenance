@@ -14,6 +14,7 @@ class MyCarbon extends Carbon {
       $this->subDay();
       $includeToday = true;
     }
+    return $this;
   }
 
   /**
@@ -25,6 +26,7 @@ class MyCarbon extends Carbon {
       $this->addDay();
       $includeToday = true;
     }
+    return $this;
   }
 
 

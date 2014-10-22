@@ -10,4 +10,5 @@ composer.lock
 .DS_Store
 Thumbs.db
 app/database/production.sqlite
+app/database/seeds/BankStringsTableSeeder.php
 runtests

@@ -125,7 +125,7 @@ return array(
     'Markfee\Responder\ResponderServiceProvider',
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
     'Clockwork\Support\Laravel\ClockworkServiceProvider',
-
+    'Orangehill\Iseed\IseedServiceProvider'
 	),
 
 	/*
@@ -192,7 +192,6 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
-
 	),
 
 );

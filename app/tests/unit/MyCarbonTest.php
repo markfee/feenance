@@ -19,5 +19,23 @@ class MyCarbonTest extends TestCase {
 
     $this->assertTrue(0 === $date->diff($expectedDate)->days);
   }
-}
- 
+
+  public function test_many_previous_days() {
+    $date = MyCarbon::create(2014, 8, 1, 0);
+    for ($i=0; $i < 12; $i++) {
+      $expectedDate = clone($date);
+      $expectedDate->previousWorkingDay();
+
+      print "\n" . $date . "(". $date->format("D") .  ") --- " . $expectedDate . "(". $expectedDate->format("D") .")";
+
+      $this->assertTrue($date->diff($expectedDate)->days > 0, "Are the days different?");
+
+      // Test that days are less than or equal to 5 days apart (in the case where there are two subsequent bank holidays next to a weekend)
+      $this->assertTrue($date->diff($expectedDate)->days <= 5, "Are the days less than or equal to five apart?");
+
+      $this->assertEquals(true, $expectedDate->isWeekday(), "Is Expected Day a weekday?");
+
+      $date->addMonth();
+    }
+  }
+};

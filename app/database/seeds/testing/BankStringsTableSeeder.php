@@ -4,7 +4,7 @@
 use Faker\Factory as Faker;
 use Feenance\Model\BankString;
 
-class BankStringsTableSeeder extends Seeder {
+class testBankStringsTableSeeder extends Seeder {
 
 	public function run()
 	{

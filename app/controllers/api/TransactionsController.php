@@ -108,7 +108,7 @@ class TransactionsController extends BaseController {
 
 
   /**
-   * Display a listing of transactions
+   * Return list of transactions with a specific bank string
    *
    * @return Response
    */
@@ -120,16 +120,31 @@ class TransactionsController extends BaseController {
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
 
+  /**
+   * Updates all transactions that contain the specific bank string and do not already have a Payee or category set
+   *
+   * Will also update bank_strings likewise.
+   *
+   * @param $bank_string_id
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function bank_strings_update($bank_string_id) {
-//    return $this->bank_strings($bank_string_id);
     $queryBuilder = Transaction::where("bank_string_id", "=", $bank_string_id)
-      ->whereNull("payee_id", 'and')
-      ->whereNull("category_id", 'and')
-      ->orderBy('date', "DESC")->orderBy('id', "DESC");
+      ->whereNull("payee_id", 'AND')
+      ->whereNull("category_id", 'AND');
 
-    $recordCount = $queryBuilder->update(Input::only(["payee_id", "category_id"]));
+    $transactionUpdateCount = $queryBuilder->update(Input::only(["payee_id", "category_id"]));
 
-    return Respond::Updated($recordCount);
+    $queryBuilder = BankString::where("id", "=", $bank_string_id)
+      ->whereNull("payee_id", 'AND')
+      ->whereNull("category_id", 'AND');
+
+    $bankStringUpdateCount = $queryBuilder->update(Input::only(["payee_id", "category_id"]));
+
+
+
+
+    return Respond::Updated($transactionUpdateCount);
   }
 
 

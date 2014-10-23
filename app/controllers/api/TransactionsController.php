@@ -129,15 +129,20 @@ class TransactionsController extends BaseController {
    * @return \Illuminate\Http\JsonResponse
    */
   public function bank_strings_update($bank_string_id) {
+
+    $payeeId    = Input::get("payee_id", 0);
+    $categoryId = Input::get("categoryId", 0);
+
+
     $queryBuilder = Transaction::where("bank_string_id", "=", $bank_string_id)
-      ->whereNull("payee_id", 'AND')
-      ->whereNull("category_id", 'AND');
+      ->whereNull(DB::Raw("NULLIF(payee_id, $payeeId)"), 'AND')
+      ->whereNull(DB::Raw("NULLIF(category_id, $categoryId)"), 'AND');
 
     $transactionUpdateCount = $queryBuilder->update(Input::only(["payee_id", "category_id"]));
 
     $queryBuilder = BankString::where("id", "=", $bank_string_id)
-      ->whereNull("payee_id", 'AND')
-      ->whereNull("category_id", 'AND');
+      ->whereNull(DB::Raw("NULLIF(payee_id, $payeeId)"), 'AND')
+      ->whereNull(DB::Raw("NULLIF(category_id, $categoryId)"), 'AND');
 
     $bankStringUpdateCount = $queryBuilder->update(Input::only(["payee_id", "category_id"]));
 
@@ -286,8 +291,8 @@ class TransactionsController extends BaseController {
             , "amount"      =>  $line[2] * 100
             , "account_id"  =>  $account_id
             , "reconciled"  =>  false
-//            , "payee_id"    => $bank_string->map ? $bank_string->map->payee_id : null
-//            , "category_id" => $bank_string->map ? $bank_string->map->category_id : null
+            , "payee_id"    => $bank_string->payee_id     ? $bank_string->payee_id    : null
+            , "category_id" => $bank_string->category_id  ? $bank_string->category_id : null
             , "notes"       => "imported from bank statement"
           ]);
 

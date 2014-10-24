@@ -1,0 +1,17 @@
+UPDATE transactions JOIN balances 
+ON balances.transaction_id = transactions.id AND transactions.bank_balance = balances.balance
+SET transactions.reconciled = 1
+WHERE transactions.reconciled = 0 ;
+
+use feenance;
+select transactions.id, 
+transactions.reconciled, 
+transactions.bank_balance, 
+transactions.payee_id, 
+transactions.category_id, 
+balances.* 
+FROM transactions, balances 
+WHERE balances.transaction_id = transactions.id AND reconciled = 0 AND transactions.bank_balance = balances.balance;
+
+
+

@@ -131,7 +131,7 @@ class TransactionsController extends BaseController {
   public function bank_strings_update($bank_string_id) {
 
     $payeeId    = Input::get("payee_id", 0);
-    $categoryId = Input::get("categoryId", 0);
+    $categoryId = Input::get("category_id", 0);
 
 
     $queryBuilder = Transaction::where("bank_string_id", "=", $bank_string_id)

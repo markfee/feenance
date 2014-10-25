@@ -108,8 +108,8 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   $scope.transactions = null;
   $scope.predicate    = ["date", "id"];
   $scope.reverse      = true;
-  $scope.reconciled_all     = false;
-  $scope.reconciled_only    = true;
+  $scope.reconciled_all     = true;
+  $scope.reconciled_only    = false;
   $scope.unreconciled_only  = false;
 
   $scope.showReconciled = function(val) {

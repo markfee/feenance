@@ -141,7 +141,6 @@ class TransactionsTest extends TestCase {
 
     $jsonResponse = $controller->index()->getData();
 
-    // TODO WRITE TESTS TO TEST THE RETURNED RESPONSE
     array_map(  function($res) {
       if ($res->id == 1 || $res->id == 2) {
         $this->assertEquals($res->payee_id, 3,              "Is the updated payee_id = 3? Actual result: " . $res->payee_id);

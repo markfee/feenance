@@ -25,7 +25,21 @@ class Transaction extends Eloquent {
     DB::unprepared('SET @disable_transaction_triggers = NULL;');
     if ($refresh) {
       DB::unprepared('call refresh_balances();');
+      Transaction::autoReconcile();
     }
+  }
+
+  /**
+   * Set Reconciled flag where balance matches bank balance.
+   * TODO: this function should also unreconcile reconciled transactions that don't match
+   */
+  public static function autoReconcile() {
+    DB::unprepared('
+      UPDATE transactions JOIN balances
+      ON balances.transaction_id = transactions.id AND transactions.bank_balance = balances.balance
+      SET transactions.reconciled = 1
+      WHERE transactions.reconciled = 0 ;
+    ');
   }
 
   public function balance() {

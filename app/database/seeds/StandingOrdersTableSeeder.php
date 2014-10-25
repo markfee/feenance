@@ -84,6 +84,18 @@ class StandingOrdersTableSeeder extends Seeder {
 			]);
 		}
     DB::unprepared("UPDATE standing_orders SET next_date = DATE_SUB(next_date, INTERVAL 3 MONTH) WHERE unit_id <> 'y';");
-	}
 
+    DB::unprepared(("
+      UPDATE standing_orders so
+	      LEFT JOIN payees payee ON payee.id = so.payee_id
+	      LEFT JOIN units unit on so.unit_id = unit.id
+      SET so.name =
+	      CONCAT(
+		      COALESCE(CONCAT(payee.name, ' '), ''),
+		      '(',
+			      CASE increment WHEN 1 THEN unit.singular ELSE CONCAT('every ', so.increment, ' ', unit.plural) END ,
+		      ')'
+	      );
+    "));
+	}
 }

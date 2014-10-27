@@ -11,6 +11,7 @@ feenance.controller('MapController', function($scope, BankStringsApi) {
     $scope.map.account            = null;
     $scope.map.transfer           = null;
     $scope.map.payee              = null;
+    $scope.map.standing_order     = null;
   }
 
   $scope.$on('editMap', function($event, bank_string_id) {
@@ -48,6 +49,10 @@ feenance.controller('MapController', function($scope, BankStringsApi) {
     $scope.map.category_id = (item.id) ? item.id : null;
   });
 
+  $scope.$on('standingOrderUpdated', function (something, item) {
+    $scope.map.standing_order_id = (item.id) ? item.id : null;
+  });
+
   $scope.mapUpdate = function(bank_string_id) {
 
     BankStringsApi.map({id:bank_string_id}, $scope.map, function(response) {
@@ -56,7 +61,6 @@ feenance.controller('MapController', function($scope, BankStringsApi) {
       $scope.reset();
     });
   }
-
 
 });
 

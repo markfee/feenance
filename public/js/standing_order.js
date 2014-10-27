@@ -11,7 +11,6 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
         $scope.standingOrders.splice(0, 0, { "id":null, name:""});
         $scope.selected = $scope.standingOrders[0];
       }
-
     }
   );
   $scope.sort = function(predicate) {
@@ -22,6 +21,15 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
       $scope.reverse=false;
     }
   };
+
+  $scope.change = function() {
+    $scope.selectedId = $scope.selected.id;
+    var message = "standingOrderUpdated";
+    console.log("emitting: standingOrderUpdated from standingOrderSelector");
+
+    $scope.$emit(message, $scope.selected);
+  };
+
 });
 
 feenance.directive('standingOrdersTable', function() {
@@ -38,7 +46,9 @@ feenance.directive('standingOrdersTable', function() {
 feenance.directive('standingOrderSelector', function() {
   return {
     restrict: 'E',
-    scope: {    },
+    scope: {
+      selected: "=ngModel"
+    },
     templateUrl: '/view/standingOrderSelector.html'
     , link: function (scope) {
       scope.optional     = true;

@@ -26,6 +26,7 @@ class TransactionTransformer extends Transformer {
       "balance"           => $record->balance ? 0.01 * $record->balance->balance : null,
       "reconciled"        => $record->reconciled,
       "payee_id"          => $record->payee_id,
+      "standing_order_id" => $record->standing_order_id,
       "category_id"       => $record->category_id,
       "notes"             => $record->notes?:null ,
       "source"            => $record->source?$record->source->source:null ,

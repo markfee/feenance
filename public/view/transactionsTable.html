@@ -72,7 +72,7 @@
           <transfer source="transaction.source" />
         </td>
 
-        <td class="currency">{{transaction.balance | currency: "£" }}
+        <td class="currency" ng-class="{ negative: transaction.balance < 0 }">{{transaction.balance | currency: "£" }}
           <span ng-show="transaction.bank_balance && transaction.bank_balance !=transaction.balance">({{transaction.bank_balance | currency: "£" }})</span>
         </td>
 

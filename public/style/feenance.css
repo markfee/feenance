@@ -31,6 +31,6 @@ td.currency {
 
 .unreconciled::before { content: "* "; }
 
-.debit {
+.debit, .negative {
     color: red;
 }

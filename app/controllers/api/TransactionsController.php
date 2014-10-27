@@ -20,7 +20,7 @@ use \Carbon\Carbon;
 
 class TransactionsController extends BaseController {
 
-  protected $paginateCount = 100; // alter with ?perPage=nnn in url
+  protected $paginateCount = 110; // alter with ?perPage=nnn in url
 
   /**
    * @return Transformer

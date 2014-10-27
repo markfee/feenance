@@ -2,10 +2,16 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
   $scope.standingOrders = null;
   $scope.predicate    = ["next_date"];
   $scope.reverse      = false;
+  $scope.optional     = false;
 
   var standingOrders = StandingOrdersApi.get({},
     function() {
       $scope.standingOrders = standingOrders.data;
+      if ($scope.optional) {
+        $scope.standingOrders.splice(0, 0, { "id":null, name:""});
+        $scope.selected = $scope.standingOrders[0];
+      }
+
     }
   );
   $scope.sort = function(predicate) {
@@ -24,6 +30,19 @@ feenance.directive('standingOrdersTable', function() {
     scope: {    },
     templateUrl: '/view/standingOrdersTable.html'
     , link: function (scope) {
+    }
+    , controller: "StandingOrderController"
+  };
+});
+
+feenance.directive('standingOrderSelector', function() {
+  return {
+    restrict: 'E',
+    scope: {    },
+    templateUrl: '/view/standingOrderSelector.html'
+    , link: function (scope) {
+      scope.optional     = true;
+      scope.predicate = "name";
     }
     , controller: "StandingOrderController"
   };

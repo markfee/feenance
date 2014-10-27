@@ -1,15 +1,16 @@
 feenance.controller('MapController', function($scope, BankStringsApi) {
 
   $scope.reset = function() {
-    $scope.map.bank_string_id   = null;
-    $scope.map.bank_string      = null;
-    $scope.map.category_id      = null;
-    $scope.map.account_id       = null;
-    $scope.map.transfer_id      = null;
-    $scope.map.payee_id         = null;
-    $scope.map.account          = null;
-    $scope.map.transfer         = null;
-    $scope.map.payee            = null;
+    $scope.map.bank_string_id     = null;
+    $scope.map.bank_string        = null;
+    $scope.map.category_id        = null;
+    $scope.map.account_id         = null;
+    $scope.map.standing_order_id  = null;
+    $scope.map.transfer_id        = null;
+    $scope.map.payee_id           = null;
+    $scope.map.account            = null;
+    $scope.map.transfer           = null;
+    $scope.map.payee              = null;
   }
 
   $scope.$on('editMap', function($event, bank_string_id) {

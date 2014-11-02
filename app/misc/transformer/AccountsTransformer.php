@@ -28,4 +28,11 @@ class AccountsTransformer extends Transformer {
       "notes"             => $record->notes?:null ,
       ] : null;
   }
+
+  public static function transformInput($record) {
+    if (isset($record["opening_balance"])) $record["opening_balance"] *= 100;
+    return $record;
+  }
+
+
 }

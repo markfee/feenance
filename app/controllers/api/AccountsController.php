@@ -56,7 +56,7 @@ class AccountsController extends BaseController {
   public function update($id)
   {
     $account = Account::findOrFail($id);
-    $validator = Validator::make($data = Input::all(), Account::$rules);
+    $validator = Validator::make($data = $this->transformInput(Input::all()), Account::$rules);
     if ($validator->fails()) {
       return Respond::ValidationFailed();
     }

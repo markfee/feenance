@@ -7,6 +7,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.name = "account_id";
   $scope.emitMessage = "Account";
   $scope.optional = false;
+  $scope.editing = false;
 
   var records = AccountsApi.get( {}, function () {
     $scope.accounts = records.data;
@@ -19,6 +20,20 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     }
   });
 
+  $scope.cancel = function () {
+    $scope.select($scope.selected.id);
+  };
+
+  $scope.edit = function () {
+    var editRecord = AccountsApi.get({id:$scope.selected.id}, function() {
+      $scope.selected = editRecord;
+      $scope.editing = true;
+      $scope.selectedId = $scope.selected.id;
+    });
+  };
+
+
+
   $scope.new = function() {
     $scope.selected = new AccountsApi();
     $scope.editing=true;
@@ -29,10 +44,17 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
       $scope.selected = response;
       alert(response.id);
       $scope.select(response.id);
-//      $scope.editing = false;
-//      $scope.selected_id = $scope.selected.id;
     });
   };
+
+  $scope.update = function () {
+    AccountsApi.update({id:$scope.selected.id}, $scope.selected, function(response) {
+      $scope.selected = response;
+      $scope.editing = false;
+      $scope.selected_id = $scope.selected.id;
+    });
+  };
+
 
 
   $transclude(function(clone,scope) {
@@ -70,6 +92,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 
 
   $scope.select = function(id) {
+    $scope.editing = false;
     var $changed = ($scope.selectedId != id);
     $scope.selectedId = id;
     angular.forEach($scope.accounts, function(account, key) {

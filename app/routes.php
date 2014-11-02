@@ -51,6 +51,7 @@ Route::group(['prefix' =>  'api/v1/'], function()
   Route::get('accounts/{id}/transactions/unreconciled',     $NAMESPACE.'TransactionsController@unreconciled');
   Route::delete('accounts/{id}/transactions/unreconciled',  $NAMESPACE.'TransactionsController@deleteUnreconciled');
   Route::get('accounts/{id}/transactions/unreconciled/count',     $NAMESPACE.'TransactionsController@unreconciledCount');
+  Route::post('accounts/{id}/transactions/reconcile',  $NAMESPACE.'TransactionsController@reconcileAll');
 
   Route::get('accounts/upload',               $NAMESPACE.'TransactionsController@upload');
   Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');

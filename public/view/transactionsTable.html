@@ -29,7 +29,16 @@
 
   <button type="button" class="btn btn-default" ng-click="refresh()">Refresh</button>
 
-  <button type="button" class="btn btn-danger" ng-click="deleteUnreconciled()">Delete Unreconciled</button>
+  <button type="button" class="btn btn-danger" ng-click="deleteUnreconciled()"
+          title = "Delete all unreconciled transactions for this account">
+    Delete Unreconciled
+  </button>
+
+  <button type="button" class="btn btn-danger" ng-click="reconcileAll()"
+          title = "Reconcile all transactions for this account">
+    Reconcile all
+  </button>
+
 
   <table class="table table-striped" >
 
@@ -51,7 +60,8 @@
         <td title="transaction #{{transaction.id}}">{{transaction.date | date:'dd/MM/yy'}}</td>
 
         <td>
-          <payee ng-model="transaction.payee" payeeid="transaction.payee_id" />
+          {{transaction.payee.name}}
+          <!--<payee ng-model="transaction.payee" payeeid="transaction.payee_id" />-->
           <a href=""
              ng-click="onClickBankString(transaction.bank_string_id)"
              ng-show="transaction.bank_string" class="bank_string">({{transaction.bank_string}})</a>
@@ -73,10 +83,13 @@
         </td>
 
         <td class="currency" ng-class="{ negative: transaction.balance < 0 }">{{transaction.balance | currency: "£" }}
-          <span ng-show="transaction.bank_balance && transaction.bank_balance !=transaction.balance">
+          <a hfref=""
+             ng-click="refreshBalances(transaction)"
+             ng-show="transaction.bank_balance && transaction.bank_balance !=transaction.balance"
+            >
             ({{transaction.bank_balance | currency: "£" }})
             {{transaction.balance - transaction.bank_balance | currency: "£" }}
-          </span>
+          </a>
         </td>
 
         <td>

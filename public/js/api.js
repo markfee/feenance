@@ -4,8 +4,8 @@ feenance.factory('AccountsApi', function($resource) {
   return $resource(   $API_ROOT + "accounts/:id/:collection/:filter",   {id:"@id"}, {
       'transactions': { method:'GET', params: {collection: "transactions" } },
       'update':       { method:'PUT'                    },
-      'deleteUnreconciled': { method:'DELETE', params: {collection: "transactions", filter: "unreconciled" } }
-
+      'deleteUnreconciled': { method:'DELETE', params: {collection: "transactions", filter: "unreconciled" } },
+      'reconcileAll': { method:'POST', params: {collection: "transactions", filter: "reconcile" } }
     }
   );
 });

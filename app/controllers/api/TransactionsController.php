@@ -102,9 +102,20 @@ class TransactionsController extends BaseController {
 
     Transaction::startBulk();
     $query = Transaction::where("reconciled", false)->where("account_id", $account_id)->delete();
-    dd($query);
     Transaction::finishBulk(true);
   }
+
+  /**
+   * @param null $account_id
+   * @return mixed
+   */
+  public function reconcileAll($account_id) {
+    Transaction::startBulk();
+    $query = Transaction::where("reconciled", false)->where("account_id", $account_id)->update(["reconciled" => true]);
+    Transaction::finishBulk(true);
+  }
+
+
 
 
   /**

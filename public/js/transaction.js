@@ -181,12 +181,25 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
     if ($scope.account.id) {
       alert("This will delete all unreconciled transactions for account " + $scope.account.id);
       AccountsApi.deleteUnreconciled({id:$scope.account.id}, function(response) {
-        alert("did it almost");
+        alert("Successfully deleted all unreconciled transactions");
       }, function() {
         alert("Deletion failed");
       });
     } else {
       alert("No account set for bulk delete ");
+    }
+  };
+
+  $scope.reconcileAll = function() {
+    if ($scope.account.id) {
+      alert("This will reconciled transactions for account " + $scope.account.id);
+      AccountsApi.reconcileAll({id:$scope.account.id}, function(response) {
+        alert("Successfully reconciled all transactions");
+      }, function() {
+        alert("Failed to reconcile all transactions");
+      });
+    } else {
+      alert("No account set for bulk update ");
     }
   };
 

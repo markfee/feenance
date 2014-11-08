@@ -25,6 +25,7 @@ class TransactionTransformer extends Transformer {
       "account_id"        => $record->account_id,
       "balance"           => $record->balance ? 0.01 * $record->balance->balance : null,
       "reconciled"        => $record->reconciled,
+      "status"            => $record->status->code ,
       "payee_id"          => $record->payee_id,
       "standing_order_id" => $record->standing_order_id,
       "category_id"       => $record->category_id,
@@ -38,7 +39,6 @@ class TransactionTransformer extends Transformer {
       "bank_string"       => $record->bank_string_id ? $record->bankString->name : null,
       "payee"             => $record->payee_id ? PayeeTransformer::transform($record->payee) : null,
       "category"          => $record->category_id ? CategoryTransformer::transform($record->category) : null,
-
       ];
   }
 

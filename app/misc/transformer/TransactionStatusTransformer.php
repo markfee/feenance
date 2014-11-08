@@ -16,6 +16,7 @@ class TransactionStatusTransformer extends Transformer {
     return $record == null ? null : [
       "id"                => (int)$record->id,
       "name"              => $record->name,
+      "code"              => $record->code,
       ];
   }
 }

@@ -34,12 +34,13 @@ class Transaction extends Eloquent {
    * TODO: this function should also unreconcile reconciled transactions that don't match
    */
   public static function autoReconcile() {
-    DB::unprepared('
+    DB::unprepared("
       UPDATE transactions JOIN balances
       ON balances.transaction_id = transactions.id AND transactions.bank_balance = balances.balance
-      SET transactions.reconciled = 1
-      WHERE transactions.reconciled = 0 ;
-    ');
+      SET transactions.reconciled = 1,
+       transactions.status_id = 2
+       WHERE transactions.reconciled = 0 OR transactions.status_id != 2;"
+    );
   }
 
   public function balance() {
@@ -69,6 +70,11 @@ class Transaction extends Eloquent {
   public function category() {
     // If this is the destination the transfer->source is the source
     return $this->hasOne('Feenance\Model\Category', "id", "category_id");
+  }
+
+  public function status() {
+    // If this is the destination the transfer->source is the source
+    return $this->hasOne('Feenance\Model\TransactionStatus', "id", "status_id");
   }
 
 

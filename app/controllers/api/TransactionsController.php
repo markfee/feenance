@@ -2,9 +2,12 @@
 namespace Feenance\Api;
 
 use Feenance\Model\Transaction;
-use \Feenance\Model\Transfer;
+use Feenance\Model\Transfer;
+use Feenance\Model\BankString;
+use Feenance\Model\TransactionStatus;
+
 use Markfee\Responder\Respond;
-use Feenance\Misc\Transformers\Transformer;
+use Markfee\Responder\Transformer;
 use Feenance\Misc\Transformers\TransactionTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -15,12 +18,12 @@ use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 use \DB;
 use \SplFileObject;
 use Illuminate\Support\MessageBag;
-use Feenance\Model\BankString;
 use \Carbon\Carbon;
 
 class TransactionsController extends BaseController {
 
   protected $paginateCount = 110; // alter with ?perPage=nnn in url
+  protected static $default_with = ["balance", "source", "destination", "bankString", "payee", "category.parent", "status"];
 
   /**
    * @return Transformer
@@ -37,11 +40,10 @@ class TransactionsController extends BaseController {
    */
   public function index($account_id = null)
   {
-    $with = ["balance", "source", "destination", "bankString", "payee", "category.parent"];
     if (!empty($account_id)) {
-      $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate($this->paginateCount);
+      $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with(TransactionsController::$default_with)->paginate($this->paginateCount);
     } else {
-      $records = Transaction::orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate($this->paginateCount);
+      $records = Transaction::orderBy('date', "DESC")->orderBy('id', "DESC")->with(TransactionsController::$default_with)->paginate($this->paginateCount);
     }
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
@@ -54,12 +56,11 @@ class TransactionsController extends BaseController {
    */
   private function _reconciled($reconciled, $account_id)
   {
-    $with = ["balance", "source", "destination", "bankString", "payee", "category.parent"];
     $query = Transaction::where("reconciled", $reconciled);
     if (!empty($account_id)) {
       $query->where("account_id", $account_id);
     }
-    $records = $query->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate($this->paginateCount);
+    $records = $query->orderBy('date', "DESC")->orderBy('id', "DESC")->with(TransactionsController::$default_with)->paginate($this->paginateCount);
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
 
@@ -111,12 +112,9 @@ class TransactionsController extends BaseController {
    */
   public function reconcileAll($account_id) {
     Transaction::startBulk();
-    $query = Transaction::where("reconciled", false)->where("account_id", $account_id)->update(["reconciled" => true]);
+    $query = Transaction::where("account_id", $account_id)->update(["reconciled" => true, "status_id" => TransactionStatus::RECONCILED]);
     Transaction::finishBulk(true);
   }
-
-
-
 
   /**
    * Return list of transactions with a specific bank string
@@ -125,8 +123,7 @@ class TransactionsController extends BaseController {
    */
   public function bank_strings($bank_string_id)
   {
-    $with = ["balance", "source", "destination", "bankString"];
-    $records = Transaction::where("bank_string_id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with($with)->paginate($this->paginateCount);
+    $records = Transaction::where("bank_string_id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with(TransactionsController::$default_with)->paginate($this->paginateCount);
 //    dd($records);
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }

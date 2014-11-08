@@ -13,7 +13,8 @@ feenance.factory('AccountsApi', function($resource) {
 feenance.factory('StandingOrdersApi', function($resource) {
   return $resource(   $API_ROOT + "standing_orders/:id/:collection", { id:"@id"}, {
       'transactions': { method:'GET', params: {collection: "transactions" } },
-      'update':       { method:'PUT'                    }
+      'update':       { method:'PUT'                    },
+      'increment':    { method:'PUT', params: {collection: "increment" } }
     }
   );
 });

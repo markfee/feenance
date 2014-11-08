@@ -90,6 +90,25 @@ class StandingOrdersController extends BaseController {
   }
 
   /**
+   * Increments a specific standing order by one payment
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function increment($id)
+  {
+    try {
+      /** @var \Illuminate\Support\Collection $standingOrder */
+      $standingOrder = StandingOrder::findOrFail($id);
+      $standingOrder->previous_date = $standingOrder->next_date;
+      $standingOrder->next_date = $this->incrementDate($standingOrder->next_date, $standingOrder->increment, $standingOrder->unit);
+      $standingOrder->save();
+      return Respond::Raw($this->transform($standingOrder));
+    } catch (ModelNotFoundException $e) {
+      return Respond::NotFound($e->getMessage());
+    }
+  }
+
+  /**
    * Generate Transactions for a specific standing order until $endDate
    *
    * @param  int    $id

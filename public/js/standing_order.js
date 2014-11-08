@@ -13,6 +13,14 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
       }
     }
   );
+
+  $scope.increment = function($id, $index) {
+    StandingOrdersApi.increment({ id: $id}, function(response) {
+      $scope.standingOrders[$index] = response;
+    });
+
+  }
+
   $scope.sort = function(predicate) {
     if ($scope.predicate == predicate) {
       $scope.reverse=!$scope.reverse;

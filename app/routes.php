@@ -88,6 +88,8 @@ Route::group(['prefix' =>  'api/v1/'], function()
   Route::get('standing_orders/{id}/generate/{endDate?}',    $NAMESPACE.'StandingOrdersController@generate');
   Route::get('standing_orders/generate/{endDate?}',         $NAMESPACE.'StandingOrdersController@generateAll');
 
+  Route::put('standing_orders/{id}/increment',              $NAMESPACE.'StandingOrdersController@increment');
+
   Route::resource('standing_orders',                        $NAMESPACE.'StandingOrdersController');
   Route::resource('transaction_statuses',                   $NAMESPACE.'TransactionStatusesController');
 

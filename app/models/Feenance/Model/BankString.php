@@ -30,4 +30,14 @@ class BankString extends \Eloquent {
     return $this->hasMany('Feenance\Model\BankTransaction');
   }
 
+  public function payee() {
+    // If this is the destination the transfer->source is the source
+    return $this->hasOne('Feenance\Model\Payee', "id", "payee_id");
+  }
+
+  public function category() {
+    // If this is the destination the transfer->source is the source
+    return $this->hasOne('Feenance\Model\Category', "id", "category_id");
+  }
+
 }

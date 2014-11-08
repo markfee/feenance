@@ -4,6 +4,7 @@ namespace Feenance\Api;
 
 use Feenance\Model\StandingOrder;
 use Feenance\Model\Transaction;
+use Feenance\Model\TransactionStatus;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\StandingOrderTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -139,9 +140,9 @@ class StandingOrdersController extends BaseController {
         , "amount" => $standingOrder->amount
         , "account_id" => $standingOrder->account_id
         , "reconciled" => false
+        , "status_id" => TransactionStatus::EXPECTED_STANDING_ORDER
         , "payee_id" => $standingOrder->payee_id
         , "category_id" => $standingOrder->category_id
-        , "notes" => "auto generated standing order"
       ]);
       $standingOrder->previous_date = $standingOrder->next_date;
       $standingOrder->next_date = $this->incrementDate($standingOrder->next_date, $standingOrder->increment, $standingOrder->unit);

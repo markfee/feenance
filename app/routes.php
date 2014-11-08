@@ -89,7 +89,7 @@ Route::group(['prefix' =>  'api/v1/'], function()
   Route::get('standing_orders/generate/{endDate?}',         $NAMESPACE.'StandingOrdersController@generateAll');
 
   Route::resource('standing_orders',                        $NAMESPACE.'StandingOrdersController');
-
+  Route::resource('transaction_statuses',                   $NAMESPACE.'TransactionStatusesController');
 
 /*
   // Generate transactions for a specific standing_order for a period (default == the next month)

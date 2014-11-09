@@ -1,24 +1,33 @@
-feenance.controller('StandingOrderController', function($scope, StandingOrdersApi) {
-  $scope.standingOrders = null;
+feenance.factory('StandingOrderCollection', function(Notifier, StandingOrdersApi, Paginator) {
+  var collection = {data: []};
+  collection.data[0] = {id: null, name: "<Please Select>"};
+  var standingOrders = StandingOrdersApi.get({},
+    function() {
+      angular.extend(collection.data, standingOrders.data);
+      collection.data.splice(0, 0, {id: null, name: "<Please Select>"});
+    }
+  );
+
+  return {
+    collection: function () {
+      return collection.data;
+    }
+  }
+
+});
+
+feenance.controller('StandingOrderController', function($scope, StandingOrdersApi, StandingOrderCollection) {
+  $scope.standingOrders = StandingOrderCollection.collection();
+  $scope.selected       = $scope.standingOrders[0]; // the currently selected standing order.
+  $scope.rollback       = null; // used to rollback edits
   $scope.predicate    = ["next_date"];
   $scope.reverse      = false;
   $scope.optional     = false;
-
-  var standingOrders = StandingOrdersApi.get({},
-    function() {
-      $scope.standingOrders = standingOrders.data;
-      if ($scope.optional) {
-        $scope.standingOrders.splice(0, 0, { "id":null, name:""});
-        $scope.selected = $scope.standingOrders[0];
-      }
-    }
-  );
 
   $scope.increment = function($id, $index) {
     StandingOrdersApi.increment({ id: $id}, function(response) {
       $scope.standingOrders[$index] = response;
     });
-
   }
 
   $scope.sort = function(predicate) {
@@ -30,11 +39,23 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
     }
   };
 
+  $scope.edit = function(transaction) {
+    $scope.selected = transaction;
+    $scope.rollback = angular.copy($scope.selected);
+  }
+
+  $scope.cancel = function(transaction) {
+    angular.extend($scope.selected, $scope.rollback);
+    $scope.rollback = null;
+    $scope.selected = null;
+  }
+
+
+
   $scope.change = function() {
     $scope.selectedId = $scope.selected.id;
     var message = "standingOrderUpdated";
     console.log("emitting: standingOrderUpdated from standingOrderSelector");
-
     $scope.$emit(message, $scope.selected);
   };
 
@@ -51,14 +72,26 @@ feenance.directive('standingOrdersTable', function() {
   };
 });
 
+feenance.directive('standingOrderForm', function() {
+  return {
+    restrict: 'E',
+    scope: {
+      selected: "=ngModel"
+    },
+    templateUrl: '/view/standing_order_form.html',
+    link: function (scope) {
+    }
+  };
+});
+
 feenance.directive('standingOrderSelector', function() {
   return {
     restrict: 'E',
     scope: {
       selected: "=ngModel"
     },
-    templateUrl: '/view/standing_order_selector.html'
-    , link: function (scope) {
+    templateUrl: '/view/standing_order_selector.html',
+    link: function (scope) {
       scope.optional     = true;
       scope.predicate = "name";
     }

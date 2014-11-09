@@ -100,8 +100,6 @@ feenance.controller('TransactionController', function($scope, TransactionsApi) {
       }
     );
   }
-
-
 });
 
 feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi) {

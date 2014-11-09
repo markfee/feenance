@@ -1,36 +1,56 @@
-<table class="table table-striped">
+<div class = "col-lg-9">
 
-  <thead>
-  <tr>
-    <th><a href="" ng-click="sort('account.name');">      Account</a></th>
-    <th><a href="" ng-click="sort('name');">              Name</a></th>
-    <th><a href="" ng-click="sort('next_date');">         Next Date</a></th>
-    <th><a href="" ng-click="sort('days');">              Frequency</a></th>
-    <th><a href="" ng-click="sort('amount');">            Credit</a></th>
-    <th><a href="" ng-click="sort('amount');">            Debit</a></th>
-    <th><a href="" ng-click="sort('payee.name');">        Payee</a></th>
-    <th><a href="" ng-click="sort('category.fullName');"> Category</a></th>
-  </tr>
-  </thead>
+  <table class="table table-striped">
 
-  <tbody>
-    <tr ng-repeat="so in standingOrders|orderBy:predicate:reverse" class="standingOrders" ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
-      <td>{{so.account.name}}           </td>
-      <td>{{so.name}} </td>
-      <td>
-        {{so.next_date    | date:'dd/MM/yy'  }}
-        <a href = "" ng-click="increment(so.id, standingOrders.indexOf(so))"> <i class="fa fa-plus-circle fa-sm"> </i>  </a>
-      </td>
-      <td>{{so.frequency}} </td>
-      <td>
-        <span ng-show="so.amount>0">{{ so.amount  | currency: "£" }}   </span>
-      </td>
-      <td>
-        <span ng-show="so.amount<0">{{ so.amount *-1 | currency: "£" }}   </span>
-      </td>
-      <td>{{so.payee.name}}                             </td>
-      <td>{{so.category.fullName}}                      </td>
+    <thead>
+    <tr>
+      <th><a href="" ng-click="sort('account.name');">      Account</a></th>
+      <th><a href="" ng-click="sort('name');">              Name</a></th>
+      <th><a href="" ng-click="sort('next_date');">         Next Date</a></th>
+      <th><a href="" ng-click="sort('days');">              Frequency</a></th>
+      <th><a href="" ng-click="sort('amount');">            Credit</a></th>
+      <th><a href="" ng-click="sort('amount');">            Debit</a></th>
+      <th><a href="" ng-click="sort('payee.name');">        Payee</a></th>
+      <th><a href="" ng-click="sort('category.fullName');"> Category</a></th>
+      <th> Edit</a></th>
     </tr>
-  </tbody>
+    </thead>
 
-</table>
+    <tbody>
+      <tr ng-repeat="so in standingOrders|orderBy:predicate:reverse|filter:{id:'!!'}" class="standingOrders" ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
+        <td>{{so.account.name}}           </td>
+        <td>{{so.name}} </td>
+        <td>
+          {{so.next_date    | date:'dd/MM/yy'  }}
+          <a href = "" ng-click="increment(so.id, standingOrders.indexOf(so))"> <i class="fa fa-plus-circle fa-sm"> </i>  </a>
+        </td>
+        <td>{{so.frequency}} </td>
+        <td>
+          <span ng-show="so.amount>0">{{ so.amount  | currency: "£" }}   </span>
+        </td>
+        <td>
+          <span ng-show="so.amount<0">{{ so.amount *-1 | currency: "£" }}   </span>
+        </td>
+        <td>{{so.payee.name}}                             </td>
+        <td>{{so.category.fullName}}                      </td>
+
+        <td>
+          <a href="" title="Edit" ng-click="edit(so)">
+            <i ng-class="showEdit||transaction.edit ? 'fa fa-edit fa-lg' : 'fa fa-square-o fa-lg' "> </i>
+          </a>
+        </td>
+
+
+      </tr>
+    </tbody>
+
+  </table>
+</div>
+<div class = "col-lg-3">
+  <standing-order-form ng-model="selected"> Edit Standing Orders Table </standing-order-form>
+  <div class="form-group">
+    <button ng-click="cancel()">Cancel</button>
+    <button type="submit" ng-click="save()">Save</button>
+  </div>
+
+</div>

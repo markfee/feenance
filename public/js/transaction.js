@@ -230,7 +230,7 @@ feenance.directive('transactionForm', function(AccountsApi) {
   return {
     restrict: 'E',
     scope: {    },
-    templateUrl: '/view/transactionForm.html'
+    templateUrl: '/view/transaction_form.html'
     , link: function (scope) {
       if (scope.accountId) {
         var $account = AccountsApi.get({id:scope.accountId}, function() {
@@ -248,7 +248,7 @@ feenance.directive('transactionUploader', function() {
     scope: {
       uploadFile: "=ngModel"
     },
-    templateUrl: '/view/transactionUploader.html'
+    templateUrl: '/view/transaction_uploader.html'
     , link: function (scope) {   }
     , controller: "TransactionController"
   };

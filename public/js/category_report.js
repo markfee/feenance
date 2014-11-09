@@ -90,7 +90,7 @@ feenance.directive('categoryReport', function(CategoryReportData) {
       endYear: "=",
       endMonth: "="
     },
-    templateUrl: '/view/categoryReport.html'
+    templateUrl: '/view/category_report.html'
     , link: function (scope) {
       if (!scope.year) scope.year = 2014;
       CategoryReportData.getReportData(scope.year, scope.month, scope.endYear, scope.endMonth);

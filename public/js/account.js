@@ -124,7 +124,7 @@ feenance.directive('accountSelector', function() {
      , accountId: "=" // remember account_id in markup accountId in directive / controller
      , name: "@"
     }
- , templateUrl: '/view/accountSelector.html'
+ , templateUrl: '/view/account_selector.html'
     , link: function (scope, element, attr) {
      scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
       scope.optional = attr.optional ? true : false;

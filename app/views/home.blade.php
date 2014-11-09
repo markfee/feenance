@@ -8,7 +8,7 @@
 
     <div class = "row">
 
-      <div class = "col-lg-8"  ng-include="'view/transactionsTable.html'"> </div>
+      <div class = "col-lg-8"  ng-include="'view/transaction_table.html'"> </div>
 
       <div class = "col-lg-4">
         <new-map accountId=""></new-map>

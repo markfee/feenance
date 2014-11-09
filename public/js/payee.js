@@ -81,7 +81,7 @@ feenance.directive('payeeSelector', function() {
       selected: "=ngModel"
     , payeeId: "=" // remember payee_id in markup payeeId in directive / controller ???
     }
-  , templateUrl: '/view/payeeSelector.html'
+  , templateUrl: '/view/payee_selector.html'
   , link: function (scope, element, attr) {
       if (scope.payeeId) {
         scope.select(scope.payeeId);

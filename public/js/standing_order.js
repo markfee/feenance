@@ -44,7 +44,7 @@ feenance.directive('standingOrdersTable', function() {
   return {
     restrict: 'E',
     scope: {    },
-    templateUrl: '/view/standingOrdersTable.html'
+    templateUrl: '/view/standing_order_table.html'
     , link: function (scope) {
     }
     , controller: "StandingOrderController"
@@ -57,7 +57,7 @@ feenance.directive('standingOrderSelector', function() {
     scope: {
       selected: "=ngModel"
     },
-    templateUrl: '/view/standingOrderSelector.html'
+    templateUrl: '/view/standing_order_selector.html'
     , link: function (scope) {
       scope.optional     = true;
       scope.predicate = "name";

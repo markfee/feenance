@@ -20,7 +20,7 @@ Route::pattern('endMonth', '0[1-9]|1[012]|[1-9]');
 use \Markfee\MyCarbon;
 use Feenance\CategoryReportController;
 
-Route::get('/',                   function()  {  return View::make('home');  });
+Route::get('/',                   function()  {  return View::make('transactions');  });
 Route::get('/import',             function()  {  return View::make('import'); });
 
 Route::get('/reports/categories/{year?}', function($year=null) {

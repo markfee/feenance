@@ -226,11 +226,11 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   });
 });
 
-feenance.directive('newTransaction', function(AccountsApi) {
+feenance.directive('transactionForm', function(AccountsApi) {
   return {
     restrict: 'E',
     scope: {    },
-    templateUrl: '/view/newTransaction.html'
+    templateUrl: '/view/transactionForm.html'
     , link: function (scope) {
       if (scope.accountId) {
         var $account = AccountsApi.get({id:scope.accountId}, function() {

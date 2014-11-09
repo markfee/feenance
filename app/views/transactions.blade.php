@@ -11,7 +11,7 @@
       <div class = "col-lg-8"  ng-include="'view/transaction_table.html'"> </div>
 
       <div class = "col-lg-4">
-        <new-map accountId=""></new-map>
+        <bank-string-map-form accountId=""></bank-string-map-form>
         <transaction-form accountId=""></transaction-form>
       </div>
 

@@ -64,7 +64,7 @@ feenance.controller('MapController', function($scope, BankStringsApi) {
 
 });
 
-feenance.directive('newMap', function() {
+feenance.directive('bankStringMapForm', function() {
   return {
     restrict: 'E',
     scope: {    },

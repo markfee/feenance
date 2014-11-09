@@ -50,8 +50,9 @@
         <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Credit</a></th>
         <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Debit</a></th>
         <th class="currency"><a href="" ng-click="predicate = 'balance';       reverse=!reverse">Balance</a></th>
-        <th ><a href="" ng-click="predicate = 'status';       reverse=!reverse">Status</a></th>
-        <th colspan="3"><a href="" ng-click="predicate = 'reconciled';    reverse=!reverse" title="Reconciled">R</a></th>
+        <th >
+          <a href="" ng-click="predicate = 'status';       reverse=!reverse">Status</a></th>
+        <th colspan="2"></th>
       </tr>
     </thead>
 
@@ -94,13 +95,10 @@
         </td>
 
         <td>
-            {{transaction.status}}
-        </td>
-
-        <td>
           <a href="" title="Reconciled?" ng-click="toggleReconciled(transaction)">
             <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>
           </a>
+            {{transaction.status}}
         </td>
 
         <td>

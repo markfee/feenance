@@ -27,9 +27,11 @@ feenance.factory('StandingOrderCollection', function(Notifier, StandingOrdersApi
   }
 
   return {
-    collection: function () {
-      return collection.data;
-    }
+    collection:
+      function ()
+      {
+        return collection.data;
+      }
   }
 
 });
@@ -68,12 +70,9 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
     $scope.selected = null;
   }
 
-
-
   $scope.change = function() {
     $scope.selectedId = $scope.selected.id;
     var message = "standingOrderUpdated";
-    console.log("emitting: standingOrderUpdated from standingOrderSelector");
     $scope.$emit(message, $scope.selected);
   };
 
@@ -106,12 +105,16 @@ feenance.directive('standingOrderSelector', function() {
   return {
     restrict: 'E',
     scope: {
-      selected: "=ngModel"
+      selected: "=ngModel",
+      name: "@"
     },
     templateUrl: '/view/standing_order_selector.html',
-    link: function (scope) {
+    link: function (scope, attributes) {
       scope.optional     = true;
       scope.predicate = "name";
+      if (scope.name == undefined) {
+        scope.name = "standing_order_id"; // TODO - this doesn't work for default values
+      }
     }
     , controller: "StandingOrderController"
   };

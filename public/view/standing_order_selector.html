@@ -1,9 +1,10 @@
 <div>
   <div class="row">
-      <label class="col-sm-3" >    Standing Order:</label>
+    <label class="col-sm-3" >Standing Order:</label>
+    <input name="{{name}}" type="number" ng-model="selected.id" ng-show="true">
     <div class="col-sm-9" >
       <select ng-model="selected" ng-options="standingOrder.name for standingOrder in standingOrders|orderBy:predicate" ng-change="change()" ng-show="!editing"> </select>
-      </div>
+    </div>
   </div>
   <div class="row" ng-hide="true">
 <!--
@@ -15,8 +16,6 @@
       <button class="btn btn-default btn-sm" ng-click="cancel()"          ng-show="selected.id && editing" >  <i class="fa fa-undo fa-lg">        </i>  </button>
     </div>
 -->
-
   </div>
 
-  <json-view ng-model="selected" title="standingOrder"></json-view>
 </div>

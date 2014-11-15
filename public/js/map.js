@@ -49,9 +49,16 @@ feenance.controller('MapController', function($scope, BankStringsApi) {
     $scope.map.category_id = (item.id) ? item.id : null;
   });
 
+  $scope.$watch('map.standing_order', function(new_val, old_val)
+  {
+    $scope.map.standing_order_id = $scope.map.standing_order.id;
+  });
+
+/*
   $scope.$on('standingOrderUpdated', function (something, item) {
     $scope.map.standing_order_id = (item.id) ? item.id : null;
   });
+*/
 
   $scope.mapUpdate = function(bank_string_id) {
 

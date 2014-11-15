@@ -2,8 +2,35 @@
 
 namespace Feenance\Model;
 class StandingOrder extends \Eloquent {
-  protected $fillable = [];
+
+  protected $fillable = [
+    "previous_date",
+    "next_date",
+    "finish_date",
+    "increment",
+    "unit_id",
+    "exceptions",
+    "amount",
+    "next_bank_day",
+    "modifier",
+    "account_id",
+    "destination_account_id",
+    "payee_id",
+    "category_id",
+    "bank_string_id",
+    "notes",
+  ];
+
   protected $dates = ['previous_date', 'next_date', 'finish_date', 'created_at', 'updated_at'];
+  static public $rules = [
+    "previous_date" => "required|date",
+    "next_date" => "required|date",
+    "finish_date" => "date",
+    "increment" => "required|integer|not_in:0",
+    "unit_id" => "required|alpha",
+    "amount" => "required|integer|not_in:0",
+    "account_id" => "required|integer",
+  ];
 
   /*
     id: "1",

@@ -1,5 +1,48 @@
-feenance.controller('AccountController', function($scope, $transclude, AccountsApi) {
-  $scope.accounts   = {};
+feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
+  var collection = { data: [] };
+  var $_PLEASE_SELECT =  {id: null, name: "<Please select an account>"};
+  collection.data[0] = $_PLEASE_SELECT;
+
+  var accounts = AccountsApi.get({},
+    function()
+    {
+      angular.extend(collection.data, accounts.data);
+      collection.data.splice(0, 0, $_PLEASE_SELECT);
+    }
+  );
+
+  return {
+    collection:
+      function ()
+      {
+        return collection.data;
+      },
+    get:
+      function (id)
+      {
+        var account = null;
+        angular.forEach(collection.data,
+          function(value)
+          {
+            if (value.id == id) {
+              account = value;
+            }
+          }
+        );
+        return account;
+      },
+    add:
+      function(newAccount)
+      {
+        collection.data.push(newAccount);
+        return newAccount;
+      }
+  }
+
+});
+
+feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection) {
+  $scope.accounts   = AccountCollection.collection();
   $scope.selected   = null;
   $scope.selectedId = null;
   $scope.initialSelect = null;
@@ -8,73 +51,44 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.emitMessage = "Account";
   $scope.optional = false;
   $scope.editing = false;
-
-  var records = AccountsApi.get( {}, function () {
-    $scope.accounts = records.data;
-    if ($scope.optional) {
-      $scope.accounts.splice(0, 0, { "id":null, name:""});
-      $scope.selected = records.data[0];
-    }
-    if ($scope.initialSelect) {
-      $scope.select($scope.initialSelect);
-    }
-  });
+  var rollback = null;
 
   $scope.cancel = function () {
-    $scope.select($scope.selected.id);
+    angular.extend($scope.selected, rollback);
+    $scope.editing = false;
   };
 
   $scope.edit = function () {
-    var editRecord = AccountsApi.get({id:$scope.selected.id}, function() {
-      $scope.selected = editRecord;
-      $scope.editing = true;
-      $scope.selectedId = $scope.selected.id;
-    });
+    rollback = angular.copy($scope.selected);
+    $scope.editing = true;
   };
 
-
-
   $scope.new = function() {
+    rollback = $scope.selected;
     $scope.selected = new AccountsApi();
     $scope.editing=true;
   };
 
   $scope.save = function () {
     $scope.selected.$save(function(response) {
-      $scope.selected = response;
-      alert(response.id);
-      $scope.select(response.id);
+      $scope.selected = AccountCollection.add(response);
+      rollback = null;
     });
   };
 
   $scope.update = function () {
     AccountsApi.update({id:$scope.selected.id}, $scope.selected, function(response) {
-      $scope.selected = response;
+      angular.extend($scope.selected, response);
       $scope.editing = false;
-      $scope.selected_id = $scope.selected.id;
+      rollback = null;
     });
   };
-
-
 
   $transclude(function(clone,scope) {
     $scope.title = clone.html();
     if ($scope.title == undefined)  $scope.title = "Account";
   });
 
-  $scope.$on('setAccount', function (event, $newAccount) {
-    if ($scope.emitMessage != "Account") {
-      return;
-    }
-    if ($newAccount.id == undefined) {
-      console.log("received: setAccount "+$newAccount+" in " + $scope.title);
-      $scope.select($newAccount);
-    }
-    else {
-      console.log("received: setAccount "+$newAccount.id+" in " + $scope.title);
-      $scope.select($newAccount.id);
-    }
-  });
 
   $scope.$on('setTransfer', function (event, $newAccount) {
     if ($scope.emitMessage != "Transfer") {
@@ -82,29 +96,12 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     }
     console.log("received: setTransfer in " + $scope.title);
     if ($newAccount.id == undefined) {
-      $scope.select($newAccount);
+      selectAccount($newAccount);
     }
     else {
-      $scope.select($newAccount.id);
+      selectAccount($newAccount.id);
     }
   });
-
-
-
-  $scope.select = function(id) {
-    $scope.editing = false;
-    var $changed = ($scope.selectedId != id);
-    $scope.selectedId = id;
-    angular.forEach($scope.accounts, function(account, key) {
-      if (account.id == id) {
-        $scope.selected =   records.data[key];
-        if ($changed) {
-          $scope.change();
-        }
-        return;
-      }
-    });
-  };
 
   $scope.change = function() {
     $scope.selectedId = $scope.selected.id;

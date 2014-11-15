@@ -3,18 +3,53 @@
   <form novalidate role="form" class="form-horizontal">
 
     <div class="form-group">
-      <label class="col-sm-3" for="transaction_amount">    Amount:</label>
-      <div class="col-sm-9"><input id="transaction_amount"   type="number"    ng-model="selected.amount" /></div>
+      <label class="col-sm-3" for="so_name">    Name:</label>
+      <div class="col-sm-9"><input id="so_name"   type="text"    ng-model="selected.name" /></div>
     </div>
 
     <div class="form-group">
-      <label class="col-sm-3" for="transaction_date">  Date </label>
-      <div class="col-sm-9"><input id="transaction_date"   type="date" ng-model="transaction.date"></div>
+      <label class="col-sm-3" for="so_amount">    Amount:</label>
+      <div class="col-sm-9"><input id="so_amount"   type="number"    ng-model="selected.amount" /></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3" for="so_prev_date">  Previous Date </label>
+      <div class="col-sm-9"><input id="so_prev_date"   type="date" ng-model="selected.previous_date"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3" for="so_next_date">  Next Date </label>
+      <div class="col-sm-9"><input id="so_next_date"   type="date" ng-model="selected.next_date"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3" for="so_finish_date">  Finish Date </label>
+      <div class="col-sm-9"><input id="so_finish_date"   type="date" ng-model="selected.finish_date"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3" for="so_increment">  Increment </label>
+      <div class="col-sm-9"><input id="so_increment"   type="number" ng-model="selected.increment"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3" for="so_unit_id">    Unit:</label>
+      <div class="col-sm-9"><input id="so_unit_id"   type="text"    ng-model="selected.unit_id" /></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3" for="so_exceptions">    Exceptions:</label>
+      <div class="col-sm-9"><input id="so_exceptions"   type="text"    ng-model="selected.exceptions" /></div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3" for="so_notes">Notes:</label>
+      <div class="col-sm-9"><input id="so_notes"   type="text"    ng-model="selected.notes" /></div>
     </div>
 
     <account-selector ng-model="selected.account" linked-account="true"></account-selector>
 
-    <account-selector ng-model="selected.transfer" emit-message="Transfer" optional="true">
+    <account-selector ng-model="selected.destination" emit-message="Transfer" optional="true">
       Transfer
     </account-selector>
 

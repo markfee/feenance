@@ -193,10 +193,10 @@ class StandingOrdersController extends BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), StandingOrder::$rules);
+    $validator = Validator::make($data = $this->transformInput(Input::all()), StandingOrder::$rules);
 
 		if ($validator->fails())		{
-			return Respond::ValidationFailed();
+      return Respond::ValidationFailed($validator->getMessageBag()->first());
 		}
 
 		$standingorder = StandingOrder::create($data);
@@ -214,11 +214,11 @@ class StandingOrdersController extends BaseController {
 	{
 		$standingorder = StandingOrder::findOrFail($id);
 
-		$validator = Validator::make($data = Input::all(), StandingOrder::$rules);
+    $validator = Validator::make($data = $this->transformInput(Input::all()), StandingOrder::$rules);
 
 		if ($validator->fails())
 		{
-      return Respond::ValidationFailed();
+      return Respond::ValidationFailed($validator->getMessageBag()->first());
 		}
 
 		$standingorder->update($data);

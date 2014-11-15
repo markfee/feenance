@@ -39,4 +39,23 @@ class StandingOrderTransformer extends Transformer {
       "category"          => $record->category_id ? CategoryTransformer::transform($record->category) : null,
     ];
   }
+
+  public static function transformInput($record) {
+    if (isset($record["amount"])) $record["amount"] *= 100;
+
+    if (isset($record["previous_date"])) {
+      $record["previous_date"] = substr($record["previous_date"], 0, 10);
+    }
+
+    if (isset($record["next_date"])) {
+      $record["next_date"] = substr($record["next_date"], 0, 10);
+    }
+
+    if (isset($record["finish_date"])) {
+      $record["finish_date"] = substr($record["finish_date"], 0, 10);
+    }
+    return $record;
+  }
+
+
 }

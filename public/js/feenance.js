@@ -10,6 +10,12 @@ feenance.filter('range', function() {
   };
 });
 
+feenance.filter('isoDate', function() {
+  return function(input) {
+    return input.substr(0,10);
+  };
+});
+
 feenance.controller('FeenanceController', function($scope, $templateCache) {
   $scope.debug = false;
 

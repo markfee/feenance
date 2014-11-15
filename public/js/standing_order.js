@@ -1,12 +1,30 @@
-feenance.factory('StandingOrderCollection', function(Notifier, StandingOrdersApi, Paginator) {
+feenance.factory('StandingOrderCollection', function(Notifier, StandingOrdersApi, Paginator, $filter) {
   var collection = {data: []};
   collection.data[0] = {id: null, name: "<Please Select>"};
   var standingOrders = StandingOrdersApi.get({},
-    function() {
+    function()
+    {
       angular.extend(collection.data, standingOrders.data);
       collection.data.splice(0, 0, {id: null, name: "<Please Select>"});
+      angular.forEach(collection.data,
+        function(value)
+        {
+          transform(value);
+        }
+      );
     }
   );
+
+  function transform(standingOrder)
+  {
+    try {
+      if (standingOrder.previous_date)
+        standingOrder.previous_date = $filter("isoDate")(standingOrder.previous_date);
+      if (standingOrder.next_date)
+        standingOrder.next_date     = $filter("isoDate")(standingOrder.next_date);
+    } catch(exception) {
+    }
+  }
 
   return {
     collection: function () {

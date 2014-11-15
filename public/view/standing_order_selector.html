@@ -1,7 +1,7 @@
 <div>
   <div class="row">
     <label class="col-sm-3" >Standing Order:</label>
-    <input name="{{name}}" type="number" ng-model="selected.id" ng-show="true">
+    <input name="{{id_name}}" type="number" ng-model="selected.id" ng-show="false">
     <div class="col-sm-9" >
       <select ng-model="selected" ng-options="standingOrder.name for standingOrder in standingOrders|orderBy:predicate" ng-change="change()" ng-show="!editing"> </select>
     </div>

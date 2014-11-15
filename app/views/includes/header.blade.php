@@ -5,5 +5,6 @@
     <a class="navbar-brand" href="{{ URL::to('/import') }}">Import</a>
     <a class="navbar-brand" href="{{ URL::to('/reports/categories') }}">Category</a>
     <button ng-click="toggleDebug()">Debug</button>
+    <button ng-click="clearCache()">Clear Cache</button>
   </div>
 </nav>

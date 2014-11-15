@@ -10,7 +10,7 @@ feenance.filter('range', function() {
   };
 });
 
-feenance.controller('FeenanceController', function($scope) {
+feenance.controller('FeenanceController', function($scope, $templateCache) {
   $scope.debug = false;
 
   $scope.$on('updatedAccount', function($event, account) {
@@ -43,6 +43,13 @@ feenance.controller('FeenanceController', function($scope) {
     $scope.debug = !$scope.debug;
     $scope.$broadcast('setDebug', $scope.debug);
   };
+
+  $scope.clearCache = function() {
+    $scope.clearCache = function() {
+      $templateCache.removeAll();
+    }
+  };
+
 
 });
 

@@ -1,4 +1,4 @@
-feenance.controller('TransactionController', function($scope, TransactionsApi) {
+feenance.controller('TransactionController', function($scope, TransactionsApi, AccountCollection) {
   // Set the default for the Form!
   $scope.page = 1;
   $scope.reset = function() {
@@ -27,8 +27,9 @@ feenance.controller('TransactionController', function($scope, TransactionsApi) {
 
       $scope.transaction.date         =  transaction.date.substr(0,10);
       if (transaction.account_id) {
-        $scope.$broadcast('setAccount', transaction.account_id);
+        $scope.transaction.account = AccountCollection.get(transaction.account_id);
       }
+
       if (transaction.category_id)
         $scope.$broadcast('setCategory', transaction.category_id);
       if (transaction.payee_id)
@@ -38,8 +39,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi) {
 
   $scope.setTransaction = function(transaction_id) {
     __setTransaction(transaction_id);
-  //  if (!$scope.transaction.account)
-      __setTransaction(transaction_id);
+
   }
 
 
@@ -56,10 +56,16 @@ feenance.controller('TransactionController', function($scope, TransactionsApi) {
     $scope.transaction.category_id = (item.id) ? item.id : null;
   });
 
-  $scope.$on('updatedAccount', function ($event, item) {
-    $event.stopPropagation();
-    console.log("updatedAccount in TransactionController" + item.id);
-    $scope.transaction.account_id = (item.id) ? item.id : null;
+  $scope.$watch('transaction.account', function(new_val, old_val)
+  {
+    try
+    {
+      if ($scope.transaction != undefined) {
+        $scope.transaction.account_id = $scope.transaction.account.id;
+      }
+    } catch(exception) {
+      $scope.transaction.account_id = null;
+    }
   });
 
   $scope.$on('updatedTransfer', function ($event, item) {

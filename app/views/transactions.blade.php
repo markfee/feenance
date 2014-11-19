@@ -4,7 +4,7 @@
 
   <div>
 
-    <account-selector ng-model="account" account-id="2"> </account-selector>
+    <account-selector ng-model="account" account_id="2"> </account-selector>
 
     <div class = "row">
 

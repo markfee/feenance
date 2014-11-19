@@ -3,13 +3,48 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
   var $_PLEASE_SELECT =  {id: null, name: "<Please select an account>"};
   collection.data[0] = $_PLEASE_SELECT;
 
+  var promises = {};
+
   var accounts = AccountsApi.get({},
     function()
     {
       angular.extend(collection.data, accounts.data);
       collection.data.splice(0, 0, $_PLEASE_SELECT);
+      _updatePromises();
     }
   );
+
+  /*
+   * promises are a set of objects that will contain accounts, once the accounts are returned
+   * from the ajax call.
+   * This private method is called post ajax return to populate all of the promises
+   */
+  function _updatePromises() {
+    angular.forEach(collection.data,
+      function(value, key)
+      {
+        if (promises[value.id] != undefined) {
+          angular.extend(promises[value.id], value);
+        }
+      }
+    );
+  }
+
+  /*
+   * This private method sets a promise and populates it if data is available,
+   * otherwise it waits until the promises are fetched and _updatePromises is called
+   */
+  function _setPromise(promise, id) {
+    angular.forEach(collection.data,
+      function(value)
+      {
+        if (value.id == id) {
+          angular.extend(promise, value);
+        }
+      }
+    );
+    return promise;
+  }
 
   return {
     collection:
@@ -20,16 +55,11 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
     get:
       function (id)
       {
-        var account = null;
-        angular.forEach(collection.data,
-          function(value)
-          {
-            if (value.id == id) {
-              account = value;
-            }
-          }
-        );
-        return account;
+        if (promises[id] != undefined) {
+          return promises[id];
+        }
+        promises[id] = {};
+        return _setPromise(promises[id], id);
       },
     add:
       function(newAccount)
@@ -44,8 +74,6 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
 feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection) {
   $scope.accounts   = AccountCollection.collection();
   $scope.selected   = null;
-  $scope.selectedId = null;
-  $scope.initialSelect = null;
   $scope.title = "Account";
   $scope.name = "account_id";
   $scope.emitMessage = "Account";
@@ -84,7 +112,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     });
   };
 
-  $transclude(function(clone,scope) {
+  $transclude(function(clone, scope) {
     $scope.title = clone.html();
     if ($scope.title == undefined)  $scope.title = "Account";
   });
@@ -103,11 +131,22 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     }
   });
 
-  $scope.change = function() {
-    $scope.selectedId = $scope.selected.id;
+  $scope.selectAccount = function(accountId) {
+    $scope.selected = AccountCollection.get(accountId);
+    return $scope.selected;
+  }
+
+  $scope.$watch('selected.id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        change();
+      }
+    }
+  );
+
+  var change = function() {
     var message = "updated"+$scope.emitMessage;
     console.log("emitting: " +  message + " from " + $scope.title);
-
     $scope.$emit(message, $scope.selected);
   };
 });
@@ -123,11 +162,10 @@ feenance.directive('accountSelector', function() {
     }
  , templateUrl: '/view/account_selector.html'
     , link: function (scope, element, attr) {
-     scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
+      scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
       scope.optional = attr.optional ? true : false;
       if (scope.accountId) {
-        scope.initialSelect = scope.accountId;
-//        scope.select(scope.accountId);
+        scope.selected = scope.selectAccount(scope.accountId);
       }
     }
     , controller: "AccountController"

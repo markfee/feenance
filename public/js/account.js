@@ -24,7 +24,8 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
       function(value, key)
       {
         if (promises[value.id] != undefined) {
-          angular.extend(promises[value.id], value);
+          promises[value.id].index = key;
+//          promises[value.id].data.name += "X";
         }
       }
     );
@@ -36,10 +37,10 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
    */
   function _setPromise(promise, id) {
     angular.forEach(collection.data,
-      function(value)
+      function(value, key)
       {
         if (value.id == id) {
-          angular.extend(promise, value);
+          promise.index = key;
         }
       }
     );
@@ -52,13 +53,13 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
       {
         return collection.data;
       },
-    get:
+    getPromisedIndex:
       function (id)
       {
         if (promises[id] != undefined) {
           return promises[id];
         }
-        promises[id] = {};
+        promises[id] = {index:0};
         return _setPromise(promises[id], id);
       },
     add:
@@ -132,9 +133,18 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   });
 
   $scope.selectAccount = function(accountId) {
-    $scope.selected = AccountCollection.get(accountId);
+    $scope.selected = AccountCollection.getPromisedIndex(accountId);
     return $scope.selected;
   }
+
+
+  $scope.$watch('selected.index',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        $scope.selected = $scope.accounts[new_val];
+      }
+    }
+  );
 
   $scope.$watch('selected.id',
     function(new_val, old_val) {
@@ -165,7 +175,7 @@ feenance.directive('accountSelector', function() {
       scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
       scope.optional = attr.optional ? true : false;
       if (scope.accountId) {
-        scope.selected = scope.selectAccount(scope.accountId);
+        scope.selectAccount(scope.accountId);
       }
     }
     , controller: "AccountController"

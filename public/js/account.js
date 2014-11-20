@@ -15,7 +15,7 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
   );
 
   /*
-   * promises are a set of objects that will contain accounts, once the accounts are returned
+   * promises are a set of objects that will contain the index of an account, once the accounts are returned
    * from the ajax call.
    * This private method is called post ajax return to populate all of the promises
    */
@@ -25,7 +25,6 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
       {
         if (promises[value.id] != undefined) {
           promises[value.id].index = key;
-//          promises[value.id].data.name += "X";
         }
       }
     );
@@ -137,7 +136,6 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     return $scope.selected;
   }
 
-
   $scope.$watch('selected.index',
     function(new_val, old_val) {
       if (new_val != undefined && new_val != old_val) {
@@ -146,19 +144,6 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     }
   );
 
-  $scope.$watch('selected.id',
-    function(new_val, old_val) {
-      if (new_val != undefined && new_val != old_val) {
-        change();
-      }
-    }
-  );
-
-  var change = function() {
-    var message = "updated"+$scope.emitMessage;
-    console.log("emitting: " +  message + " from " + $scope.title);
-    $scope.$emit(message, $scope.selected);
-  };
 });
 
 feenance.directive('accountSelector', function() {

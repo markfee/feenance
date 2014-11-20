@@ -27,7 +27,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
 
       $scope.transaction.date         =  transaction.date.substr(0,10);
       if (transaction.account_id) {
-        $scope.transaction.account = AccountCollection.get(transaction.account_id);
+        $scope.transaction.account = AccountCollection.getPromisedIndex(transaction.account_id);
       }
 
       if (transaction.category_id)
@@ -223,11 +223,16 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
         $scope.paginator = records.paginator;
       });
     }
-  }
+  };
 
-  $scope.$on('setAccount', function ($event, $newAccount) {
-    $scope.onSetAccount($newAccount);
-  });
+  $scope.$watch('account.id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        $scope.onSetAccount($scope.account);
+      }
+    }
+  );
+
 });
 
 feenance.directive('transactionForm', function(AccountsApi) {

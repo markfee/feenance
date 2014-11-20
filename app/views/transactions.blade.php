@@ -4,8 +4,6 @@
 
   <div>
 
-    <account-selector ng-model="account" account_id="2"> </account-selector>
-
     <div class = "row">
 
       <div class = "col-lg-8"  ng-include="'view/transaction_table.html'"> </div>

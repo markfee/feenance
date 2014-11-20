@@ -3,6 +3,8 @@
 
 <div data-ng-controller="TransactionsController" >
 
+  <account-selector ng-model="account" account_id="2"> </account-selector>
+
   <h3>{{account.name}}</h3>
 
   <select ng-model="page" ng-options="n for n in [] | range:1:paginator.last_page" ng-change="refresh()"></select>

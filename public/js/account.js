@@ -147,21 +147,45 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 });
 
 feenance.directive('accountSelector', function() {
- return {
-  restrict: 'E'
- , transclude: true
- ,  scope: {
+  return {
+    restrict: 'E'
+    , transclude: true
+    ,  scope: {
       selected: "=ngModel"
-     , accountId: "=" // remember account_id in markup accountId in directive / controller
-     , name: "@"
+      , accountId: "=" // remember account_id in markup accountId in directive / controller
+      , name: "@"
     }
- , templateUrl: '/view/account_selector.html'
+    , templateUrl: '/view/account_selector.html'
     , link: function (scope, element, attr) {
       scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
       scope.optional = attr.optional ? true : false;
       if (scope.accountId) {
         scope.selectAccount(scope.accountId);
       }
+    }
+    , controller: "AccountController"
+  };
+});
+
+feenance.directive('myaccountSelector', function() {
+  return {
+    restrict: 'E'
+    , transclude: true
+    ,  scope: {
+      accountId: "=ngModel"
+//      , accountId: "=" // remember account_id in markup accountId in directive / controller
+      , name: "@"
+    }
+    , templateUrl: '/view/account_selector.html'
+    , link: function (scope, element, attr) {
+      scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
+      scope.optional = attr.optional ? true : false;
+      if (scope.accountId) {
+        scope.selectAccount(scope.accountId);
+      }
+      scope.$watch('scope.selected.id', function(new_val, old_val) {
+        scope.accountId = new_val;
+      });
     }
     , controller: "AccountController"
   };

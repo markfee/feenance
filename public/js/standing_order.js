@@ -38,7 +38,7 @@ feenance.factory('StandingOrderCollection', function(Notifier, StandingOrdersApi
 
 });
 
-feenance.controller('StandingOrderController', function($scope, StandingOrdersApi, StandingOrderCollection) {
+feenance.controller('StandingOrderController', function($scope, StandingOrdersApi, StandingOrderCollection, AccountCollection) {
   $scope.standingOrders = StandingOrderCollection.collection();
   $scope.selected       = $scope.standingOrders[0]; // the currently selected standing order.
   var rollback       = null; // used to rollback edits
@@ -59,6 +59,23 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
       $scope.reverse=false;
     }
   };
+
+  $scope.$watch('selected.account_id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        $scope.selected.account = AccountCollection.getPromisedIndex($scope.selected.account_id);
+      }
+    }
+  );
+
+  $scope.$watch('selected.account.id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        $scope.selected.account_id = $scope.selected.account.id;
+      }
+    }
+  );
+
 
   $scope.edit = function(transaction) {
     $scope.selected = transaction;

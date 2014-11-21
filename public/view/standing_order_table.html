@@ -18,7 +18,9 @@
 
     <tbody>
       <tr ng-repeat="so in standingOrders|orderBy:predicate:reverse|filter:{id:'!!'}" class="standingOrders" ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
-        <td>{{so.account.name}}           </td>
+        <td>
+          <account-name ng-model="so.account_id"/>
+        </td>
         <td>{{so.name}} </td>
         <td>
           {{so.next_date    | date:'dd/MM/yy'  }}

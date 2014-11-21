@@ -111,10 +111,12 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     });
   };
 
-  $transclude(function(clone, scope) {
-    $scope.title = clone.html();
-    if ($scope.title == undefined)  $scope.title = "Account";
-  });
+  if ($transclude != undefined) {
+    $transclude(function (clone, scope) {
+      $scope.title = clone.html();
+      if ($scope.title == undefined)  $scope.title = "Account";
+    });
+  }
 
   $scope.selectAccount = function(accountId) {
     $scope.selected = AccountCollection.getPromisedIndex(accountId);
@@ -123,7 +125,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 
   $scope.$watch('selected.index',
     function(new_val, old_val) {
-      if (new_val != undefined && new_val != old_val) {
+      if (new_val != undefined) {
         $scope.selected = $scope.accounts[new_val];
       }
     }
@@ -183,6 +185,23 @@ feenance.directive('accountIdSelector', function() {
     , link: function (scope, element, attr) {
       if (scope.account_id) {
         scope.selectAccount(scope.account_id);
+      }
+    }
+    , controller: "AccountController"
+  };
+});
+
+feenance.directive('accountName', function() {
+  return {
+    restrict: 'E'
+    ,  scope: {
+      account_id: "=ngModel",
+      ngModel: "="
+    }
+    , template: '{{selected.name}}'
+    , link: function (scope, element, attr) {
+      if (scope.ngModel) {
+        scope.selectAccount(scope.ngModel);
       }
     }
     , controller: "AccountController"

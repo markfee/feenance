@@ -76,8 +76,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.selected   = null;
   $scope.title = "Account";
   $scope.name = "account_id";
-  $scope.emitMessage = "Account";
-  $scope.optional = false;
+  $scope.account_id = null;
   $scope.editing = false;
   var rollback = null;
 
@@ -117,20 +116,6 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     if ($scope.title == undefined)  $scope.title = "Account";
   });
 
-
-  $scope.$on('setTransfer', function (event, $newAccount) {
-    if ($scope.emitMessage != "Transfer") {
-      return;
-    }
-    console.log("received: setTransfer in " + $scope.title);
-    if ($newAccount.id == undefined) {
-      selectAccount($newAccount);
-    }
-    else {
-      selectAccount($newAccount.id);
-    }
-  });
-
   $scope.selectAccount = function(accountId) {
     $scope.selected = AccountCollection.getPromisedIndex(accountId);
     return $scope.selected;
@@ -140,6 +125,27 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     function(new_val, old_val) {
       if (new_val != undefined && new_val != old_val) {
         $scope.selected = $scope.accounts[new_val];
+      }
+    }
+  );
+
+  $scope.$watch('selected.id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        $scope.account_id = $scope.selected.id;
+      }
+    }
+  );
+
+  function isSelected(account_id) {
+    return $scope.selected != undefined && $scope.selected.id == account_id;
+  }
+
+  $scope.$watch('account_id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        if (!isSelected(new_val))
+          $scope.selectAccount(new_val);
       }
     }
   );
@@ -157,8 +163,6 @@ feenance.directive('accountSelector', function() {
     }
     , templateUrl: '/view/account_selector.html'
     , link: function (scope, element, attr) {
-      scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
-      scope.optional = attr.optional ? true : false;
       if (scope.accountId) {
         scope.selectAccount(scope.accountId);
       }
@@ -167,25 +171,19 @@ feenance.directive('accountSelector', function() {
   };
 });
 
-feenance.directive('myaccountSelector', function() {
+feenance.directive('accountIdSelector', function() {
   return {
     restrict: 'E'
     , transclude: true
     ,  scope: {
-      accountId: "=ngModel"
-//      , accountId: "=" // remember account_id in markup accountId in directive / controller
+      account_id: "=ngModel"
       , name: "@"
     }
     , templateUrl: '/view/account_selector.html'
     , link: function (scope, element, attr) {
-      scope.emitMessage =  attr.emitMessage ? attr.emitMessage : scope.emitMessage;
-      scope.optional = attr.optional ? true : false;
-      if (scope.accountId) {
-        scope.selectAccount(scope.accountId);
+      if (scope.account_id) {
+        scope.selectAccount(scope.account_id);
       }
-      scope.$watch('scope.selected.id', function(new_val, old_val) {
-        scope.accountId = new_val;
-      });
     }
     , controller: "AccountController"
   };

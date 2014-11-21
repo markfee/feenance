@@ -46,10 +46,7 @@
       <label class="col-sm-3" for="so_notes">Notes:</label>
       <div class="col-sm-9"><input id="so_notes"   type="text"    ng-model="selected.notes" /></div>
     </div>
-
-    <account-selector ng-model="selected.account" linked-account="true"></account-selector>
-
-    <myaccount-selector ng-model="selected.account_id" linked-account="true"></myaccount-selector>
+    <account-id-selector ng-model="selected.account_id" linked-account="true"></account-id-selector>
 
     <account-selector ng-model="selected.destination" emit-message="Transfer" optional="true">
       Transfer

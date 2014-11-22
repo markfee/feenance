@@ -39,9 +39,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
 
   $scope.setTransaction = function(transaction_id) {
     __setTransaction(transaction_id);
-
   }
-
 
   $scope.$on('editTransaction', function (event, transaction) {
     $scope.setTransaction(transaction.id);
@@ -109,6 +107,7 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
 });
 
 feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi) {
+  $scope.account_id = 2;
   $scope.transactions = null;
   $scope.predicate    = ["date", "id"];
   $scope.reverse      = true;
@@ -130,7 +129,7 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
 
   $scope.$on('addTransactions', function($event, $transactions) {
     angular.forEach($transactions, function($transaction, $key) {
-      if ($transaction.account_id == $scope.accountId) {
+      if ($transaction.account_id == $scope.account_id) {
         $scope.transactions.push($transaction);
       }
     });
@@ -178,13 +177,13 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   };
 
   $scope.refresh = function () {
-    $scope.onSetAccount($scope.account);
+    $scope.onSetAccount($scope.account_id);
   };
 
   $scope.deleteUnreconciled = function() {
-    if ($scope.account.id) {
-      alert("This will delete all unreconciled transactions for account " + $scope.account.id);
-      AccountsApi.deleteUnreconciled({id:$scope.account.id}, function(response) {
+    if ($scope.account_id) {
+      alert("This will delete all unreconciled transactions for account " + $scope.account_id);
+      AccountsApi.deleteUnreconciled({id:$scope.account_id}, function(response) {
         alert("Successfully deleted all unreconciled transactions");
       }, function() {
         alert("Deletion failed");
@@ -195,9 +194,9 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   };
 
   $scope.reconcileAll = function() {
-    if ($scope.account.id) {
-      alert("This will reconciled transactions for account " + $scope.account.id);
-      AccountsApi.reconcileAll({id:$scope.account.id}, function(response) {
+    if ($scope.account_id) {
+      alert("This will reconciled transactions for account " + $scope.account_id);
+      AccountsApi.reconcileAll({id:$scope.account_id}, function(response) {
         alert("Successfully reconciled all transactions");
       }, function() {
         alert("Failed to reconcile all transactions");
@@ -208,10 +207,10 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   };
 
 
-  $scope.onSetAccount = function ($newAccount) {
-    if ($newAccount.id) {
-      $scope.account = $newAccount;
-      var accountsApiParameters =  {id:$newAccount.id, page:$scope.page  };
+  $scope.onSetAccount = function ($newAccount_id) {
+    if ($newAccount_id) {
+      $scope.account_id = $newAccount_id;
+      var accountsApiParameters =  {id:$newAccount_id, page:$scope.page  };
       if ($scope.reconciled_only) {
         accountsApiParameters.filter = "reconciled";
       } else if ($scope.unreconciled_only) {
@@ -219,16 +218,16 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
       }
       var records = AccountsApi.transactions( accountsApiParameters ,function () {
         $scope.transactions = records.data;
-        $scope.accountId = $newAccount.id;
+//        $scope.accountId = $newAccount_id;
         $scope.paginator = records.paginator;
       });
     }
   };
 
-  $scope.$watch('account.id',
+  $scope.$watch('account_id',
     function(new_val, old_val) {
       if (new_val != undefined && new_val != old_val) {
-        $scope.onSetAccount($scope.account);
+        $scope.onSetAccount($scope.account_id);
       }
     }
   );
@@ -262,8 +261,6 @@ feenance.directive('transactionUploader', function() {
     , controller: "TransactionController"
   };
 });
-
-
 
 feenance.directive('transfer', function(TransactionsApi, AccountsApi) {
   return {

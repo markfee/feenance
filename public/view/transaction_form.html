@@ -10,9 +10,9 @@
       <div class="col-sm-9"><input id="transaction_date"   type="date" ng-model="transaction.date"></div>
     </div>
 
-    <account-selector ng-model="transaction.account" linked-account="true"></account-selector>
+    <account-id-selector ng-model="transaction.account_id"></account-id-selector>
     <account-selector ng-model="transaction.transfer" emit-message="Transfer" optional="true">
-      Transfer
+      TodoTransfer
     </account-selector>
 
     <payee-selector ng-model="transaction.payee" >        </payee-selector>

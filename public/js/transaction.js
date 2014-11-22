@@ -10,7 +10,6 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
     $scope.transaction.account_id   = null;
     $scope.transaction.transfer_id  = null;
     $scope.transaction.payee_id     = null;
-    $scope.transaction.account      = null;
     $scope.transaction.transfer     = null;
     $scope.transaction.payee        = null;
     $scope.page = 1;
@@ -21,14 +20,10 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
   var __setTransaction = function(transaction_id) {
     var transaction = TransactionsApi.get({id:transaction_id}, function() {
       $scope.transaction = transaction;
-      $scope.transaction.account      = null;
       $scope.transaction.transfer     = null;
       $scope.transaction.payee        = null;
 
       $scope.transaction.date         =  transaction.date.substr(0,10);
-      if (transaction.account_id) {
-        $scope.transaction.account = AccountCollection.getPromisedIndex(transaction.account_id);
-      }
 
       if (transaction.category_id)
         $scope.$broadcast('setCategory', transaction.category_id);
@@ -52,18 +47,6 @@ feenance.controller('TransactionController', function($scope, TransactionsApi, A
 
   $scope.$on('categoryUpdated', function (something, item) {
     $scope.transaction.category_id = (item.id) ? item.id : null;
-  });
-
-  $scope.$watch('transaction.account', function(new_val, old_val)
-  {
-    try
-    {
-      if ($scope.transaction != undefined) {
-        $scope.transaction.account_id = $scope.transaction.account.id;
-      }
-    } catch(exception) {
-      $scope.transaction.account_id = null;
-    }
   });
 
   $scope.$on('updatedTransfer', function ($event, item) {

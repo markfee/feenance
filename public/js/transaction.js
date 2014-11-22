@@ -1,4 +1,4 @@
-feenance.controller('TransactionController', function($scope, TransactionsApi, AccountCollection) {
+feenance.controller('TransactionController', function($scope, TransactionsApi) {
   // Set the default for the Form!
   $scope.page = 1;
   $scope.reset = function() {

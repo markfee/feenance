@@ -1,7 +1,8 @@
 feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
   var collection = { data: [] };
+  var $_WAITING =  {id: null, name: "..fetching accounts"};
   var $_PLEASE_SELECT =  {id: null, name: "<Please select an account>"};
-  collection.data[0] = $_PLEASE_SELECT;
+  collection.data[0] = $_WAITING;
 
   var promises = {};
 

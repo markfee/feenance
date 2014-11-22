@@ -11,7 +11,7 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
     $scope.reconciled_all     = (val == undefined);
     $scope.reconciled_only    = !$scope.reconciled_all && (val == "reconciled");
     $scope.unreconciled_only  = !$scope.reconciled_all && (val == "unreconciled");
-  }
+  };
 
   $scope.reconciledFilter = function(element) {
     return  $scope.reconciled_only   ? element.reconciled >  0 ?  true : false
@@ -69,7 +69,7 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   };
 
   $scope.refresh = function () {
-    $scope.onSetAccount($scope.account_id);
+    __SetAccount($scope.account_id);
   };
 
   $scope.deleteUnreconciled = function() {
@@ -99,7 +99,7 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   };
 
 
-  $scope.onSetAccount = function ($newAccount_id) {
+  __SetAccount = function ($newAccount_id) {
     if ($newAccount_id) {
       $scope.account_id = $newAccount_id;
       var accountsApiParameters =  {id:$newAccount_id, page:$scope.page  };
@@ -110,7 +110,6 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
       }
       var records = AccountsApi.transactions( accountsApiParameters ,function () {
         $scope.transactions = records.data;
-//        $scope.accountId = $newAccount_id;
         $scope.paginator = records.paginator;
       });
     }
@@ -119,7 +118,7 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   $scope.$watch('account_id',
     function(new_val, old_val) {
       if (new_val != undefined && new_val != old_val) {
-        $scope.onSetAccount($scope.account_id);
+        __SetAccount($scope.account_id);
       }
     }
   );

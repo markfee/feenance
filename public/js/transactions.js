@@ -1,11 +1,12 @@
 feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi) {
-  $scope.account_id = 2;
+  $scope.account_id = 0;
   $scope.transactions = null;
   $scope.predicate    = ["date", "id"];
   $scope.reverse      = true;
   $scope.reconciled_all     = true;
   $scope.reconciled_only    = false;
   $scope.unreconciled_only  = false;
+  $scope.account_id = 2;
 
   $scope.showReconciled = function(val) {
     $scope.reconciled_all     = (val == undefined);
@@ -28,7 +29,6 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
   });
 
   $scope.onClickBankString = function(bank_string_id) {
-//    alert(bank_string_id);
     $scope.$emit("BankStringClicked", bank_string_id);
   };
 
@@ -68,10 +68,6 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
 
   };
 
-  $scope.refresh = function () {
-    __SetAccount($scope.account_id);
-  };
-
   $scope.deleteUnreconciled = function() {
     if ($scope.account_id) {
       alert("This will delete all unreconciled transactions for account " + $scope.account_id);
@@ -98,7 +94,6 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
     }
   };
 
-
   __SetAccount = function ($newAccount_id) {
     if ($newAccount_id) {
       $scope.account_id = $newAccount_id;
@@ -110,16 +105,22 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
       }
       var records = AccountsApi.transactions( accountsApiParameters ,function () {
         $scope.transactions = records.data;
+        $scope.account_id = $newAccount_id;
         $scope.paginator = records.paginator;
       });
     }
   };
 
+  $scope.refresh = function () {
+    __SetAccount($scope.account_id);
+  };
+
   $scope.$watch('account_id',
     function(new_val, old_val) {
-      if (new_val != undefined && new_val != old_val) {
+      if (new_val && new_val != old_val) {
         __SetAccount($scope.account_id);
       }
     }
   );
+  __SetAccount($scope.account_id);
 });

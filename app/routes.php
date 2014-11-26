@@ -55,6 +55,9 @@ Route::group(['before' => ''], function() {
   Route::group(['prefix' =>  'api/v1/'], function()
   {
     $NAMESPACE = 'Feenance\\Api\\';
+
+    Route::post('transfer/join_transactions',              $NAMESPACE.'TransferController@joinTwoTransactionsAsTransfer');
+
     Route::get('accounts/{id}/transactions',                  $NAMESPACE.'TransactionsController@index');
     Route::get('accounts/{id}/transactions/reconciled',       $NAMESPACE.'TransactionsController@reconciled');
     Route::get('accounts/{id}/transactions/unreconciled',     $NAMESPACE.'TransactionsController@unreconciled');

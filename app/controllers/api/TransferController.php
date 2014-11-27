@@ -1,8 +1,13 @@
 <?php namespace Feenance\Api;
 use Feenance\Model\Transaction;
+use Feenance\Model\Transfer;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Markfee\Responder\Respond;
+use \Validator;
+use \Input;
+use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 
 /**
  * Created by PhpStorm.
@@ -16,7 +21,7 @@ class TransferController extends BaseController {
 
   public function joinTwoTransactionsAsTransfer()
   {
-    $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
+    $validator = Validator::make($data = $this->transformInput(Input::all()), Transfer::$rules);
 
     if ($validator->fails())		{
       Respond::WithErrors($validator->getMessageBag());
@@ -49,6 +54,8 @@ class TransferController extends BaseController {
       Respond::setStatusCode(ResponseCodes::HTTP_CREATED);
       return Respond::Raw($this->transform($transfer));
 
+    } catch (QueryException $e) {
+      return Respond::QueryException($e);
     } catch (\Exception $ex) {
       return Respond::ValidationFailed($ex->getMessage());
     }

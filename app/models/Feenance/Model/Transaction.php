@@ -1,6 +1,4 @@
-<?php
-
-namespace Feenance\Model;
+<?php namespace Feenance\Model;
 use DB;
 use Eloquent;
 

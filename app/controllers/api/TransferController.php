@@ -8,6 +8,7 @@ use Markfee\Responder\Respond;
 use \Validator;
 use \Input;
 use Symfony\Component\HttpFoundation\Response as ResponseCodes;
+use \Carbon\Carbon;
 
 /**
  * Created by PhpStorm.
@@ -19,8 +20,17 @@ use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 class TransferController extends BaseController {
 
 
+  /**
+   * expects a POST { source: id, destination: id }
+   * creates a transfer if the two transactions exist
+   * and the dates are the same
+   * and the accounts don't match
+   * and the amounts are the same (with opposite signs)
+   * @return \Illuminate\Http\JsonResponse
+   */
   public function joinTwoTransactionsAsTransfer()
   {
+
     $validator = Validator::make($data = $this->transformInput(Input::all()), Transfer::$rules);
 
     if ($validator->fails())		{
@@ -32,7 +42,9 @@ class TransferController extends BaseController {
     $destinationId  = $data["destination"];
 
     try {
+      /** @var Transaction $sourceTransaction */
       $sourceTransaction = Transaction::findOrFail($sourceId);
+      /** @var Transaction $destinationTransaction */
       $destinationTransaction = Transaction::findOrFail($destinationId);
     } catch(ModelNotFoundException $ex) {
       return Respond::NotFound("Transaction not found for transfer");
@@ -42,6 +54,17 @@ class TransferController extends BaseController {
       if ($sourceTransaction->account_id == $destinationTransaction->account_id) {
         return Respond::ValidationFailed("Source and Destination accounts must be different");
       }
+
+      /** @var Carbon $srcDate */
+      $srcDate = $sourceTransaction->date;
+      /** @var Carbon $destinationDate */
+      $destinationDate = $destinationTransaction->date;
+
+      if (0 !== $srcDate->diffInDays($destinationDate)) {
+        return Respond::ValidationFailed("Source and destination transactions must be made on the same day");
+      }
+
+
       if ($sourceTransaction->amount + $destinationTransaction->amount !== 0) {
         return Respond::ValidationFailed("Source amount must be equal to minus the destination amount");
       }
@@ -61,4 +84,20 @@ class TransferController extends BaseController {
     }
   }
 
-} 
+    /**
+     * returns a collection of potential transfers
+     * with the same date
+     * and the accounts don't match
+     * and the amounts are the same (with opposite signs)
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPotentialTransfers()
+    {
+      $query = "
+      ";
+
+    }
+
+
+
+    }

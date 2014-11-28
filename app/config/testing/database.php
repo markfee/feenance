@@ -6,12 +6,17 @@
  * Time: 06:30
  */
 return array(
-  'default' => 'sqlite',
   'connections' => array(
-    'sqlite' => array(
-      'driver'   => 'sqlite',
-      'database' => ':memory:',
-      'prefix'   => ''
+    'mysql' => array(
+      'driver'    => 'mysql',
+      'driver'    => 'mysql',
+      'engine'    => 'MEMORY',
+      'database'  => 'feenance_testing',
+      'username'  => 'feenance_s',
+      'password'  => 'titduWigsojnefateej',
+      'charset'   => 'utf8',
+      'collation' => 'utf8_unicode_ci',
+      'prefix'    => '',
     ),
   )
 );

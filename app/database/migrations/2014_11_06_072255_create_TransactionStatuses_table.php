@@ -12,7 +12,6 @@ class CreateTransactionStatusesTable extends Migration {
 	 */
 	public function up()
 	{
-    Schema::dropIfExists('transaction_statuses');
 		Schema::create('transaction_statuses', function(Blueprint $table)
 		{
 			$table->increments('id');
@@ -32,11 +31,6 @@ class CreateTransactionStatusesTable extends Migration {
       $table->foreign('status_id')->references('id')->on('transaction_statuses');
     });
 
-    Schema::table('transactions', function(Blueprint $table)
-    {
-      $table->integer('status_id')->unsigned();
-    });
-
 	}
 
 
@@ -47,7 +41,12 @@ class CreateTransactionStatusesTable extends Migration {
 	 */
 	public function down()
 	{
-    Schema::drop('transaction_statuses');
+    Schema::table('transactions', function($table) {
+      $table->dropForeign('transactions_status_id_foreign');
+      $table->dropColumn('status_id');
+    });
+
+    Schema::dropIfExists('transaction_statuses');
 	}
 
 }

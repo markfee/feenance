@@ -196,9 +196,15 @@ class TransactionsController extends BaseController {
     if (!empty($transfer_id)) {
       return $this->createTransfer($data, $transfer_id);
     }
-    $transaction = Transaction::create($data);
-    Respond::setStatusCode(ResponseCodes::HTTP_CREATED);
-    return Respond::Raw($this->transform($transaction));
+    try {
+      $transaction = Transaction::create($data);
+      Respond::setStatusCode(ResponseCodes::HTTP_CREATED);
+      return Respond::Raw($this->transform($transaction));
+    } catch(Exception $ex) {
+      $messageBag = new MessageBag();
+      $messageBag->add($ex->getCode(), $ex->getMessage());
+      return Respond::WithErrors($messageBag);
+    }
 	}
 
   private function createTransfer($data, $transfer_id) {
@@ -270,7 +276,7 @@ class TransactionsController extends BaseController {
    * @param  SplFileObject $SplFileObject
    * @return Response
    */
-  public function uploadFile($account_id, $SplFileObject) {
+  static public function uploadFile($account_id, $SplFileObject) {
     try {
       // TODO - UNCOMMENT THESE PRINTS AND CREATE A LOG
       $header = $SplFileObject->getCurrentLine();

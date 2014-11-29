@@ -9,7 +9,7 @@ return array(
   'connections' => array(
     'mysql' => array(
       'driver'    => 'mysql',
-      'driver'    => 'mysql',
+      'host'      => 'mysqltest',
       'engine'    => 'MEMORY',
       'database'  => 'feenance_testing',
       'username'  => 'feenance_s',

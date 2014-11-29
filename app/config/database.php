@@ -23,6 +23,18 @@ return array(
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
 		),
+    'mysql_testing' => array(
+      'driver'    => 'mysql',
+      'host'      => 'mysqltest',
+      'engine'    => 'MEMORY',
+      'database'  => 'feenance_testing',
+      'username'  => 'feenance_s',
+      'password'  => 'titduWigsojnefateej',
+      'charset'   => 'utf8',
+      'collation' => 'utf8_unicode_ci',
+      'prefix'    => '',
+    ),
+
 	),
 
 	'migrations' => 'migrations',

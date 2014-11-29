@@ -14,6 +14,7 @@ class CreateTransactionsTable extends Migration {
 	{
 		Schema::create('transactions', function(Blueprint $table)
 		{
+      $table->engine = DB::connection()->getConfig("engine");
 			$table->increments('id');
       $table->datetime('date');
       $table->integer('amount');      // in pence, signed.
@@ -36,7 +37,6 @@ class CreateTransactionsTable extends Migration {
       $table->index(['date', 'id']);
 		});
 
-    if (!App::runningUnitTests()) {
       DB::unprepared('
         CREATE TRIGGER transaction_update_balance AFTER UPDATE ON transactions FOR EACH ROW
         BEGIN
@@ -104,7 +104,6 @@ class CreateTransactionsTable extends Migration {
                 ;
             END;
           ');*/
-    }
   }
 
 

@@ -14,7 +14,8 @@ class CreatePayeesTable extends Migration {
 	{
 		Schema::create('payees', function(Blueprint $table)
 		{
-			$table->increments('id');
+      $table->engine = DB::connection()->getConfig("engine");
+      $table->increments('id');
 			$table->string('name');
 			$table->integer('category_id')->nullable()->unsigned();
       $table->foreign('category_id')->references('id')->on('categories');

@@ -14,6 +14,7 @@ class CreateTransactionStatusesTable extends Migration {
 	{
 		Schema::create('transaction_statuses', function(Blueprint $table)
 		{
+      $table->engine = DB::connection()->getConfig("engine");
 			$table->increments('id');
       $table->string('name')->nullable();
       $table->char('code', 4);

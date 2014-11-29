@@ -14,6 +14,7 @@ class CreateBankStringsTable extends Migration {
 	{
 		Schema::create('bank_strings', function(Blueprint $table)
 		{
+      $table->engine = DB::connection()->getConfig("engine");
 			$table->increments('id');
       $table->integer('account_id')->unsigned();
       $table->string('name');

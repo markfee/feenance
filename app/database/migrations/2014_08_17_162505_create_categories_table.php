@@ -14,8 +14,9 @@ class CreateCategoriesTable extends Migration {
 	{
 		Schema::create('categories', function(Blueprint $table)
 		{
+      $table->engine = DB::connection()->getConfig("engine");
 			$table->increments('id');
-			$table->string('name');
+      $table->string('name');
       $table->integer('parent_id')->nullable()->unsigned();
       $table->integer('mmex_subcatid')->nullable()->unsigned();
       $table->foreign('parent_id')->references('id')->on('categories');

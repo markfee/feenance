@@ -14,6 +14,7 @@ class CreateAccountsTable extends Migration {
 	{
 		Schema::create('accounts', function(Blueprint $table)
 		{
+      $table->engine = DB::connection()->getConfig("engine");
 			$table->increments('id');
 			$table->string('name');
 			$table->string('acc_number')->nullable();

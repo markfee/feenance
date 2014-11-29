@@ -13,6 +13,7 @@ class CreateStandingOrdersTable extends Migration {
 	public function up()
 	{
     Schema::create('units', function(Blueprint $table) {
+      $table->engine = DB::connection()->getConfig("engine");
       $table->char('id', 1);
       $table->string('unit');     // eg day, month, year
       $table->string('singular'); // eg daily, monthly, yearly
@@ -23,6 +24,7 @@ class CreateStandingOrdersTable extends Migration {
 
     Schema::create('standing_orders', function(Blueprint $table)
 		{
+      $table->engine = DB::connection()->getConfig("engine");
       $table->increments('id');
       $table->string('name')->nullable();
       $table->datetime('previous_date');

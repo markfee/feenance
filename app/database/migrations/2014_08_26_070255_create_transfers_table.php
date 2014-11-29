@@ -14,6 +14,7 @@ class CreateTransfersTable extends Migration {
 	{
 		Schema::create('transfers', function(Blueprint $table)
 		{
+      $table->engine = DB::connection()->getConfig("engine");
       // These are source and destination transactions NOT acccounts.
       // This table links two transactions together as a transfer.
 			$table->integer('source')->unsigned();

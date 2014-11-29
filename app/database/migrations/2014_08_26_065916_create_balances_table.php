@@ -14,6 +14,7 @@ class CreateBalancesTable extends Migration {
 	{
 		Schema::create('balances', function(Blueprint $table)
 		{
+      $table->engine = DB::connection()->getConfig("engine");
 			$table->integer('transaction_id')->unsigned();
 			$table->integer('balance');
 			$table->timestamps();
@@ -21,7 +22,6 @@ class CreateBalancesTable extends Migration {
       $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
 		});
 
-    if (!App::runningUnitTests()) {
       DB::unprepared('
 
         DROP PROCEDURE IF EXISTS refresh_balances;
@@ -70,7 +70,6 @@ class CreateBalancesTable extends Migration {
         END;
       ');
     }
-	}
 
 
 	/**

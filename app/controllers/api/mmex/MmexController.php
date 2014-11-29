@@ -1,8 +1,6 @@
-<?php
+<?php namespace Feenance\MMEX;
 
-namespace Feenance\MMEX;
-
-class MmexController extends \api\BaseController {
+class MmexController extends \Feenance\Api\BaseController {
 
 	/**
 	 * Display a listing of the resource.

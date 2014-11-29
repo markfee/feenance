@@ -32,10 +32,6 @@ class testTransactionsTableSeeder extends Seeder {
         "category_id"       =>  null,
         "notes"             =>  $faker->sentence(),
       ]);
-      Balance::create([
-        "transaction_id"  =>$src->id,
-        "balance"         =>$accountBalances[$account]
-      ]);
       if ($src->amount > 0 && $faker->boolean()) {
         $account = $accounts->random(1)->id;
         if (empty($accountBalances[$account])) $accountBalances[$account] = 0;
@@ -54,11 +50,6 @@ class testTransactionsTableSeeder extends Seeder {
           'source'      => $src->id,
           'destination' => $destination->id
           ]);
-        Balance::create([
-          "transaction_id"  =>$destination->id,
-          "balance"         =>$accountBalances[$account]
-        ]);
-
       }
       $date->addDays($faker->numberBetween(1, 365));
     }

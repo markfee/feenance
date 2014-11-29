@@ -17,7 +17,7 @@ class BankStringsTest extends TestCase {
   }*/
 
   public function test_passing_new_string_will_create_record_or_return_existing_one() {
-
+    $this->runMigrations();
     $bank_string = BankString::findOrCreate(123, "New String Doesn't Exist")->firstOrFail();
     $this->assertEquals($bank_string->id, 1);
     $this->assertEquals($bank_string->name, "New String Doesn't Exist");

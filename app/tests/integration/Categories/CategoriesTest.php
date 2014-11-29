@@ -7,10 +7,9 @@ class CategoriesTest extends TestCase {
   private $API_ROOT  = "api/v1/categories";
 
   public function test_controller_splits_two_sub_categories() {
-    $catCon = new CategoriesController();
     $category = "House: Insurance";
 
-    $split = $catCon->splitCategory($category);
+    $split = CategoriesController::splitCategory($category);
 
     $this->assertTrue(is_array($split), "Result should be an array");
     $this->assertEquals(2, count($split), "Result should be an array of length 2");

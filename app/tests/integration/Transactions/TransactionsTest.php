@@ -14,7 +14,6 @@ class TransactionsTest extends TestCase {
     $this->seed('AccountsTableSeeder');
     $this->seed('TransactionsTableSeeder');
     $response = $this->call('GET', $this->API_ROOT , [], [], array('HTTP_ACCEPT' => 'application/json') );
-//    dd($response);
     $json = $this->assertValidJsonResponse($response, ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
   }
 
@@ -84,9 +83,10 @@ class TransactionsTest extends TestCase {
   }
 
   public function test_import_csv() {
+    $this->runMigrations();
     $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Transactions/test_statement.csv", "r");
-    $controller = new TransactionsController();
-    $controller->uploadFile(1, $file);
+//    $controller = new TransactionsController();
+    TransactionsController::uploadFile(1, $file);
 
     $response = $this->call('GET', $this->API_ROOT , [], [], array('HTTP_ACCEPT' => 'application/json') );
     $this->assertEquals($response->getData()->paginator->total, 25);
@@ -96,6 +96,7 @@ class TransactionsTest extends TestCase {
    * bank_string_id to be updated, provided they do not already have some different map data applied.
    */
   public function test_map_update() {
+    $this->runMigrations();
     \Feenance\Model\BankString::create(["account_id" =>1, "name"  => "This will be updated"]);
     \Feenance\Model\BankString::create(["account_id" =>1, "name"  => "This will not be updated"]);
     $transactionModel = new Transaction;

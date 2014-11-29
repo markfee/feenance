@@ -32,7 +32,6 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
     return $this;
   }
 
-
   public function seed($seederName) {
     Eloquent::unguard();
     $seeder = new \DatabaseSeeder();
@@ -46,13 +45,17 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
   {
     parent::setUp();
     Respond::Reset();
-    Artisan::call('migrate');
-    Eloquent::reguard();
-
   }
 
+  public function runMigrations()
+  {
+//    print "\nCALLING MIGRATE FOR " . get_class($this);
+    Artisan::call('migrate:refresh');
+    Eloquent::reguard();
+//    print "\n";
+  }
 
-  protected function assertNoErrors($jsonResponse) {
+    protected function assertNoErrors($jsonResponse) {
     $this->assertEquals(true,  isset($jsonResponse->errors),    "Empty errors attribute expected: \n");
     if ( count($jsonResponse->errors) ) {
       $str = print_r($jsonResponse->errors, true);

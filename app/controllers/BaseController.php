@@ -1,5 +1,4 @@
-<?php
-namespace Feenance\Api;
+<?php namespace Feenance\Api;
 use Feenance\Misc\Transformers\Transformer;
 use \Event;
 use Illuminate\Support\Facades\Input;

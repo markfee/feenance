@@ -1,4 +1,4 @@
-<?php
+<?php namespace Feenance\Misc\Transformers;
 /**
  * Created by PhpStorm.
  * User: mark
@@ -6,7 +6,7 @@
  * Time: 07:40
  */
 
-namespace Feenance\Misc\Transformers;
+
 use Markfee\Responder\Transformer;
 use \Carbon\Carbon;
 use Mockery\CountValidator\Exception;
@@ -25,7 +25,7 @@ class TransactionTransformer extends Transformer {
       "account_id"        => $record->account_id,
       "balance"           => $record->balance ? 0.01 * $record->balance->balance : null,
       "reconciled"        => $record->reconciled,
-      "status"            => $record->status->code ,
+      "status"            => $record->status ? $record->status->code : null ,
       "payee_id"          => $record->payee_id,
       "standing_order_id" => $record->standing_order_id,
       "category_id"       => $record->category_id,

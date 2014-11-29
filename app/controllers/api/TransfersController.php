@@ -1,24 +1,50 @@
-<?php namespace Feenance\Api;
-use Feenance\Model\Transaction;
-use Feenance\Model\Transfer;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+<?php
+
+namespace Feenance\Api;
+
 use Markfee\Responder\Respond;
-use \Validator;
-use \Input;
 use Symfony\Component\HttpFoundation\Response as ResponseCodes;
-use \Carbon\Carbon;
+//use Feenance\Misc\Transformers\TransferTransformer;
+use Feenance\Model\Transfer;
+use Feenance\Model\PotentialTransfer;
+use Feenance\Model\Transaction;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use \Exception;
+use \Input;
+use \Validator;
 
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 26/11/14
- * Time: 07:44
- */
+class TransfersController extends BaseController {
 
-class TransferController extends BaseController {
+  /* @return Transformer */
+//  protected function getTransformer() {    return $this->transformer ?: new TransferTransformer;    }
 
+  /**
+   * Display a listing of transfers
+   *
+   * @return Response
+   */
+  public function index()
+  {
+      $transfers = Transfer::paginate();
+      return Respond::Paginated($transfers, $this->transformCollection($transfers->all()));
+  }
+
+  /**
+   * Display a specific transfer.
+   *
+   * @param  int  $id
+   * @return Response
+   */
+  public function show($id)
+  {
+    try {
+      $transfer = Transfer::where("source", $id)->orWhere("destination", $id)->firstOrFail();
+      return Respond::Raw($this->transform($transfer));
+    } catch (ModelNotFoundException $e) {
+      return Respond::NotFound($e->getMessage());
+    }
+  }
 
   /**
    * expects a POST { source: id, destination: id }
@@ -30,7 +56,6 @@ class TransferController extends BaseController {
    */
   public function joinTwoTransactionsAsTransfer()
   {
-
     $validator = Validator::make($data = $this->transformInput(Input::all()), Transfer::$rules);
 
     if ($validator->fails())		{
@@ -84,20 +109,40 @@ class TransferController extends BaseController {
     }
   }
 
-    /**
-     * returns a collection of potential transfers
-     * with the same date
-     * and the accounts don't match
-     * and the amounts are the same (with opposite signs)
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getPotentialTransfers()
-    {
-      $query = "
-      ";
+  /**
+   * returns a collection of potential transfers
+   * with the same date
+   * and the accounts don't match
+   * and the amounts are the same (with opposite signs)
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function getPotentialTransfers()
+  {
+    $transfers = PotentialTransfer::paginate();
+    return Respond::Paginated($transfers, $transfers->all());
+  }
 
+	/**
+	 * Remove the specified transfer from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+    try {
+      $transfer = Transfer::where("source", $id)->orWhere("destination", $id)->firstOrFail();
+      if (! $transfer->delete() ) {
+        return Respond::InternalError("Failed to delete transfer with source or destination {$id}");
+      }
+    } catch (ModelNotFoundException $e) {
+      return Respond::NotFound($e->getMessage());
+    } catch (QueryException $e) {
+        return Respond::QueryException($e);
+    } catch (Exception $e) {
+      return Respond::InternalError($e->getMessage());
     }
+		return Respond::Success();
+	}
 
-
-
-    }
+}

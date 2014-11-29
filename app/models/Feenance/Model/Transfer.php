@@ -1,6 +1,5 @@
-<?php
+<?php namespace Feenance\Model;
 
-namespace Feenance\Model;
 class Transfer extends \Eloquent {
   protected $fillable = ["source", "destination"];
   public $timestamps = false;

@@ -56,7 +56,11 @@ Route::group(['before' => ''], function() {
   {
     $NAMESPACE = 'Feenance\\Api\\';
 
-    Route::post('transfers/join_transactions',              $NAMESPACE.'TransferController@joinTwoTransactionsAsTransfer');
+    Route::post('transfers',             $NAMESPACE.'TransfersController@joinTwoTransactionsAsTransfer');
+    Route::get('transfers',              $NAMESPACE.'TransfersController@index');
+    Route::get('transfers/potential',    $NAMESPACE.'TransfersController@getPotentialTransfers');
+    Route::get('transfers/{id}',         $NAMESPACE.'TransfersController@show');
+    Route::delete('transfers/{id}',      $NAMESPACE.'TransfersController@destroy');
 
     Route::get('accounts/{id}/transactions',                  $NAMESPACE.'TransactionsController@index');
     Route::get('accounts/{id}/transactions/reconciled',       $NAMESPACE.'TransactionsController@reconciled');

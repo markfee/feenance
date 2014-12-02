@@ -5,6 +5,7 @@ namespace Feenance\Model;
 class PotentialTransfer extends \Eloquent {
   protected $table = "v_potential_transfers";
   protected $fillable = [];
+  protected $dates = ["date"];
   public $timestamps = false;
   static public $rules = [];
 

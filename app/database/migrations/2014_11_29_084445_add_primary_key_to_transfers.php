@@ -32,6 +32,7 @@ class AddPrimaryKeyToTransfers extends Migration {
     {
       $table->foreign('source')->references('id')->on('transactions')->onDelete('cascade')->unique();
       $table->foreign('destination')->references('id')->on('transactions')->onDelete('cascade')->unique();
+      $table->unique(['source', 'destination']);
     });
 
 

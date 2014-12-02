@@ -28,7 +28,7 @@ class TransfersController extends BaseController {
    */
   public function index()
   {
-      $transfers = Transfer::paginate();
+      $transfers = Transfer::paginate($this->paginateCount);
       return Respond::Paginated($transfers, $this->transformCollection($transfers->all()));
   }
 
@@ -140,7 +140,7 @@ class TransfersController extends BaseController {
         $result[] = $response->getData();
       }
       Respond::setData($result);
-      DB::rollBack();
+      DB::commit();
       return Respond::Created($result);
     } catch(Exception $ex)  {
       DB::rollBack();
@@ -157,7 +157,7 @@ class TransfersController extends BaseController {
    */
   public function getPotentialTransfers()
   {
-    $transfers = PotentialTransfer::paginate();
+    $transfers = PotentialTransfer::paginate($this->paginateCount);
     return Respond::Paginated($transfers, (new PotentialTransferTransformer)->transformCollection($transfers->all()));
   }
 

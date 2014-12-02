@@ -4,7 +4,8 @@ namespace Feenance\Api;
 
 use Markfee\Responder\Respond;
 use Symfony\Component\HttpFoundation\Response as ResponseCodes;
-//use Feenance\Misc\Transformers\TransferTransformer;
+use Feenance\Misc\Transformers\TransferTransformer;
+use Feenance\Misc\Transformers\PotentialTransferTransformer;
 use Feenance\Model\Transfer;
 use Feenance\Model\PotentialTransfer;
 use Feenance\Model\Transaction;
@@ -13,11 +14,12 @@ use Illuminate\Database\QueryException;
 use \Exception;
 use \Input;
 use \Validator;
+use \DB;
 
 class TransfersController extends BaseController {
 
   /* @return Transformer */
-//  protected function getTransformer() {    return $this->transformer ?: new TransferTransformer;    }
+  protected function getTransformer() {    return $this->transformer ?: new TransferTransformer;    }
 
   /**
    * Display a listing of transfers
@@ -47,16 +49,17 @@ class TransfersController extends BaseController {
   }
 
   /**
-   * expects a POST { source: id, destination: id }
+   * @param $postData expects a POST { source: id, destination: id }
    * creates a transfer if the two transactions exist
    * and the dates are the same
    * and the accounts don't match
    * and the amounts are the same (with opposite signs)
    * @return \Illuminate\Http\JsonResponse
    */
-  public function joinTwoTransactionsAsTransfer()
+  public function joinTwoTransactionsAsTransfer($postData = null)
   {
-    $validator = Validator::make($data = $this->transformInput(Input::all()), Transfer::$rules);
+    $postData = $postData ?: Input::all();
+    $validator = Validator::make($data = $this->transformInput($postData), Transfer::$rules);
 
     if ($validator->fails())		{
       Respond::WithErrors($validator->getMessageBag());
@@ -110,6 +113,42 @@ class TransfersController extends BaseController {
   }
 
   /**
+   * expects a POST with a data member containing an array of { source: id, destination: id }
+   * creates a transfer of each if the two transactions exist
+   * and the dates are the same
+   * and the accounts don't match
+   * and the amounts are the same (with opposite signs)
+   * if any fail validation, then no update will be made.
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function joinAllTransactionsAsTransfer()
+  {
+    try {
+      $result = [];
+      DB::beginTransaction();
+      $data = Input::get("data");
+      if (!is_array($data)) {
+        throw new Exception("posted should contain an array named data");
+      }
+
+      foreach($data as $transfer) {
+        $response = $this->joinTwoTransactionsAsTransfer($transfer);
+        if (Respond::hasErred()) {
+          Respond::setData(["failedRecord" => $transfer]);
+          return Respond::respond();
+        }
+        $result[] = $response->getData();
+      }
+      Respond::setData($result);
+      DB::rollBack();
+      return Respond::Created($result);
+    } catch(Exception $ex)  {
+      DB::rollBack();
+      return Respond::ValidationFailed($ex->getMessage());
+    }
+  }
+
+  /**
    * returns a collection of potential transfers
    * with the same date
    * and the accounts don't match
@@ -119,7 +158,7 @@ class TransfersController extends BaseController {
   public function getPotentialTransfers()
   {
     $transfers = PotentialTransfer::paginate();
-    return Respond::Paginated($transfers, $transfers->all());
+    return Respond::Paginated($transfers, (new PotentialTransferTransformer)->transformCollection($transfers->all()));
   }
 
 	/**

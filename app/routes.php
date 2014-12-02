@@ -59,6 +59,7 @@ Route::group(['before' => ''], function() {
     Route::post('transfers',             $NAMESPACE.'TransfersController@joinTwoTransactionsAsTransfer');
     Route::get('transfers',              $NAMESPACE.'TransfersController@index');
     Route::get('transfers/potential',    $NAMESPACE.'TransfersController@getPotentialTransfers');
+    Route::post('transfers/potential',    $NAMESPACE.'TransfersController@joinAllTransactionsAsTransfer');
     Route::get('transfers/{id}',         $NAMESPACE.'TransfersController@show');
     Route::delete('transfers/{id}',      $NAMESPACE.'TransfersController@destroy');
 

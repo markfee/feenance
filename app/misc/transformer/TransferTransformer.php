@@ -9,9 +9,12 @@ class TransferTransformer extends Transformer {
   }
 
   public static function transformInput($record) {
+    if (!is_object($record)) {
+      $record = (object) $record;
+    }
     return [
-      $record->source,
-      $record->destination,
+      "source"      =>  (int) $record->source,
+      "destination" =>  (int) $record->destination,
     ];
   }
 }

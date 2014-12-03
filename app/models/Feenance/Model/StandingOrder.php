@@ -4,6 +4,7 @@ namespace Feenance\Model;
 class StandingOrder extends \Eloquent {
 
   protected $fillable = [
+    "name",
     "previous_date",
     "next_date",
     "finish_date",

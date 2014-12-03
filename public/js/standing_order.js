@@ -40,7 +40,7 @@ feenance.factory('StandingOrderCollection', function(Notifier, StandingOrdersApi
 
 feenance.controller('StandingOrderController', function($scope, StandingOrdersApi, StandingOrderCollection, AccountCollection) {
   $scope.standingOrders = StandingOrderCollection.collection();
-  $scope.selected       = $scope.standingOrders[0]; // the currently selected standing order.
+  $scope.selected = new StandingOrdersApi();
   var rollback       = null; // used to rollback edits
   $scope.predicate    = ["next_date"];
   $scope.reverse      = false;
@@ -105,7 +105,7 @@ feenance.controller('StandingOrderController', function($scope, StandingOrdersAp
       $scope.selected.$save(
         function(response)
         {
-          alert("Saved Successfully");
+          alert("Saved New Record Successfully");
         }
       );
     } else {

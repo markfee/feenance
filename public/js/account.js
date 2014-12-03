@@ -157,9 +157,9 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 
 feenance.directive('accountSelector', function() {
   return {
-    restrict: 'E'
-    , transclude: true
-    ,  scope: {
+    restrict: 'E',
+    transclude: true,
+    scope: {
       selected: "=ngModel"
       , accountId: "=" // remember account_id in markup accountId in directive / controller
       , name: "@"
@@ -176,11 +176,11 @@ feenance.directive('accountSelector', function() {
 
 feenance.directive('accountIdSelector', function() {
   return {
-    restrict: 'E'
-    , transclude: true
-    ,  scope: {
-      account_id: "=ngModel"
-      , name: "@"
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      account_id: "=ngModel",
+      name: "@"
     }
     , templateUrl: '/view/account_selector.html'
     , link: function (scope, element, attr) {

@@ -2,6 +2,7 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
   // Set the default for the Form!
   $scope.selected = undefined;
   $scope.selected_id = null;
+  $scope.payee_id = null;
   $scope.editing = false;
 
 
@@ -9,7 +10,7 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
     var record = PayeesApi.get({id:$id}, function() {
       $scope.selected = record;
       $scope.editing = false;
-      $scope.selected_id = $scope.selected.id;
+      $scope.selected_id  = $scope.selected.id;
     });
   };
 
@@ -58,38 +59,68 @@ feenance.controller('PayeeController', function($scope, $http, PayeesApi) {
       $scope.selected_id = $scope.selected.id;
     });
   };
-/*
-  function getPage($page) {
-    $records = PayeesApi.get({page: $page}, function() {
-      $scope.records = $scope.records.concat($records.data);
-      if ($records.paginator != undefined && $records.paginator.next != undefined) {
-        getPage($records.paginator.next);
+
+  $scope.$watch('selected.id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        $scope.payee_id = $scope.selected.id;
       }
-    });
+    }
+  );
+
+  function isSelected(payee_id) {
+    return $scope.selected != undefined && $scope.selected.id == payee_id;
   }
 
-  $scope.records = [];
-  getPage(1);
-*/
+  $scope.$watch('payee_id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        if (!isSelected(new_val))
+          $scope.select(new_val);
+      }
+    }
+  );
+
+
 });
 
 feenance.directive('payeeSelector', function() {
   return {
     restrict: 'E',
-    scope:
-    {
+
+    scope: {
       selected: "=ngModel"
-    , payeeId: "=" // remember payee_id in markup payeeId in directive / controller ???
+      , payeeId: "=" // remember payee_id in markup payeeId in directive / controller ???
+
     }
-  , templateUrl: '/view/payee_selector.html'
-  , link: function (scope, element, attr) {
+    , templateUrl: '/view/payee_selector.html'
+    , link: function (scope, element, attr) {
       if (scope.payeeId) {
         scope.select(scope.payeeId);
       }
     }
-  , controller: "PayeeController"
+    , controller: "PayeeController"
   };
 });
+
+feenance.directive('payeeIdSelector', function() {
+  return {
+    restrict: 'E',
+
+    scope: {
+      payee_id: "=ngModel"
+
+    }
+    , templateUrl: '/view/payee_selector.html'
+    , link: function (scope, element, attr) {
+      if (scope.payee_id) {
+        scope.select(scope.payee_id);
+      }
+    }
+    , controller: "PayeeController"
+  };
+});
+
 
 feenance.directive('payee', function(PayeesApi) {
   return {

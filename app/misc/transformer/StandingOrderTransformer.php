@@ -35,6 +35,8 @@ class StandingOrderTransformer extends Transformer {
       "destination"       => AccountsTransformer::transform($record->destination),
 
       "notes"             => $record->notes?  : null ,
+      "payee_id"          => $record->payee_id ?    (int) $record->payee_id : null,
+      "category_id"       => $record->category_id ?    (int) $record->category_id : null,
       "payee"             => $record->payee_id ?    PayeeTransformer::transform($record->payee) : null,
       "category"          => $record->category_id ? CategoryTransformer::transform($record->category) : null,
     ];

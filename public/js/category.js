@@ -32,6 +32,7 @@ feenance.controller('CategoryController', function($scope, $http, CategoriesApi)
   // Set the default for the Form!
   $scope.selected = undefined;
   $scope.selected_id = null;
+  $scope.category_id = null;
   $scope.editing = false;
 
 
@@ -97,22 +98,62 @@ feenance.controller('CategoryController', function($scope, $http, CategoriesApi)
       }
     });
   }
-//  $scope.records = [];
-//  getPage(1);
+
+  $scope.$watch('selected.id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        $scope.category_id = $scope.selected.id;
+      }
+    }
+  );
+
+  function isSelected(category_id) {
+    return $scope.selected != undefined && $scope.selected.id == category_id;
+  }
+
+  $scope.$watch('category_id',
+    function(new_val, old_val) {
+      if (new_val != undefined && new_val != old_val) {
+        if (!isSelected(new_val))
+          $scope.select(new_val);
+      }
+    }
+  );
+
+
 });
 
 feenance.directive('categorySelector', function() {
   return {
     restrict: 'E',
-    scope:
-    {
+
+    scope: {
       selected: "=ngModel"
       , categoryId: "=" // remember category_id in markup categoryId in directive / controller ???
+
     }
     , templateUrl: '/view/category_selector.html'
     , link: function (scope, element, attr) {
       if (scope.categoryId) {
         scope.select(scope.categoryId);
+      }
+    }
+    , controller: "CategoryController"
+  };
+});
+
+feenance.directive('categoryIdSelector', function() {
+  return {
+    restrict: 'E',
+
+    scope: {
+      category_id: "=ngModel"
+
+    }
+    , templateUrl: '/view/category_selector.html'
+    , link: function (scope, element, attr) {
+      if (scope.category_id) {
+        scope.select(scope.category_id);
       }
     }
     , controller: "CategoryController"

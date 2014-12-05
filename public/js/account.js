@@ -1,20 +1,6 @@
-feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
+feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
   var collection = { data: [] };
-  var $_WAITING =  {id: null, name: "..fetching accounts"};
-  var $_PLEASE_SELECT =  {id: null, name: "<Please select an account>"};
-  collection.data[0] = $_WAITING;
-
   var promises = {};
-
-  var accounts = AccountsApi.get({},
-    function()
-    {
-      angular.extend(collection.data, accounts.data);
-      collection.data.splice(0, 0, $_PLEASE_SELECT);
-      _updatePromises();
-    }
-  );
-
   /*
    * promises are a set of objects that will contain the index of an account, once the accounts are returned
    * from the ajax call.
@@ -47,28 +33,62 @@ feenance.factory('AccountCollection', function(Notifier, AccountsApi, $filter) {
     return promise;
   }
 
-  return {
-    collection:
-      function ()
-      {
-        return collection.data;
-      },
-    getPromisedIndex:
-      function (id)
-      {
-        if (promises[id] != undefined) {
-          return promises[id];
-        }
-        promises[id] = {index:0};
-        return _setPromise(promises[id], id);
-      },
-    add:
-      function(newAccount)
-      {
-        collection.data.push(newAccount);
-        return newAccount;
+  return function ($initialText) {
+    if ($initialText) {
+      collection.data[0] = {id: null, name: $initialText};
+    }
+
+    this.getData = function()
+    {
+      return collection.data;
+    };
+    this.setData = function(data, $initialText)
+    {
+      angular.extend(collection.data, data);
+      if ($initialText) {
+        collection.data.splice(0, 0, {id: null, name: $initialText});
       }
-  }
+      _updatePromises();
+    };
+    this.add = function(record)
+    {
+      collection.data.push(record);
+      return record;
+    };
+    this.getPromisedIndex = function (id)
+    {
+      if (promises[id] != undefined) {
+        return promises[id];
+      }
+      promises[id] = {index:0};
+      return _setPromise(promises[id], id);
+    }
+  };
+});
+
+feenance.factory('AccountCollection', function(AccountsApi, Collection) {
+  var collection = new Collection("..fetching accounts");
+  var $_PLEASE_SELECT =   {id: null, name: "<Please select an account>"};
+  var accounts = AccountsApi.get({}, function()
+  {
+    collection.setData(accounts.data, "<Please select an account>");
+  });
+
+  return {
+    collection: function ()
+    {
+      return collection.getData();
+    },
+    getPromisedIndex: function (id)
+    {
+      // TODO : Create a selection object that implements the getPromisedIndex method.
+      return collection.getPromisedIndex(id);
+    },
+    add: function(newAccount)
+    {
+      return collection.add(newAccount);
+    }
+  };
 
 });
 

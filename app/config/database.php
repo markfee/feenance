@@ -6,34 +6,33 @@ return array(
 	'default' => 'mysql',
 
 	'connections' => array(
+        'mmex' => array(
+            'driver'   => 'sqlite',
+            'database' => '/home/mark/www/.mmex/finances.mmb',
+            'prefix'   => '',
+        ),
 
-		'mmex' => array(
-			'driver'   => 'sqlite',
-			'database' => '/home/mark/www/.mmex/mmexini.db3',
-			'prefix'   => '',
-		),
-
-		'mysql' => array(
-			'driver'    => 'mysql',
-			'host'      => 'mysqltest',
-			'database'  => 'feenance',
-			'username'  => 'feenance_s',
-			'password'  => 'titduWigsojnefateej',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-		),
-    'mysql_testing' => array(
-      'driver'    => 'mysql',
-      'host'      => 'mysqltest',
-      'engine'    => 'MEMORY',
-      'database'  => 'feenance_testing',
-      'username'  => 'feenance_s',
-      'password'  => 'titduWigsojnefateej',
-      'charset'   => 'utf8',
-      'collation' => 'utf8_unicode_ci',
-      'prefix'    => '',
-    ),
+        'mysql' => array(
+            'driver'    => 'mysql',
+            'host'      => 'mysqltest',
+            'database'  => 'feenance',
+            'username'  => 'feenance_s',
+            'password'  => 'titduWigsojnefateej',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ),
+        'mysql_testing' => array(
+            'driver'    => 'mysql',
+            'host'      => 'mysqltest',
+            'engine'    => 'MEMORY',
+            'database'  => 'feenance_testing',
+            'username'  => 'feenance_s',
+            'password'  => 'titduWigsojnefateej',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ),
 
 	),
 

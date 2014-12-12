@@ -62,6 +62,10 @@ feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
       }
       promises[id] = {index:0};
       return _setPromise(promises[id], id);
+    },
+    this.getItemAtIndex = function (index)
+    {
+      return collection.data[index];
     }
   };
 });
@@ -81,55 +85,162 @@ feenance.factory('AccountCollection', function(AccountsApi, Collection) {
     },
     getPromisedIndex: function (id)
     {
-      // TODO : Create a selection object that implements the getPromisedIndex method.
       return collection.getPromisedIndex(id);
     },
     add: function(newAccount)
     {
       return collection.add(newAccount);
+    },
+    getItemAtIndex: function (index)
+    {
+      return collection.getItemAtIndex(index);
     }
   };
-
 });
 
-feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection) {
-  $scope.accounts   = AccountCollection.collection();
-  $scope.selected   = null;
+feenance.factory('CollectionSelection', function() {
+  var controller  = null;
+
+  return function($collection, $api, $controller, boundCollection, boundId) {
+    this.controller = $controller;
+    $controller.collection = $collection;
+    $controller.api = $api;
+    $controller.collectionSelection = this;
+    $controller[boundCollection]   = $collection.collection();
+    $controller.selected = null;
+
+    $controller.$watch('selected.index',
+      function (new_val, old_val) {
+        if (new_val != undefined) {
+          $controller.selected = $controller.collection.getItemAtIndex(new_val);
+        }
+      }
+    );
+
+    $controller.$watch('selected.id',
+      function (new_val, old_val) {
+        if (new_val != undefined && new_val != old_val) {
+          $controller[boundId] = new_val;
+        }
+      }
+    );
+
+    function isSelected(id) {
+      return $controller.selected != undefined && $controller.selected.id == id;
+    }
+
+    function isAnewRecord() {
+      try {
+        if ($controller.selected.id != undefined && $controller.selected.id > 0) {
+          return false;
+        }
+      } catch(e) {
+      }
+      return true;
+    }
+
+    $controller.$watch(boundId,
+      function (new_val, old_val) {
+        if (new_val != undefined && new_val != old_val) {
+          if (!isSelected(new_val))
+            selectItem(new_val);
+        }
+      }
+    );
+
+    this.getSelected = function()
+    {
+      return $controller.selected;
+    };
+
+    this.rollback = function()
+    {
+      angular.extend($controller.selected, rollback);
+    };
+
+    this.beginEditing = function() {
+      rollback = angular.copy($controller.selected);
+    };
+
+    this.beginEditingNewItem = function($newItem)
+    {
+      rollback = $controller.selected;
+      $controller.selected = $newItem;
+    };
+
+    this.saveItem = function() {
+      if (isAnewRecord()) {
+        $controller.selected.$save(function (response)
+        {
+          $controller.selected = $controller.collection.add(response);
+          beginEditing();
+        });
+      } else {
+        this.api.update({id:$controller.selected.id}, $controller.selected,
+          function(response)
+          {
+            alert("Updated Successfully (CollectionSelection)");
+          }
+        );
+      }
+    };
+
+    this.selectItem = function (id) {
+      $controller.selected = $controller.collection.getPromisedIndex(id);
+      return $controller.selected;
+    };
+  }
+});
+
+feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection, CollectionSelection) {
+  var collectionSelection = new CollectionSelection(AccountCollection, AccountsApi, $scope, "accounts", "account_id");
+
   $scope.title = "Account";
   $scope.name = "account_id";
-  $scope.account_id = null;
   $scope.editing = false;
   var rollback = null;
 
+  $scope.getId = function() {
+    return $scope.account_id;
+  }
+
   $scope.cancel = function () {
-    angular.extend($scope.selected, rollback);
+    $scope.collectionSelection.rollback();
+//    angular.extend($scope.selected, rollback);
     $scope.editing = false;
   };
 
   $scope.edit = function () {
-    rollback = angular.copy($scope.selected);
+    $scope.collectionSelection.beginEditing();
+//    rollback = angular.copy($scope.selected);
     $scope.editing = true;
   };
 
   $scope.new = function() {
-    rollback = $scope.selected;
-    $scope.selected = new AccountsApi();
+    $scope.collectionSelection.beginEditingNewItem(new AccountsApi());
+//    rollback = $scope.selected;
+//    $scope.selected = new AccountsApi();
     $scope.editing=true;
   };
 
   $scope.save = function () {
-    $scope.selected.$save(function(response) {
-      $scope.selected = AccountCollection.add(response);
-      rollback = null;
-    });
+    $scope.collectionSelection.saveItem();
+
+//    $scope.selected.$save(function(response) {
+//      $scope.selected = AccountCollection.add(response);
+//      rollback = null;
+//    });
   };
 
   $scope.update = function () {
-    AccountsApi.update({id:$scope.selected.id}, $scope.selected, function(response) {
-      angular.extend($scope.selected, response);
-      $scope.editing = false;
-      rollback = null;
-    });
+
+    $scope.collectionSelection.saveItem();
+
+//    AccountsApi.update({id:$scope.selected.id}, $scope.selected, function(response) {
+//      angular.extend($scope.selected, response);
+//      $scope.editing = false;
+//      rollback = null;
+//    });
   };
 
   if ($transclude != undefined) {
@@ -140,10 +251,14 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   }
 
   $scope.selectAccount = function(accountId) {
-    $scope.selected = AccountCollection.getPromisedIndex(accountId);
-    return $scope.selected;
+
+    return $scope.collectionSelection.selectItem(accountId);
+
+//    $scope.selected = AccountCollection.getPromisedIndex(accountId);
+//    return $scope.selected;
   }
 
+/*
   $scope.$watch('selected.index',
     function(new_val, old_val) {
       if (new_val != undefined) {
@@ -172,6 +287,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
       }
     }
   );
+*/
 
 });
 

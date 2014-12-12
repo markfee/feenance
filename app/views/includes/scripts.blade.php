@@ -18,6 +18,7 @@
 {{ HTML::script('js/angular/ui-bootstrap-tpls-0.11.0.js') }}
 {{ HTML::script('js/feenance.js') }}
 {{ HTML::script('js/api.js') }}
+{{ HTML::script('js/collectionSelection.js') }}
 {{ HTML::script('js/payee.js') }}
 {{ HTML::script('js/category.js') }}
 {{ HTML::script('js/account.js') }}

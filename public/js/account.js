@@ -98,100 +98,6 @@ feenance.factory('AccountCollection', function(AccountsApi, Collection) {
   };
 });
 
-feenance.factory('CollectionSelection', function() {
-  var controller  = null;
-
-  return function($collection, $api, $controller, boundCollection, boundId) {
-    this.controller = $controller;
-    $controller.collection = $collection;
-    $controller.api = $api;
-    $controller.collectionSelection = this;
-    $controller[boundCollection]   = $collection.collection();
-    $controller.selected = null;
-
-    $controller.$watch('selected.index',
-      function (new_val, old_val) {
-        if (new_val != undefined) {
-          $controller.selected = $controller.collection.getItemAtIndex(new_val);
-        }
-      }
-    );
-
-    $controller.$watch('selected.id',
-      function (new_val, old_val) {
-        if (new_val != undefined && new_val != old_val) {
-          $controller[boundId] = new_val;
-        }
-      }
-    );
-
-    function isSelected(id) {
-      return $controller.selected != undefined && $controller.selected.id == id;
-    }
-
-    function isAnewRecord() {
-      try {
-        if ($controller.selected.id != undefined && $controller.selected.id > 0) {
-          return false;
-        }
-      } catch(e) {
-      }
-      return true;
-    }
-
-    $controller.$watch(boundId,
-      function (new_val, old_val) {
-        if (new_val != undefined && new_val != old_val) {
-          if (!isSelected(new_val))
-            selectItem(new_val);
-        }
-      }
-    );
-
-    this.getSelected = function()
-    {
-      return $controller.selected;
-    };
-
-    this.rollback = function()
-    {
-      angular.extend($controller.selected, rollback);
-    };
-
-    this.beginEditing = function() {
-      rollback = angular.copy($controller.selected);
-    };
-
-    this.beginEditingNewItem = function($newItem)
-    {
-      rollback = $controller.selected;
-      $controller.selected = $newItem;
-    };
-
-    this.saveItem = function() {
-      if (isAnewRecord()) {
-        $controller.selected.$save(function (response)
-        {
-          $controller.selected = $controller.collection.add(response);
-          beginEditing();
-        });
-      } else {
-        this.api.update({id:$controller.selected.id}, $controller.selected,
-          function(response)
-          {
-            alert("Updated Successfully (CollectionSelection)");
-          }
-        );
-      }
-    };
-
-    this.selectItem = function (id) {
-      $controller.selected = $controller.collection.getPromisedIndex(id);
-      return $controller.selected;
-    };
-  }
-});
-
 feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection, CollectionSelection) {
   var collectionSelection = new CollectionSelection(AccountCollection, AccountsApi, $scope, "accounts", "account_id");
 
@@ -206,41 +112,25 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 
   $scope.cancel = function () {
     $scope.collectionSelection.rollback();
-//    angular.extend($scope.selected, rollback);
     $scope.editing = false;
   };
 
   $scope.edit = function () {
     $scope.collectionSelection.beginEditing();
-//    rollback = angular.copy($scope.selected);
     $scope.editing = true;
   };
 
   $scope.new = function() {
     $scope.collectionSelection.beginEditingNewItem(new AccountsApi());
-//    rollback = $scope.selected;
-//    $scope.selected = new AccountsApi();
     $scope.editing=true;
   };
 
   $scope.save = function () {
     $scope.collectionSelection.saveItem();
-
-//    $scope.selected.$save(function(response) {
-//      $scope.selected = AccountCollection.add(response);
-//      rollback = null;
-//    });
   };
 
   $scope.update = function () {
-
     $scope.collectionSelection.saveItem();
-
-//    AccountsApi.update({id:$scope.selected.id}, $scope.selected, function(response) {
-//      angular.extend($scope.selected, response);
-//      $scope.editing = false;
-//      rollback = null;
-//    });
   };
 
   if ($transclude != undefined) {
@@ -251,44 +141,8 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   }
 
   $scope.selectAccount = function(accountId) {
-
     return $scope.collectionSelection.selectItem(accountId);
-
-//    $scope.selected = AccountCollection.getPromisedIndex(accountId);
-//    return $scope.selected;
   }
-
-/*
-  $scope.$watch('selected.index',
-    function(new_val, old_val) {
-      if (new_val != undefined) {
-        $scope.selected = $scope.accounts[new_val];
-      }
-    }
-  );
-
-  $scope.$watch('selected.id',
-    function(new_val, old_val) {
-      if (new_val != undefined && new_val != old_val) {
-        $scope.account_id = $scope.selected.id;
-      }
-    }
-  );
-
-  function isSelected(account_id) {
-    return $scope.selected != undefined && $scope.selected.id == account_id;
-  }
-
-  $scope.$watch('account_id',
-    function(new_val, old_val) {
-      if (new_val != undefined && new_val != old_val) {
-        if (!isSelected(new_val))
-          $scope.selectAccount(new_val);
-      }
-    }
-  );
-*/
-
 });
 
 feenance.directive('accountSelector', function() {

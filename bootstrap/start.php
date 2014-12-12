@@ -26,7 +26,8 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-  'local' => array('webserv'),
+    'local' => array('webserv'),
+    'confusion' => array('confserv'),
 ));
 
 /*

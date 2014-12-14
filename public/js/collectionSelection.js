@@ -5,7 +5,7 @@ feenance.factory('CollectionSelection', function() {
     this.controller = $controller;
     this.boundId = boundId;
     $controller.collection = $collection;
-    $controller.api = $api;
+    this.api = $api;
     $controller.collectionSelection = this;
     $controller[boundCollection]   = $collection.collection();
     $controller.selected = { index: -2 };
@@ -35,8 +35,6 @@ feenance.factory('CollectionSelection', function() {
         $controller.log("selected.index changed from " + old_val + " to " + new_val);
         if ( new_val != undefined && new_val >=0 ) {
           $controller.selected = $controller.collection.getItemAtIndex(new_val);
-        } else {
-          var stop = 1;
         }
       }
     );

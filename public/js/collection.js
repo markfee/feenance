@@ -17,7 +17,7 @@ feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
             function(value, key)
             {
                 if (promises[value.id] != undefined) {
-                    console.log("updating promise for id: " + value.id + " to index: " + key);
+                    console.log("updating promise    : id: " + value.id + " to index: " + key);
                     promises[value.id].index = key;
                 }
             }
@@ -29,13 +29,11 @@ feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
      * otherwise it waits until the promises are fetched and _updatePromises is called
      */
     function _setPromise(promise, id) {
-        console.log("setting promise for id: " + id + " to index: " + promise.index );
-
         angular.forEach(collection.data,
             function(value, key)
             {
                 if (value.id == id) {
-                    console.log("setting promise found for index: " + key + " to id: " + id);
+                    console.log("setting  promise found for index: " + key + " to id: " + id);
                     promise.index = key;
                 }
             }
@@ -71,10 +69,10 @@ feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
         this.getPromisedIndex = function (id)
         {
             if (promises[id] != undefined) {
-                console.log("found promise for id: " + id + " to key: " + promises[id].index);
+                console.log("found promise       : id: " + id + " to index: " + promises[id].index);
                 return promises[id];
             }
-            console.log("creating promise for id: " + id + " to index: -1");
+                console.log("creating promise    : id: " + id + " to index: -1");
             promises[id] = {index: -1};
             return _setPromise(promises[id], id);
         };

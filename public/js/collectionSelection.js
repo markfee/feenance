@@ -11,6 +11,11 @@ feenance.factory('CollectionSelection', function() {
     $controller.selected = { index: -2 };
     $controller[boundId] = -1;
 
+    $controller.log = function($message) {
+      var directiveName = ($controller.directive ? $controller.directive : "_") + "                        ";
+      console.log(directiveName.substr(0, 20) + ": " + $message);
+    }
+
     function isSelected(id) {
       return $controller.selected != undefined && $controller.selected.id == id;
     }
@@ -27,8 +32,7 @@ feenance.factory('CollectionSelection', function() {
 
     $controller.$watch('selected.index',
       function (new_val, old_val) {
-        var directiveName = $controller.directive ? $controller.directive : "";
-        console.log("selected.index changed from " + old_val + " to " + new_val + " in " + directiveName);
+        $controller.log("selected.index changed from " + old_val + " to " + new_val);
         if ( new_val != undefined && new_val >=0 ) {
           $controller.selected = $controller.collection.getItemAtIndex(new_val);
         } else {
@@ -48,8 +52,7 @@ feenance.factory('CollectionSelection', function() {
     $controller.$watch(boundId,
       function (new_val, old_val) {
         if (new_val != undefined && new_val != old_val) {
-          var directiveName = $controller.directive ? $controller.directive : "";
-          console.log("BOUND - " + boundId + " changed from " + old_val + " to " + new_val + " in " + directiveName)
+          $controller.log("Watched " + boundId + " changed from " + old_val + " to " + new_val + " in ");
           if (!isSelected(new_val))
             $controller.collectionSelection.selectItem(new_val);
         }
@@ -95,9 +98,9 @@ feenance.factory('CollectionSelection', function() {
 
     this.selectItem = function (id) {
       if (id >= 0) {
-        console.log("gettingPromisedIndex for id: " + id + " in " + $controller.directive);
+        $controller.log("gettingPromisedIndex for id: " + id);
         $controller.selected = $controller.collection.getPromisedIndex(id);
-        console.log("gettingPromisedIndex returned: " + $controller.selected.index + " in " + $controller.directive);
+        $controller.log("gettingPromisedIndex returned: " + $controller.selected.index);
       }
 
       return $controller.selected;

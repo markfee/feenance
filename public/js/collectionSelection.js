@@ -1,13 +1,13 @@
 feenance.factory('CollectionSelection', function() {
   var controller  = null;
 
-  return function($collection, $api, $controller, boundCollection, boundId) {
+  return function($collection, $api, $controller, boundId) {
     this.controller = $controller;
     this.boundId = boundId;
     $controller.collection = $collection;
     this.api = $api;
     $controller.collectionSelection = this;
-    $controller[boundCollection]   = $collection.collection();
+    $controller.boundCollection   = $collection.collection();
     $controller.selected = { index: -2 };
     $controller[boundId] = -1;
 

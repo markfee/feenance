@@ -30,7 +30,7 @@ feenance.factory('AccountCollection', function(AccountsApi, Collection) {
 
 feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection, CollectionSelection) {
 
-  var collectionSelection = new CollectionSelection(AccountCollection, AccountsApi, $scope, "accounts", "account_id");
+  var collectionSelection = new CollectionSelection(AccountCollection, AccountsApi, $scope, "account_id");
   if ($scope.directive == undefined) {
     $scope.directive = "AccountController_" + global_count++;
   }

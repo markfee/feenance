@@ -1,16 +1,46 @@
 feenance.factory('CollectionSelection', function() {
   var controller  = null;
 
-  return function($collection, $api, $controller, boundId) {
+  return function($collection, $controller, boundId) {
     this.controller = $controller;
     this.boundId    = boundId;
     this.collection = $collection;
-    this.api        = $api;
 
     $controller.collectionSelection = this;
-    $controller.boundCollection   = $collection.collection();
+    $controller.boundCollection   = $collection.getData();
     $controller.selected = { index: -2 };
     $controller[boundId] = -1;
+
+    $controller.editing = false;
+
+    $controller.cancel = function ()
+    {
+      $controller.collectionSelection.rollback();
+      $controller.editing = false;
+    };
+
+    $controller.edit = function ()
+    {
+      $controller.collectionSelection.copyForRollback();
+      $controller.editing = true;
+    };
+
+    $controller.newItem = function()
+    {
+      $controller.collectionSelection.newItem();
+    };
+
+    $controller.save = function ()
+    {
+      $controller.collectionSelection.saveItem();
+    };
+
+    $controller.selectItem = function(id)
+    {
+      return $controller.collectionSelection.selectItem(id);
+    }
+
+
 
     this.log = function($message) {
       var directiveName = ($controller.directive ? $controller.directive : "_") + "                        ";
@@ -68,15 +98,16 @@ feenance.factory('CollectionSelection', function() {
       angular.extend($controller.selected, rollback);
     };
 
-    this.beginEditing = function() {
+    this.copyForRollback = function() {
       rollback = angular.copy($controller.selected);
     };
 
-    this.beginEditingNewItem = function()
+    this.newItem = function()
     {
-      $newItem = new this.api;
+      $newItem = this.collection.newItem();
       rollback = $controller.selected;
       $controller.selected = $newItem;
+      $controller.editing=true;
     };
 
     this.saveItem = function() {
@@ -85,24 +116,23 @@ feenance.factory('CollectionSelection', function() {
         $controller.selected.$save( function (response)
         {
           $controller.selected = $controller.collectionSelection.collection.add(response);
-          $controller.collectionSelection.beginEditing();
+          $controller.collectionSelection.copyForRollback();
         });
 
       } else {
 
-        this.api.update(
-            { id:$controller.selected.id   },
-            $controller.selected,
+        this.collection.saveItem($controller.selected,
             function(response)
             {
               alert("Updated Successfully (CollectionSelection)");
+              $controller.collectionSelection.copyForRollback();
+              $controller.editing = false;
             },
             function(response)
             {
               alert("Failed to update (CollectionSelection)");
             }
         );
-
       }
     };
 

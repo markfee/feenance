@@ -1,67 +1,19 @@
 var global_count = 0;
 
 feenance.factory('AccountCollection', function(AccountsApi, Collection) {
-  var collection = new Collection("..fetching accounts");
-  var $_PLEASE_SELECT =   {id: null, name: "<Please select an account>"};
-  var accounts = AccountsApi.get({}, function()
-  {
-    collection.setData(accounts.data, "<Please select an account>");
-  });
-
-  return {
-    collection: function ()
-    {
-      return collection.getData();
-    },
-    getPromisedIndex: function (id)
-    {
-      return collection.getPromisedIndex(id);
-    },
-    add: function(newAccount)
-    {
-      return collection.add(newAccount);
-    },
-    getItemAtIndex: function (index)
-    {
-      return collection.getItemAtIndex(index);
-    }
-  };
+  return new Collection(AccountsApi, "<Please select an account>");
 });
 
-feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection, CollectionSelection) {
+feenance.controller('AccountController', function($scope, $transclude, AccountCollection, CollectionSelection) {
 
-  var collectionSelection = new CollectionSelection(AccountCollection, AccountsApi, $scope, "account_id");
+  var collectionSelection = new CollectionSelection(AccountCollection, $scope, "account_id");
+
   if ($scope.directive == undefined) {
     $scope.directive = "AccountController_" + global_count++;
   }
 
   $scope.title = "Account";
   $scope.name = "account_id";
-  $scope.editing = false;
-
-  $scope.cancel = function ()
-  {
-    $scope.collectionSelection.rollback();
-    $scope.editing = false;
-  };
-
-  $scope.edit = function ()
-  {
-    $scope.collectionSelection.beginEditing();
-    $scope.editing = true;
-  };
-
-  $scope.newItem = function()
-  {
-    $scope.collectionSelection.beginEditingNewItem();
-    $scope.editing=true;
-  };
-
-  $scope.save = function ()
-  {
-    $scope.collectionSelection.saveItem();
-    $scope.editing = false;
-  };
 
   if ($transclude != undefined) {
     $transclude(function (clone, scope)
@@ -71,10 +23,6 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     });
   }
 
-  $scope.selectAccount = function(accountId)
-  {
-    return $scope.collectionSelection.selectItem(accountId);
-  }
 });
 
 feenance.directive('accountSelector', function() {
@@ -91,7 +39,7 @@ feenance.directive('accountSelector', function() {
     {
       scope.directive = "accountSelector_"  + global_count++;
       if (scope.accountId) {
-        scope.selectAccount(scope.accountId);
+        scope.selectItem(scope.accountId);
       }
     },
     controller: "AccountController"
@@ -111,10 +59,10 @@ feenance.directive('accountIdSelector', function() {
     link: function (scope, element, attr) {
       scope.directive = "accountIdSelector_"  + global_count++;
       if (scope.account_id > 0) {
-        scope.selectAccount(scope.account_id);
+        scope.selectItem(scope.account_id);
       }
       else if (attr.accountId) {
-        scope.selectAccount(attr.accountId);
+        scope.selectItem(attr.accountId);
       }
     },
     controller: "AccountController"
@@ -133,7 +81,7 @@ feenance.directive('accountName', function() {
     {
       scope.directive = "accountName_"  + global_count++;
       if (scope.ngModel) {
-        scope.selectAccount(scope.ngModel);
+        scope.selectItem(scope.ngModel);
       }
     },
     controller: "AccountController"

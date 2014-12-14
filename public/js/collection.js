@@ -41,9 +41,26 @@ feenance.factory('Collection', function() {
         return promise;
     }
 
-    return function ($initialText) {
+    return function (api, $initialText) {
+        this.api = api;
+
         if ($initialText) {
             collection.data[0] = {id: null, name: $initialText};
+        }
+
+        this.newItem = function()
+        {
+            return new this.api;
+        };
+
+        this.saveItem = function ($item, successCallback, failCallback)
+        {
+            this.api.update(
+                { id:$item.id   },
+                $item,
+                successCallback,
+                failCallback
+            );
         }
 
         this.getData = function()
@@ -81,5 +98,15 @@ feenance.factory('Collection', function() {
         {
             return collection.data[index];
         }
+
+        // Now Fetch The Data.
+        var thisCollection = this;
+        var results = this.api.get({}, function()
+        {
+            thisCollection.setData(results.data, $initialText);
+        });
+
+
+
     };
 });

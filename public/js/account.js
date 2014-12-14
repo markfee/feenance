@@ -39,11 +39,6 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.name = "account_id";
   $scope.editing = false;
 
-  $scope.getId = function()
-  {
-    return $scope.account_id;
-  };
-
   $scope.cancel = function ()
   {
     $scope.collectionSelection.rollback();

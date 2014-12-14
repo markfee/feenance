@@ -3,15 +3,16 @@ feenance.factory('CollectionSelection', function() {
 
   return function($collection, $api, $controller, boundId) {
     this.controller = $controller;
-    this.boundId = boundId;
-    $controller.collection = $collection;
-    this.api = $api;
+    this.boundId    = boundId;
+    this.collection = $collection;
+    this.api        = $api;
+
     $controller.collectionSelection = this;
     $controller.boundCollection   = $collection.collection();
     $controller.selected = { index: -2 };
     $controller[boundId] = -1;
 
-    $controller.log = function($message) {
+    this.log = function($message) {
       var directiveName = ($controller.directive ? $controller.directive : "_") + "                        ";
       console.log(directiveName.substr(0, 20) + ": " + $message);
     }
@@ -32,9 +33,9 @@ feenance.factory('CollectionSelection', function() {
 
     $controller.$watch('selected.index',
       function (new_val, old_val) {
-        $controller.log("selected.index changed from " + old_val + " to " + new_val);
+        $controller.collectionSelection.log("selected.index changed from " + old_val + " to " + new_val);
         if ( new_val != undefined && new_val >=0 ) {
-          $controller.selected = $controller.collection.getItemAtIndex(new_val);
+          $controller.selected = $controller.collectionSelection.collection.getItemAtIndex(new_val);
         }
       }
     );
@@ -50,7 +51,7 @@ feenance.factory('CollectionSelection', function() {
     $controller.$watch(boundId,
       function (new_val, old_val) {
         if (new_val != undefined && new_val != old_val) {
-          $controller.log("Watched " + boundId + " changed from " + old_val + " to " + new_val + " in ");
+          $controller.collectionSelection.log("Watched " + boundId + " changed from " + old_val + " to " + new_val + " in ");
           if (!isSelected(new_val))
             $controller.collectionSelection.selectItem(new_val);
         }
@@ -83,7 +84,7 @@ feenance.factory('CollectionSelection', function() {
 
         $controller.selected.$save( function (response)
         {
-          $controller.selected = $controller.collection.add(response);
+          $controller.selected = $controller.collectionSelection.collection.add(response);
           $controller.collectionSelection.beginEditing();
         });
 
@@ -107,9 +108,9 @@ feenance.factory('CollectionSelection', function() {
 
     this.selectItem = function (id) {
       if (id >= 0) {
-        $controller.log("gettingPromisedIndex for id: " + id);
-        $controller.selected = $controller.collection.getPromisedIndex(id);
-        $controller.log("gettingPromisedIndex returned: " + $controller.selected.index);
+        $controller.collectionSelection.log("gettingPromisedIndex for id: " + id);
+        $controller.selected = $controller.collectionSelection.collection.getPromisedIndex(id);
+        $controller.collectionSelection.log("gettingPromisedIndex returned: " + $controller.selected.index);
       }
 
       return $controller.selected;

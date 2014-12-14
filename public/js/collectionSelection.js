@@ -79,18 +79,28 @@ feenance.factory('CollectionSelection', function() {
 
     this.saveItem = function() {
       if (isAnewRecord()) {
-        $controller.selected.$save(function (response)
+
+        $controller.selected.$save( function (response)
         {
           $controller.selected = $controller.collection.add(response);
-          beginEditing();
+          $controller.collectionSelection.beginEditing();
         });
+
       } else {
-        this.api.update({id:$controller.selected.id}, $controller.selected,
-          function(response)
-          {
-            alert("Updated Successfully (CollectionSelection)");
-          }
+
+        this.api.update(
+            {id:$controller.selected.id},
+            $controller.selected,
+            function(response)
+            {
+              alert("Updated Successfully (CollectionSelection)");
+            },
+            function(response)
+            {
+              alert("Updated Successfully (CollectionSelection)");
+            }
         );
+
       }
     };
 

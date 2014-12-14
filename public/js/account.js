@@ -29,6 +29,7 @@ feenance.factory('AccountCollection', function(AccountsApi, Collection) {
 });
 
 feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection, CollectionSelection) {
+
   var collectionSelection = new CollectionSelection(AccountCollection, AccountsApi, $scope, "accounts", "account_id");
   if ($scope.directive == undefined) {
     $scope.directive = "AccountController_" + global_count++;
@@ -37,7 +38,6 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.title = "Account";
   $scope.name = "account_id";
   $scope.editing = false;
-  var rollback = null;
 
   $scope.getId = function()
   {
@@ -56,7 +56,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
     $scope.editing = true;
   };
 
-  $scope.new = function()
+  $scope.newItem = function()
   {
     $scope.collectionSelection.beginEditingNewItem(new AccountsApi());
     $scope.editing=true;
@@ -65,11 +65,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
   $scope.save = function ()
   {
     $scope.collectionSelection.saveItem();
-  };
-
-  $scope.update = function ()
-  {
-    $scope.collectionSelection.saveItem();
+    $scope.editing = false;
   };
 
   if ($transclude != undefined) {

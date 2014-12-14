@@ -71,8 +71,9 @@ feenance.factory('CollectionSelection', function() {
       rollback = angular.copy($controller.selected);
     };
 
-    this.beginEditingNewItem = function($newItem)
+    this.beginEditingNewItem = function()
     {
+      $newItem = new this.api;
       rollback = $controller.selected;
       $controller.selected = $newItem;
     };
@@ -89,7 +90,7 @@ feenance.factory('CollectionSelection', function() {
       } else {
 
         this.api.update(
-            {id:$controller.selected.id},
+            { id:$controller.selected.id   },
             $controller.selected,
             function(response)
             {
@@ -97,7 +98,7 @@ feenance.factory('CollectionSelection', function() {
             },
             function(response)
             {
-              alert("Updated Successfully (CollectionSelection)");
+              alert("Failed to update (CollectionSelection)");
             }
         );
 

@@ -58,7 +58,7 @@ feenance.controller('AccountController', function($scope, $transclude, AccountsA
 
   $scope.newItem = function()
   {
-    $scope.collectionSelection.beginEditingNewItem(new AccountsApi());
+    $scope.collectionSelection.beginEditingNewItem();
     $scope.editing=true;
   };
 

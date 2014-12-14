@@ -2,7 +2,7 @@
  * Created by mark on 13/12/2014.
  */
 
-feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
+feenance.factory('Collection', function() {
     var collection = { data: [] };
     var promises = {};
     /*

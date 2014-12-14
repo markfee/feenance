@@ -1,5 +1,5 @@
-feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi) {
-  $scope.account_id = 2;
+feenance.controller('TransactionsController', function($scope, TransactionsApi, AccountsApi, $timeout) {
+  $scope.account_id = -1;
   $scope.transactions = null;
   $scope.predicate    = ["date", "id"];
   $scope.reverse      = true;
@@ -121,5 +121,7 @@ feenance.controller('TransactionsController', function($scope, TransactionsApi, 
       }
     }
   );
-  __SetAccount($scope.account_id);
+
+//  __SetAccount(2);
 });
+

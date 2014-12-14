@@ -3,27 +3,13 @@ feenance.factory('CollectionSelection', function() {
 
   return function($collection, $api, $controller, boundCollection, boundId) {
     this.controller = $controller;
+    this.boundId = boundId;
     $controller.collection = $collection;
     $controller.api = $api;
     $controller.collectionSelection = this;
     $controller[boundCollection]   = $collection.collection();
-    $controller.selected = null;
-
-    $controller.$watch('selected.index',
-      function (new_val, old_val) {
-        if (new_val != undefined) {
-          $controller.selected = $controller.collection.getItemAtIndex(new_val);
-        }
-      }
-    );
-
-    $controller.$watch('selected.id',
-      function (new_val, old_val) {
-        if (new_val != undefined && new_val != old_val) {
-          $controller[boundId] = new_val;
-        }
-      }
-    );
+    $controller.selected = { index: -2 };
+    $controller[boundId] = -1;
 
     function isSelected(id) {
       return $controller.selected != undefined && $controller.selected.id == id;
@@ -39,11 +25,33 @@ feenance.factory('CollectionSelection', function() {
       return true;
     }
 
+    $controller.$watch('selected.index',
+      function (new_val, old_val) {
+        var directiveName = $controller.directive ? $controller.directive : "";
+        console.log("selected.index changed from " + old_val + " to " + new_val + " in " + directiveName);
+        if (new_val != undefined) {
+          $controller.selected = $controller.collection.getItemAtIndex(new_val);
+        } else {
+          var stop = 1;
+        }
+      }
+    );
+
+    $controller.$watch('selected.id',
+      function (new_val, old_val) {
+        if (new_val != undefined && new_val != old_val) {
+          $controller[boundId] = new_val;
+        }
+      }
+    );
+
     $controller.$watch(boundId,
       function (new_val, old_val) {
         if (new_val != undefined && new_val != old_val) {
+          var directiveName = $controller.directive ? $controller.directive : "";
+          console.log("BOUND - " + boundId + " changed from " + old_val + " to " + new_val + " in " + directiveName)
           if (!isSelected(new_val))
-            selectItem(new_val);
+            $controller.collectionSelection.selectItem(new_val);
         }
       }
     );
@@ -86,7 +94,11 @@ feenance.factory('CollectionSelection', function() {
     };
 
     this.selectItem = function (id) {
+      console.log("gettingPromisedIndex - id:" + id + " in " + $controller.directive);
       $controller.selected = $controller.collection.getPromisedIndex(id);
+      console.log("gettingPromisedIndex - $controller.selected.index:" + $controller.selected.index + " in " + $controller.directive);
+
+//      $controller[this.boundId] = id;
       return $controller.selected;
     };
   }

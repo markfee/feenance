@@ -28,47 +28,58 @@ feenance.factory('AccountCollection', function(AccountsApi, Collection) {
 
 feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection, CollectionSelection) {
   var collectionSelection = new CollectionSelection(AccountCollection, AccountsApi, $scope, "accounts", "account_id");
+  if ($scope.directive == undefined) {
+    $scope.directive = "AccountController";
+  }
 
   $scope.title = "Account";
   $scope.name = "account_id";
   $scope.editing = false;
   var rollback = null;
 
-  $scope.getId = function() {
+  $scope.getId = function()
+  {
     return $scope.account_id;
-  }
+  };
 
-  $scope.cancel = function () {
+  $scope.cancel = function ()
+  {
     $scope.collectionSelection.rollback();
     $scope.editing = false;
   };
 
-  $scope.edit = function () {
+  $scope.edit = function ()
+  {
     $scope.collectionSelection.beginEditing();
     $scope.editing = true;
   };
 
-  $scope.new = function() {
+  $scope.new = function()
+  {
     $scope.collectionSelection.beginEditingNewItem(new AccountsApi());
     $scope.editing=true;
   };
 
-  $scope.save = function () {
+  $scope.save = function ()
+  {
     $scope.collectionSelection.saveItem();
   };
 
-  $scope.update = function () {
+  $scope.update = function ()
+  {
     $scope.collectionSelection.saveItem();
   };
 
   if ($transclude != undefined) {
-    $transclude(function (clone, scope) {
+    $transclude(function (clone, scope)
+    {
       $scope.title = clone.html();
       if ($scope.title == undefined)  $scope.title = "Account";
     });
   }
 
-  $scope.selectAccount = function(accountId) {
+  $scope.selectAccount = function(accountId)
+  {
     return $scope.collectionSelection.selectItem(accountId);
   }
 });
@@ -78,17 +89,19 @@ feenance.directive('accountSelector', function() {
     restrict: 'E',
     transclude: true,
     scope: {
-      selected: "=ngModel"
-      , accountId: "=" // remember account_id in markup accountId in directive / controller
-      , name: "@"
-    }
-    , templateUrl: '/view/account_selector.html'
-    , link: function (scope, element, attr) {
+      selected: "=ngModel",
+      accountId: "=", // remember account_id in markup accountId in directive / controller
+      name: "@"
+    },
+    templateUrl: '/view/account_selector.html',
+    link: function (scope, element, attr)
+    {
+      scope.directive = "accountSelector";
       if (scope.accountId) {
         scope.selectAccount(scope.accountId);
       }
-    }
-    , controller: "AccountController"
+    },
+    controller: "AccountController"
   };
 });
 
@@ -98,31 +111,38 @@ feenance.directive('accountIdSelector', function() {
     transclude: true,
     scope: {
       account_id: "=ngModel",
+      ngModel: "=",
       name: "@"
-    }
-    , templateUrl: '/view/account_selector.html'
-    , link: function (scope, element, attr) {
-      if (scope.account_id) {
+    },
+    templateUrl: '/view/account_selector.html',
+    link: function (scope, element, attr) {
+      scope.directive = "accountIdSelector";
+      if (scope.account_id > 0) {
         scope.selectAccount(scope.account_id);
       }
-    }
-    , controller: "AccountController"
+      else if (attr.accountId) {
+        scope.selectAccount(attr.accountId);
+      }
+    },
+    controller: "AccountController"
   };
 });
 
 feenance.directive('accountName', function() {
   return {
-    restrict: 'E'
-    ,  scope: {
+    restrict: 'E',
+    scope: {
       account_id: "=ngModel",
       ngModel: "="
-    }
-    , template: '{{selected.name}}'
-    , link: function (scope, element, attr) {
+    },
+    template: '{{selected.name}}',
+    link: function (scope, element, attr)
+    {
+      scope.directive = "accountName";
       if (scope.ngModel) {
         scope.selectAccount(scope.ngModel);
       }
-    }
-    , controller: "AccountController"
+    },
+    controller: "AccountController"
   };
 });

@@ -7,7 +7,7 @@
     </div>
     <div class="col-sm-9" >
 
-      X{{selected.id}}X{{account_id}}<select ng-model="selected" ng-options="account.name for account in accounts" ng-show="!editing"> </select>
+      <select ng-model="selected" ng-options="account.name for account in accounts" ng-show="!editing"> </select>
 
       <div ng-show="editing">
         <br/>Name             <input type="text"      ng-model="selected.name" >

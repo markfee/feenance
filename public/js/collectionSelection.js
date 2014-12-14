@@ -29,7 +29,7 @@ feenance.factory('CollectionSelection', function() {
       function (new_val, old_val) {
         var directiveName = $controller.directive ? $controller.directive : "";
         console.log("selected.index changed from " + old_val + " to " + new_val + " in " + directiveName);
-        if (new_val != undefined) {
+        if ( new_val != undefined && new_val >=0 ) {
           $controller.selected = $controller.collection.getItemAtIndex(new_val);
         } else {
           var stop = 1;
@@ -94,11 +94,12 @@ feenance.factory('CollectionSelection', function() {
     };
 
     this.selectItem = function (id) {
-      console.log("gettingPromisedIndex - id:" + id + " in " + $controller.directive);
-      $controller.selected = $controller.collection.getPromisedIndex(id);
-      console.log("gettingPromisedIndex - $controller.selected.index:" + $controller.selected.index + " in " + $controller.directive);
+      if (id >= 0) {
+        console.log("gettingPromisedIndex for id: " + id + " in " + $controller.directive);
+        $controller.selected = $controller.collection.getPromisedIndex(id);
+        console.log("gettingPromisedIndex returned: " + $controller.selected.index + " in " + $controller.directive);
+      }
 
-//      $controller[this.boundId] = id;
       return $controller.selected;
     };
   }

@@ -52,6 +52,7 @@ feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
         {
             return collection.data;
         };
+
         this.setData = function(data, $initialText)
         {
             angular.extend(collection.data, data);
@@ -60,11 +61,13 @@ feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
             }
             _updatePromises();
         };
+
         this.add = function(record)
         {
             collection.data.push(record);
             return record;
         };
+
         this.getPromisedIndex = function (id)
         {
             if (promises[id] != undefined) {
@@ -75,6 +78,7 @@ feenance.factory('Collection', function(Notifier, AccountsApi, $filter) {
             promises[id] = {index: -1};
             return _setPromise(promises[id], id);
         };
+
         this.getItemAtIndex = function (index)
         {
             return collection.data[index];

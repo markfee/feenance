@@ -1,3 +1,5 @@
+var global_count = 0;
+
 feenance.factory('AccountCollection', function(AccountsApi, Collection) {
   var collection = new Collection("..fetching accounts");
   var $_PLEASE_SELECT =   {id: null, name: "<Please select an account>"};
@@ -29,7 +31,7 @@ feenance.factory('AccountCollection', function(AccountsApi, Collection) {
 feenance.controller('AccountController', function($scope, $transclude, AccountsApi, AccountCollection, CollectionSelection) {
   var collectionSelection = new CollectionSelection(AccountCollection, AccountsApi, $scope, "accounts", "account_id");
   if ($scope.directive == undefined) {
-    $scope.directive = "AccountController";
+    $scope.directive = "AccountController_" + global_count++;
   }
 
   $scope.title = "Account";
@@ -96,7 +98,7 @@ feenance.directive('accountSelector', function() {
     templateUrl: '/view/account_selector.html',
     link: function (scope, element, attr)
     {
-      scope.directive = "accountSelector";
+      scope.directive = "accountSelector_"  + global_count++;
       if (scope.accountId) {
         scope.selectAccount(scope.accountId);
       }
@@ -116,7 +118,7 @@ feenance.directive('accountIdSelector', function() {
     },
     templateUrl: '/view/account_selector.html',
     link: function (scope, element, attr) {
-      scope.directive = "accountIdSelector";
+      scope.directive = "accountIdSelector_"  + global_count++;
       if (scope.account_id > 0) {
         scope.selectAccount(scope.account_id);
       }
@@ -138,7 +140,7 @@ feenance.directive('accountName', function() {
     template: '{{selected.name}}',
     link: function (scope, element, attr)
     {
-      scope.directive = "accountName";
+      scope.directive = "accountName_"  + global_count++;
       if (scope.ngModel) {
         scope.selectAccount(scope.ngModel);
       }

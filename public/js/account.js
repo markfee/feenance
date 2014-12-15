@@ -1,4 +1,4 @@
-var global_count = 0;
+var global_count = 0; //Just an easy way to identify the instances of the controllers when debugging.
 
 feenance.factory('AccountCollection', function(AccountsApi, Collection) {
   return new Collection(AccountsApi, "<Please select an account>");

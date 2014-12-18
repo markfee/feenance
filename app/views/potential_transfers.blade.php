@@ -6,11 +6,12 @@
 
     <div class = "row">
 
-        <standing-orders-table> Standing Orders Table Here </standing-orders-table>
+      <potential-transfers-table> Potential Transfers Table Here </potential-transfers-table>
 
     </div>
 
   </div>
 
 </div>
+
 @stop

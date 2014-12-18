@@ -50,6 +50,7 @@ Route::group(['before' => ''], function() {
 
   Route::get('/standing_orders',  function()  {  return View::make('standing_orders'); });
 
+  Route::get('/potential_transfers',  function()  {  return View::make('potential_transfers'); });
 
 
   Route::group(['prefix' =>  'api/v1/'], function()

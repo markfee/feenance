@@ -29,10 +29,4 @@
 {{ HTML::script('js/debug.js') }}
 {{ HTML::script('js/standing_order.js') }}
 {{ HTML::script('js/category_report.js') }}
-
-
-<!--
-  {{ HTML::script('js/apiService.js') }}
-  {{ HTML::script('js/nodes.js') }}
-  {{ HTML::script('js/mapController.js') }}
--->
+{{ HTML::script('js/potential_transfers.js') }}

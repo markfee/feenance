@@ -5,8 +5,8 @@ feenance.factory('AccountCollection', function(AccountsApi, Collection) {
 });
 
 feenance.controller('AccountController', function($scope, $transclude, AccountCollection, CollectionSelection) {
-
   var collectionSelection = new CollectionSelection(AccountCollection, $scope, "account_id");
+  $scope.predicate = ["-open", "name"];
 
   if ($scope.directive == undefined) {
     $scope.directive = "AccountController_" + global_count++;

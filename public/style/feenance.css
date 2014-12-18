@@ -34,3 +34,11 @@ td.currency {
 .debit, .negative {
     color: red;
 }
+
+select.account > option {
+    color: gray;
+}
+
+select.account > option.open {
+    color: black;
+}

@@ -4,8 +4,7 @@
 
 feenance.factory('PotentialTransfersApi', function($resource) {
     return $resource(   $API_ROOT + "transfers/potential", { }, {
-            'potential':    { method:'GET', params: {collection: "potential" } },
-            'update':       { method:'PUT'                    }
+            'save':     { method:'POST' }
         }
     );
 });
@@ -24,6 +23,29 @@ feenance.controller('PotentialTransfersController', function($scope, PotentialTr
             $scope.items = items.data;
         }
     );
+
+    $scope.removeTransfer = function(item, $index)
+    {
+        $scope.items.splice($index, 1);
+    }
+
+    $scope.sendAll = function()
+    {
+        var $data = { data: $scope.items };
+
+        PotentialTransfersApi.save(
+            {},
+            $data,
+            function(response)
+            {
+                alert("Success");
+            },
+            function (response)
+            {
+                alert("Failed");
+            }
+        );
+    }
 });
 
 feenance.directive('potentialTransfersTable', function() {

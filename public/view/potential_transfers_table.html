@@ -5,10 +5,11 @@
     <thead>
     <tr>
       <th><a href="" ng-click="sort('date');">                Date</a></th>
-      <th><a href="" ng-click="sort('amount');">              Amount</a></th>
+      <th class="currency" ><a href="" ng-click="sort('amount');">              Amount</a></th>
       <th><a href="" ng-click="sort('source_account.name');"> Source Account</a></th>
       <th><a href="" ng-click="sort('dest_account.name');">   Destination Account</a></th>
       <th> Edit</a></th>
+      <th> Remove</a></th>
     </tr>
     </thead>
 
@@ -26,6 +27,11 @@
           </a>
         </td>
 
+        <td>
+          <a href="" title="Delete" ng-click="removeTransfer(item, $index)">
+            <i ng-class="'fa fa-minus fa-lg'"> </i>
+          </a>
+        </td>
 
       </tr>
     </tbody>
@@ -33,4 +39,10 @@
   </table>
 </div>
 <div class = "col-lg-3">
+
+  <div class="form-group">
+    <button ng-click="sendAll()">Confirm all displayed as transfers</button>
+  </div>
+
+
 </div>

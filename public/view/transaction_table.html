@@ -71,19 +71,29 @@
              ng-show="transaction.bank_string" class="bank_string">({{transaction.bank_string}})</a>
         </td>
 
-        <td>
-          {{transaction.category.fullName}}
+        <td> <!--Category OR Transfer Details-->
+
+          <span ng-if="transaction.destination.account_id">
+            TO: <account-name ng-model="transaction.destination.account_id"> </account-name>
+          </span>
+
+          <span ng-if="transaction.source.account_id">
+            FROM: <account-name ng-model="transaction.source.account_id"> </account-name>
+          </span>
+
+          <span ng-if="!transaction.source.account_id && !transaction.destination.account_id">
+            {{transaction.category.fullName}}
+          </span>
+
         </td>
 
 
         <td class="currency">
           <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}</span>
-          <transfer destination="transaction.destination" />
         </td>
 
         <td class="currency">
           <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}</span>
-          <transfer source="transaction.source" />
         </td>
 
         <td class="currency" ng-class="{ negative: transaction.balance < 0 }">{{transaction.balance | currency: "£" }}

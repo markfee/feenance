@@ -30,8 +30,18 @@ class TransactionTransformer extends Transformer {
       "standing_order_id" => $record->standing_order_id,
       "category_id"       => $record->category_id,
       "notes"             => $record->notes?:null ,
-      "source"            => $record->source?$record->source->source:null ,
-      "destination"       => $record->destination?$record->destination->destination:null ,
+      "source"            => $record->source
+        ? [
+          "transaction_id" => $record->source->source,
+          "account_id"     => $record->source->source_account->account_id
+        ]
+        : null ,
+      "destination"        => $record->destination
+        ? [
+          "transaction_id" => $record->destination->destination,
+          "account_id"     => $record->destination->destination_account->account_id
+        ]
+        : null ,
 
       "bank_balance"      => $record->bank_balance ? 0.01 * $record->bank_balance : null,
       "bank_string_id"    => $record->bank_string_id ? (int) $record->bank_string_id : null,

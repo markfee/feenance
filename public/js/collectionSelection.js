@@ -63,8 +63,8 @@ feenance.factory('CollectionSelection', function() {
 
     $controller.$watch('selected.index',
       function (new_val, old_val) {
-        $controller.collectionSelection.log("selected.index changed from " + old_val + " to " + new_val);
         if ( new_val != undefined && new_val >=0 ) {
+          $controller.collectionSelection.log("selected.index changed from " + old_val + " to " + new_val);
           $controller.selected = $controller.collectionSelection.collection.getItemAtIndex(new_val);
         }
       }

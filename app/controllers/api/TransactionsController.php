@@ -23,7 +23,7 @@ use \Carbon\Carbon;
 class TransactionsController extends BaseController {
 
   protected $paginateCount = 110; // alter with ?perPage=nnn in url
-  protected static $default_with = ["balance", "source", "destination", "bankString", "payee", "category.parent", "status"];
+  protected static $default_with = ["balance", "source.sourceAccount", "destination.destinationAccount", "bankString", "payee", "category.parent", "status"];
 
   /**
    * @return Transformer

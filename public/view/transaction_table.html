@@ -47,7 +47,10 @@
     <thead>
       <tr>
         <th><a href="" ng-click="predicate = ['date', 'id'];  reverse=!reverse">Date</a></th>
-        <th><a href="" ng-click="predicate = 'payee.name';    reverse=!reverse">Payee</a></th>
+        <th>
+          <a href="" ng-click="predicate = 'payee.name';    reverse=!reverse">Payee</a> /
+        ( <a href="" ng-click="predicate = 'bank_string';    reverse=!reverse">Bank String</a>  )
+        </th>
         <th><a href="" ng-click="predicate = 'category.fullName'; reverse=!reverse">Category</a></th>
         <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Credit</a></th>
         <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Debit</a></th>

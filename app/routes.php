@@ -72,6 +72,8 @@ Route::group(['before' => ''], function() {
     Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');
     Route::resource('accounts',                 $NAMESPACE.'AccountsController');
 
+    Route::get('transactions/{id}/transfer',         $NAMESPACE.'TransfersController@showTransferWithTransactionId');
+
     Route::get('transactions/totals',                   $NAMESPACE.'TransactionReportsController@totals_by_year');
     Route::get('transactions/totals/{year}',            $NAMESPACE.'TransactionReportsController@totals_by_month');
     Route::get('transactions/totals/categories',        $NAMESPACE.'TransactionReportsController@categories_by_year');

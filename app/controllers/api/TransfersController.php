@@ -43,6 +43,23 @@ class TransfersController extends BaseController {
   public function show($id)
   {
     try {
+      $transfer = Transfer::findOrFail($id);
+      return Respond::Raw($this->transform($transfer));
+    } catch (ModelNotFoundException $e) {
+      return Respond::NotFound($e->getMessage());
+    }
+  }
+
+
+  /**
+   * Display a specific transfer for a transaction.
+   *
+   * @param  int  $id
+   * @return Response
+   */
+  public function showTransferWithTransactionId($id)
+  {
+    try {
       $transfer = Transfer::where("source", $id)->orWhere("destination", $id)->firstOrFail();
       return Respond::Raw($this->transform($transfer));
     } catch (ModelNotFoundException $e) {

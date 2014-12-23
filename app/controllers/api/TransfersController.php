@@ -28,7 +28,9 @@ class TransfersController extends BaseController {
    */
   public function index()
   {
-      $transfers = Transfer::paginate($this->paginateCount);
+      $transfers = Transfer::
+        with(["sourceTransaction", "destinationTransaction"])
+      ->paginate($this->paginateCount);
       return Respond::Paginated($transfers, $this->transformCollection($transfers->all()));
   }
 
@@ -157,7 +159,9 @@ class TransfersController extends BaseController {
    */
   public function getPotentialTransfers()
   {
-    $transfers = PotentialTransfer::paginate($this->paginateCount);
+    $transfers = PotentialTransfer::
+        orderBy("date")
+      ->paginate($this->paginateCount);
     return Respond::Paginated($transfers, (new PotentialTransferTransformer)->transformCollection($transfers->all()));
   }
 

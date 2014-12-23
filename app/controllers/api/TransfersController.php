@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 use Feenance\Misc\Transformers\TransferTransformer;
 use Feenance\Misc\Transformers\PotentialTransferTransformer;
 use Feenance\Model\Transfer;
+use Feenance\Model\TransferView;
 use Feenance\Model\PotentialTransfer;
 use Feenance\Model\Transaction;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,9 +29,7 @@ class TransfersController extends BaseController {
    */
   public function index()
   {
-      $transfers = Transfer::
-        with(["sourceTransaction", "destinationTransaction"])
-      ->paginate($this->paginateCount);
+      $transfers = TransferView::paginate($this->paginateCount);
       return Respond::Paginated($transfers, $this->transformCollection($transfers->all()));
   }
 

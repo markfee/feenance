@@ -1,7 +1,3 @@
-/**
- * Created by mark on 18/12/14.
- */
-
 feenance.factory('PotentialTransfersApi', function($resource) {
     return $resource(   $API_ROOT + "transfers/potential", { }, {
             'save':     { method:'POST' }
@@ -49,12 +45,12 @@ feenance.controller('PotentialTransfersController', function($scope, PotentialTr
 });
 
 feenance.directive('potentialTransfersTable', function() {
-        return {
-            restrict: 'E',
-            scope: {    },
-            templateUrl: '/view/potential_transfers_table.html'
-            , link: function (scope) {
-            }
-            , controller: "PotentialTransfersController"
-        };
-    });
+    return {
+        restrict: 'E',
+        scope: {    },
+        templateUrl: '/view/potential_transfers_table.html'
+        , link: function (scope) {
+        }
+        , controller: "PotentialTransfersController"
+    };
+});

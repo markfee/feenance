@@ -24,7 +24,7 @@
 {{ HTML::script('js/category.js') }}
 {{ HTML::script('js/account.js') }}
 {{ HTML::script('js/transaction.js') }}
-{{ HTML::script('js/transactions.js') }}
+{{ HTML::script('js/account_transactions.js') }}
 {{ HTML::script('js/map.js') }}
 {{ HTML::script('js/debug.js') }}
 {{ HTML::script('js/standing_order.js') }}

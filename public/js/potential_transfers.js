@@ -5,11 +5,6 @@ feenance.factory('PotentialTransfersApi', function($resource) {
     );
 });
 
-feenance.factory('PotentialCollection', function(PotentialTransfersApi, Collection) {
-    return new Collection(PotentialTransfersApi, "<...transfers>");
-});
-
-
 feenance.controller('PotentialTransfersController', function($scope, PotentialTransfersApi) {
     $scope.items = [];
      var items = PotentialTransfersApi.get(

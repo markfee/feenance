@@ -1,0 +1,48 @@
+<div class = "col-lg-9">
+
+  <table class="table table-striped">
+
+    <thead>
+    <tr>
+      <th>                    <a href="" ng-click="sort('date');">                Date</a></th>
+      <th class="currency" >  <a href="" ng-click="sort('amount');">              Amount</a></th>
+      <th>                    <a href="" ng-click="sort('source_account_id');"> Source Account</a></th>
+      <th>                    <a href="" ng-click="sort('dest_account_id');">   Destination Account</a></th>
+      <th> Edit     </th>
+      <th> Remove   </th>
+    </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="item in items|orderBy:predicate:reverse" class="standingOrders" ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
+        <td>                    {{item.date    | date:'dd/MM/yyyy'  }}                  </td>
+        <td class="currency">   {{item.amount|currency: "£"}}                           </td>
+        <td>                    <account-name ng-model="item.source_account_id"/>       </td>
+        <td>                    <account-name ng-model="item.destination_account_id"/>  </td>
+
+        <td>
+          <a href="" title="Edit" ng-click="edit(so)">
+            <i ng-class="showEdit||transaction.edit ? 'fa fa-edit fa-lg' : 'fa fa-square-o fa-lg' "> </i>
+          </a>
+        </td>
+
+        <td>
+          <a href="" title="Delete" ng-click="removeTransfer(item, $index)">
+            <i ng-class="'fa fa-minus fa-lg'"> </i>
+          </a>
+        </td>
+
+      </tr>
+    </tbody>
+
+  </table>
+
+</div>
+
+<div class = "col-lg-3">
+
+  <div class="form-group">
+    <button ng-click="sendAll()">Confirm all displayed as transfers</button>
+  </div>
+
+</div>

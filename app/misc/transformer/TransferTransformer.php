@@ -6,13 +6,13 @@ class TransferTransformer extends Transformer {
 
   public static function transform($record) {
     return [
-      "id"                  =>  (int) $record->id,
-      "date"                => $record->date->toISO8601String(),
-      "source_id"           =>  (int) $record->source_id,
-      "destination_id"      =>  (int) $record->destination_id,
-      "amount"              => 0.01 * $record->amount,
-      "source_account"      =>  (int) $record->source_account,
-      "destination_account" =>  (int) $record->destination_account,
+      "id"                      => (int) $record->id,
+      "date"                    => $record->date->toISO8601String(),
+      "source_id"               => (int) $record->source_id,
+      "destination_id"          => (int) $record->destination_id,
+      "amount"                  => 0.01 * $record->amount,
+      "source_account_id"       => (int) $record->source_account,
+      "destination_account_id"  => (int) $record->destination_account,
     ];
   }
 

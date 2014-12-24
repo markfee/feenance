@@ -26,9 +26,13 @@ Route::get('/login', function()  {
 
 Route::post('/login', 'Feenance\Controllers\AdminController@login');
 
-Route::group(['before' => ''], function() {
-  Route::get('/',                   function()  {  return View::make('transactions');  });
-  Route::get('/import',             function()  {  return View::make('import'); });
+Route::group(['before' => ''],        function()  {
+
+  Route::get('/',                     function()  {  return View::make('transactions');  });
+  Route::get('/import',               function()  {  return View::make('import'); });
+  Route::get('/standing_orders',      function()  {  return View::make('standing_orders'); });
+  Route::get('/potential_transfers',  function()  {  return View::make('potential_transfers'); });
+  Route::get('/transfers',            function()  {  return View::make('transfers'); });
 
   Route::get('/reports/categories/{year?}', function($year=null) {
     return CategoryReportController::category_report($year);
@@ -46,10 +50,6 @@ Route::group(['before' => ''], function() {
     return CategoryReportController::category_report($year, $month, $endYear, $endMonth);
   });
 
-  Route::get('/standing_orders',  function()  {  return View::make('standing_orders'); });
-  Route::get('/potential_transfers',  function()  {  return View::make('potential_transfers'); });
-
-
   Route::group(['prefix' =>  'api/v1/'], function()
   {
     $NAMESPACE = 'Feenance\\Api\\';
@@ -57,7 +57,7 @@ Route::group(['before' => ''], function() {
     Route::post('transfers',             $NAMESPACE.'TransfersController@joinTwoTransactionsAsTransfer');
     Route::get('transfers',              $NAMESPACE.'TransfersController@index');
     Route::get('transfers/potential',    $NAMESPACE.'TransfersController@getPotentialTransfers');
-    Route::post('transfers/potential',    $NAMESPACE.'TransfersController@joinAllTransactionsAsTransfer');
+    Route::post('transfers/potential',   $NAMESPACE.'TransfersController@joinAllTransactionsAsTransfer');
     Route::get('transfers/{id}',         $NAMESPACE.'TransfersController@show');
     Route::delete('transfers/{id}',      $NAMESPACE.'TransfersController@destroy');
 
@@ -118,6 +118,7 @@ Route::group(['before' => ''], function() {
     Route::get('standing_orders/transactions/{period}',       $NAMESPACE.'StandingOrdersController@generate');
     Route::get('standing_orders/transactions',                $NAMESPACE.'StandingOrdersController@generate');
   */
+
   });
 
   Route::group(['prefix' =>  'api/v1/mmex'], function()

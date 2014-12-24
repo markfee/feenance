@@ -29,7 +29,7 @@ class TransfersController extends BaseController {
    */
   public function index()
   {
-      $transfers = TransferView::paginate($this->paginateCount);
+      $transfers = TransferView::orderBy("date", "desc")->paginate($this->paginateCount);
       return Respond::Paginated($transfers, $this->transformCollection($transfers->all()));
   }
 

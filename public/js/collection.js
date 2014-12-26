@@ -3,49 +3,53 @@
  */
 
 feenance.factory('Collection', function() {
-    var collection = { data: [] };
-    var promises = {};
-    /*
-     * promises are a set of objects that will contain the index of an account, once the accounts are returned
-     * from the ajax call.
-     * This private method is called post ajax return to populate all of the promises
-     */
-    function _updatePromises() {
-        console.log("updating promises");
-
-        angular.forEach(collection.data,
-            function(value, key)
-            {
-                if (promises[value.id] != undefined) {
-                    console.log("updating promise    : id: " + value.id + " to index: " + key);
-                    promises[value.id].index = key;
-                }
-            }
-        );
-    }
-
-    /*
-     * This private method sets a promise and populates it if data is available,
-     * otherwise it waits until the promises are fetched and _updatePromises is called
-     */
-    function _setPromise(promise, id) {
-        angular.forEach(collection.data,
-            function(value, key)
-            {
-                if (value.id == id) {
-                    console.log("setting  promise found for index: " + key + " to id: " + id);
-                    promise.index = key;
-                }
-            }
-        );
-        return promise;
-    }
 
     return function (api, $initialText) {
+        var thisCollection = this;
+        this.collection = { data: [] };
+        this.promises = {};
         this.api = api;
 
+        /*
+         * promises are a set of objects that will contain the index of an account, once the accounts are returned
+         * from the ajax call.
+         * This private method is called post ajax return to populate all of the promises
+         */
+        function _updatePromises() {
+            console.log("updating promises");
+
+            angular.forEach(thisCollection.collection.data,
+                function(value, key)
+                {
+                    if (thisCollection.promises[value.id] != undefined) {
+                        console.log("updating promise    : id: " + value.id + " to index: " + key);
+                        thisCollection.promises[value.id].index = key;
+                    }
+                }
+            );
+        }
+
+        /*
+         * This private method sets a promise and populates it if data is available,
+         * otherwise it waits until the promises are fetched and _updatePromises is called
+         */
+        function _setPromise(promise, id) {
+            angular.forEach(thisCollection.collection.data,
+                function(value, key)
+                {
+                    if (value.id == id) {
+                        console.log("setting  promise found for index: " + key + " to id: " + id);
+                        promise.index = key;
+                    }
+                }
+            );
+            return promise;
+        }
+
+
+
         if ($initialText) {
-            collection.data[0] = {id: null, name: $initialText};
+            thisCollection.collection.data[0] = {id: null, name: $initialText};
         }
 
         this.newItem = function()
@@ -65,42 +69,40 @@ feenance.factory('Collection', function() {
 
         this.getData = function()
         {
-            return collection.data;
+            return thisCollection.collection.data;
         };
 
         this.setData = function(data, $initialText)
         {
-            angular.extend(collection.data, data);
+            angular.extend(thisCollection.collection.data, data);
             if ($initialText) {
-                collection.data.splice(0, 0, {id: null, name: $initialText});
+                thisCollection.collection.data.splice(0, 0, {id: null, name: $initialText});
             }
             _updatePromises();
         };
 
         this.add = function(record)
         {
-            collection.data.push(record);
+            thisCollection.collection.data.push(record);
             return record;
         };
 
         this.getPromisedIndex = function (id)
         {
-            if (promises[id] != undefined) {
-                console.log("found promise       : id: " + id + " to index: " + promises[id].index);
-                return promises[id];
+            if (thisCollection.promises[id] != undefined) {
+                console.log("found promise       : id: " + id + " to index: " + thisCollection.promises[id].index);
+                return thisCollection.promises[id];
             }
                 console.log("creating promise    : id: " + id + " to index: -1");
-            promises[id] = {index: -1};
-            return _setPromise(promises[id], id);
+            thisCollection.promises[id] = {index: -1};
+            return _setPromise(thisCollection.promises[id], id);
         };
 
         this.getItemAtIndex = function (index)
         {
-            return collection.data[index];
+            return thisCollection.collection.data[index];
         }
 
-        // Now Fetch The Data.
-        var thisCollection = this;
         var results = this.api.get({}, function()
         {
             thisCollection.setData(results.data, $initialText);

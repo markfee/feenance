@@ -31,3 +31,4 @@
 {{ HTML::script('js/category_report.js') }}
 {{ HTML::script('js/potential_transfers.js') }}
 {{ HTML::script('js/transfers.js') }}
+{{ HTML::script('js/transactions.js') }}

@@ -1,7 +1,6 @@
-
 <!--TRANSACTIONS TABLE-->
 
-<div data-ng-controller="AccountTransactionsController" >
+<div>
 
   <account-id-selector ng-model="account_id" account_id="2"></account-id-selector>
 
@@ -46,6 +45,7 @@
 
     <thead>
       <tr>
+        <th>Account</th>
         <th><a href="" ng-click="predicate = ['date', 'id'];  reverse=!reverse">Date</a></th>
         <th>
           <a href="" ng-click="predicate = 'payee.name';    reverse=!reverse">Payee</a> /
@@ -61,8 +61,12 @@
       </tr>
     </thead>
 
-    <tbody ng-show="transactions">
-      <tr ng-repeat="transaction in transactions|orderBy:predicate:reverse|filter:reconciledFilter" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
+    <tbody ng-show="boundCollection">
+      <tr ng-repeat="transaction in boundCollection|orderBy:predicate:reverse|filter:reconciledFilter" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
+
+        <td>
+          <account-name ng-model="transaction.account_id"></account-name>
+        </td>
 
         <td title="transaction #{{transaction.id}}">{{transaction.date | date:'dd/MM/yy'}}</td>
 

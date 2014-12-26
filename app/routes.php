@@ -29,6 +29,7 @@ Route::post('/login', 'Feenance\Controllers\AdminController@login');
 Route::group(['before' => ''],        function()  {
 
   Route::get('/',                     function()  {  return View::make('transactions');  });
+  Route::get('/account_transactions', function()  {  return View::make('account_transactions');  });
   Route::get('/import',               function()  {  return View::make('import'); });
   Route::get('/standing_orders',      function()  {  return View::make('standing_orders'); });
   Route::get('/potential_transfers',  function()  {  return View::make('potential_transfers'); });

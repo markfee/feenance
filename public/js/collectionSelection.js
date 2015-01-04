@@ -40,6 +40,10 @@ feenance.factory('CollectionSelection', function() {
       return $controller.collectionSelection.selectItem(id);
     }
 
+    $controller.nextPage = function()
+    {
+      $controller.collectionSelection.collection.getNextPage();
+    }
 
 
     this.log = function($message) {

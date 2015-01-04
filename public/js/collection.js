@@ -111,6 +111,8 @@ feenance.factory('Collection', function() {
                     if (fetchAllPages) {
                         getNextPage();
                     }
+                } else {
+                    nextPage = null;
                 }
                 _updatePromises();
             });

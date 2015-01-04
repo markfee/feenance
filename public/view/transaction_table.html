@@ -45,6 +45,7 @@
 
     <thead>
       <tr>
+        <th>Page</th>
         <th>Account</th>
         <th><a href="" ng-click="predicate = ['date', 'id'];  reverse=!reverse">Date</a></th>
         <th>
@@ -62,8 +63,9 @@
     </thead>
 
     <tbody ng-show="boundCollection">
-      <tr ng-repeat="transaction in boundCollection|orderBy:predicate:reverse|filter:reconciledFilter" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
+      <tr ng-repeat="transaction in boundCollection|orderBy:predicate:reverse|filter:filter" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
 
+        <td>          {{transaction.page}}        </td>
         <td>
           <account-name ng-model="transaction.account_id"></account-name>
         </td>

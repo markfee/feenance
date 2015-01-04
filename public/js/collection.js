@@ -6,6 +6,8 @@ feenance.factory('Collection', function() {
 
     return function (api, $initialText) {
         var collection = { data: [] };
+        var fetchAllPages = false;
+        var nextPage = null;
 
         if ($initialText) {
             collection.data[0] = {id: null, name: $initialText};
@@ -92,14 +94,43 @@ feenance.factory('Collection', function() {
         }
 
     // NOW GET THE DATA
-        var results = api.get( {}, function()
+        var getPage = function($page)
         {
-            angular.extend(collection.data, results.data);
-            if ($initialText) {
-                collection.data.splice(0, 0, {id: null, name: $initialText});
-            }
-            _updatePromises();
-        });
+            var results = api.get({ page: $page }, function ()
+            {
+                for (var i = 0; i < results.data.length; i++)
+                {
+                    results.data[i].page = $page;
+                    collection.data.push(results.data[i]);
 
+                }
+
+                if (results.paginator && results.paginator.next)
+                {
+                    nextPage = results.paginator.next;
+                    if (fetchAllPages) {
+                        getNextPage();
+                    }
+                }
+                _updatePromises();
+            });
+        }
+
+        var getNextPage = function()
+        {
+            if (nextPage) {
+                getPage(nextPage);
+            }
+            return this;
+        };
+
+        getPage(1);
+
+        this.fetchAll = function() {
+            fetchAllPages = true;
+            getNextPage();
+            return this;
+        }
+        this.getNextPage = getNextPage;
     };
 });

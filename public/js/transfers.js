@@ -13,12 +13,10 @@ feenance.controller('TransfersController', function($scope, TransfersApi)
     var getPage = function($page)
     {
         var items = TransfersApi.get(
-            {perPage: 50, page: $page},
+            { perPage: 50, page: $page },
             function ()
             {
-                for (var i = 0; i < items.data.length; i++)
-                {
-
+                for (var i = 0; i < items.data.length; i++) {
                     items.data[i].page = $page;
                     $scope.items.push(items.data[i]);
                 }

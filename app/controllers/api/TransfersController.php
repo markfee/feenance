@@ -121,7 +121,7 @@ class TransfersController extends BaseController {
 
       $transfer = Transfer::create($data);
       Respond::setStatusCode(ResponseCodes::HTTP_CREATED);
-      return Respond::Raw($this->transform($transfer));
+      return Respond::Raw($transfer);
 
     } catch (QueryException $e) {
       return Respond::QueryException($e);

@@ -42,6 +42,13 @@
     Reconcile all
   </button>
 
+  <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+    Previous
+  </button>
+  {{currentPage+1}}/{{numberOfPages()}}
+  <button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+    Next
+  </button>
 
   <table class="table table-striped" >
 
@@ -65,7 +72,10 @@
     </thead>
 
     <tbody ng-show="boundCollection">
-      <tr ng-repeat="transaction in boundCollection|orderBy:predicate:reverse|filter:filter" class="transaction"  ng-mouseover="showEdit=true" ng-mouseout="showEdit=false">
+      <tr ng-repeat="transaction in boundCollection|orderBy:predicate:reverse|filter:filter| startFrom:currentPage*pageSize | limitTo:pageSize"
+          class="transaction"
+          ng-mouseover="showEdit=true"
+          ng-mouseout="showEdit=false">
 
         <td>          {{transaction.page}}        </td>
         <td>

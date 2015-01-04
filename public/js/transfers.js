@@ -5,17 +5,31 @@ feenance.factory('TransfersApi', function($resource) {
 
 feenance.controller('TransfersController', function($scope, TransfersApi)
 {
-    $scope.predicate="date";
+    $scope.predicate="-date";
     $scope.reverse = false;
 
     $scope.items = [];
-    var items = TransfersApi.get(
-        {},
-        function ()
-        {
-            $scope.items = items.data;
-        }
-    );
+
+    var getPage = function($page)
+    {
+        var items = TransfersApi.get(
+            {perPage: 50, page: $page},
+            function ()
+            {
+                for (var i = 0; i < items.data.length; i++)
+                {
+
+                    items.data[i].page = $page;
+                    $scope.items.push(items.data[i]);
+                }
+                if (items.paginator && items.paginator.next) {
+                    getPage(items.paginator.next);
+                }
+            }
+        );
+    };
+
+    getPage(1);
 
     $scope.sort = function(predicate) {
         if ($scope.predicate == predicate) {

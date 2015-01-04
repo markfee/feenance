@@ -73,7 +73,6 @@ feenance.directive('accountName', function() {
   return {
     restrict: 'E',
     scope: {
-      account_id: "=ngModel",
       ngModel: "="
     },
     template: '{{selected.name}}',

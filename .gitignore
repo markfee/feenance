@@ -3,6 +3,9 @@
 /bootstrap/compiled.php
 /vendor
 /workbench
+/bower_components
+/node_modules
+npm-debug.log
 composer.phar
 composer.lock
 .env.*.php

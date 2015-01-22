@@ -1,0 +1,6 @@
+{
+  "name": "Feenance!",
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}

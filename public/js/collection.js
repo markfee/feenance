@@ -10,7 +10,7 @@ feenance.factory('Collection', function() {
         var nextPage = null;
 
         if ($initialText) {
-            collection.data[0] = {id: null, name: $initialText};
+            collection.data[0] = {id: 0, name: $initialText};
         }
 
         var promises = {};

@@ -84,7 +84,7 @@ class TransactionsTest extends TestCase {
 
   public function test_import_csv() {
     $this->runMigrations();
-    $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Transactions/test_statement.csv", "r");
+    $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Controllers/Transactions/test_statement.csv", "r");
 //    $controller = new TransactionsController();
     TransactionsController::uploadFile(1, $file);
 

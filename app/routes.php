@@ -69,7 +69,6 @@ Route::group(['before' => ''],        function()  {
     Route::get('accounts/{id}/transactions/unreconciled/count',     $NAMESPACE.'TransactionsController@unreconciledCount');
     Route::post('accounts/{id}/transactions/reconcile',  $NAMESPACE.'TransactionsController@reconcileAll');
 
-    Route::get('accounts/upload',               $NAMESPACE.'TransactionsController@upload');
     Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');
     Route::resource('accounts',                 $NAMESPACE.'AccountsController');
 

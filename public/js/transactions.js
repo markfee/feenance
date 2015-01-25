@@ -13,10 +13,12 @@ feenance.controller('TransactionsController', function($scope, TransactionCollec
         return Math.ceil($scope.boundCollection.length/$scope.pageSize);
     };
 
-    $scope.filter = function(element)
+    $scope.filter = function(transaction)
     {
+        if ($scope.account_id && transaction.account_id != $scope.account_id)
+            return false;
         return true;
-        return element.page <= 3;
+        return transaction.page <= 3;
     };
 });
 

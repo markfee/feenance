@@ -6,7 +6,7 @@
  * Time: 06:58
  */
 
-use Feenance\Api\BaseController;
+use Feenance\Controllers\Api\BaseController;
 
 class AdminController extends BaseController {
   public function login() {

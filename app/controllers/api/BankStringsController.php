@@ -1,6 +1,6 @@
 <?php
 
-namespace Feenance\Api;
+namespace Feenance\Controllers\Api;
 
 use Feenance\Model\BankString;
 use Markfee\Responder\Respond;

@@ -53,7 +53,7 @@ Route::group(['before' => ''],        function()  {
 
   Route::group(['prefix' =>  'api/v1/'], function()
   {
-    $NAMESPACE = 'Feenance\\Api\\';
+    $NAMESPACE = 'Feenance\\Controllers\\Api\\';
 
     Route::post('transfers',             $NAMESPACE.'TransfersController@joinTwoTransactionsAsTransfer');
     Route::get('transfers',              $NAMESPACE.'TransfersController@index');

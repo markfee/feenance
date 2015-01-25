@@ -6,7 +6,7 @@
  * Time: 09:22
  */
 
-namespace Feenance\Api;
+namespace Feenance\Controllers\Api;
 
 use Feenance\Model\Transaction;
 use Markfee\Responder\Respond;

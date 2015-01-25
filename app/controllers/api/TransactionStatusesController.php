@@ -1,6 +1,6 @@
 <?php
 
-namespace Feenance\Controllers\Api;
+namespace Feenance\controllers\Api;
 
 use \TransactionStatus;
 use Markfee\Responder\Respond;

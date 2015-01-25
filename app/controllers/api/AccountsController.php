@@ -1,4 +1,4 @@
-<?php namespace Feenance\Controllers\Api;
+<?php namespace Feenance\controllers\Api;
 use Feenance\Model\Account;
 use Markfee\Responder\Respond;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

@@ -1,7 +1,7 @@
 <?php
 
 namespace Feenance\tests;
-use Feenance\Controllers\Api\CategoriesController;
+use Feenance\controllers\Api\CategoriesController;
 
 class CategoriesTest extends TestCase {
   private $API_ROOT  = "api/v1/categories";

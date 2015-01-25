@@ -5,7 +5,7 @@ namespace Feenance\tests;
 use Feenance\Model\BankString;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
-use Feenance\Controllers\Api\BankStringsController;
+use Feenance\controllers\Api\BankStringsController;
 
 class BankStringsTest extends TestCase {
 

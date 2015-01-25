@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
     <div class="large-6 large-centered column">
-            {{ Form::open(['action' => 'Feenance\Controllers\AdminController@login']) }}
+            {{ Form::open(['action' => 'Feenance\controllers\AdminController@login']) }}
             <fieldset>
                 <legend>Login</legend>
                 {{ Form::label('username','Username') }}

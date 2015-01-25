@@ -1,5 +1,5 @@
 <?php
-namespace Feenance\Controllers\Api;
+namespace Feenance\controllers\Api;
 
 use Feenance\Model\Transaction;
 use Feenance\Model\Transfer;

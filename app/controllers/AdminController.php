@@ -1,4 +1,4 @@
-<?php namespace Feenance\Controllers;
+<?php namespace Feenance\controllers;
 /**
  * Created by PhpStorm.
  * User: mark
@@ -6,7 +6,7 @@
  * Time: 06:58
  */
 
-use Feenance\Controllers\Api\BaseController;
+use Feenance\controllers\Api\BaseController;
 
 class AdminController extends BaseController {
   public function login() {

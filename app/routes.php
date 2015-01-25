@@ -24,7 +24,7 @@ Route::get('/login', function()  {
   return View::make('login');
 });
 
-Route::post('/login', 'Feenance\Controllers\AdminController@login');
+Route::post('/login', 'Feenance\controllers\AdminController@login');
 
 Route::group(['before' => ''],        function()  {
 
@@ -53,7 +53,7 @@ Route::group(['before' => ''],        function()  {
 
   Route::group(['prefix' =>  'api/v1/'], function()
   {
-    $NAMESPACE = 'Feenance\\Controllers\\Api\\';
+    $NAMESPACE = 'Feenance\\controllers\\Api\\';
 
     Route::post('transfers',             $NAMESPACE.'TransfersController@joinTwoTransactionsAsTransfer');
     Route::get('transfers',              $NAMESPACE.'TransfersController@index');

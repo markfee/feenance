@@ -1,6 +1,6 @@
 <?php
 
-namespace Feenance\Controllers\Api;
+namespace Feenance\controllers\Api;
 
 use Markfee\Responder\Respond;
 use Symfony\Component\HttpFoundation\Response as ResponseCodes;

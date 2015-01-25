@@ -1,6 +1,6 @@
 <?php
 
-namespace Feenance\Model;
+namespace Feenance\models\eloquent;
 class BankString extends \Eloquent {
 
   // Add your validation rules here
@@ -27,17 +27,17 @@ class BankString extends \Eloquent {
   }
 
   public function bankTransaction() {
-    return $this->hasMany('Feenance\Model\BankTransaction');
+    return $this->hasMany('Feenance\models\eloquent\BankTransaction');
   }
 
   public function payee() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Feenance\Model\Payee', "id", "payee_id");
+    return $this->hasOne('Feenance\models\eloquent\Payee', "id", "payee_id");
   }
 
   public function category() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Feenance\Model\Category', "id", "category_id");
+    return $this->hasOne('Feenance\models\eloquent\Category', "id", "category_id");
   }
 
 }

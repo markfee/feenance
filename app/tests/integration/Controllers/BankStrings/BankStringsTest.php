@@ -2,7 +2,7 @@
 
 namespace Feenance\tests;
 
-use Feenance\Model\BankString;
+use Feenance\models\eloquent\BankString;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use Feenance\controllers\Api\BankStringsController;

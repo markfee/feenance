@@ -1,4 +1,4 @@
-<?php namespace Feenance\Model;
+<?php namespace Feenance\models\eloquent;
 
 class Account extends \Eloquent {
 

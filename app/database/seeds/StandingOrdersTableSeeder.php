@@ -1,8 +1,8 @@
 <?php
 
 use Feenance\MMEX\StandingOrder as mmexStandingOrder;
-use Feenance\Model\Category;
-use Feenance\Model\Unit;
+use Feenance\models\eloquent\Category;
+use Feenance\models\eloquent\Unit;
 
 class StandingOrdersTableSeeder extends Seeder {
 
@@ -69,7 +69,7 @@ class StandingOrdersTableSeeder extends Seeder {
       */
 
 
-			\Feenance\Model\StandingOrder::create([
+			\Feenance\models\eloquent\StandingOrder::create([
         "id"                => $record->BDID,
         "previous_date"     => $record->TRANSDATE,
         "next_date"         => $record->NEXTOCCURRENCEDATE,

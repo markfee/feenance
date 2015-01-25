@@ -1,4 +1,4 @@
-<?php namespace Feenance\Model;
+<?php namespace Feenance\models\eloquent;
 
 class TransferView extends \Eloquent {
   public $timestamps = false;

@@ -1,7 +1,7 @@
 <?php
 
 use Feenance\MMEX\Accounts as mmexAccount;
-use Feenance\Model\Account;
+use Feenance\models\eloquent\Account;
 
 class AccountsTableSeeder extends Seeder {
 

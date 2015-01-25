@@ -2,7 +2,7 @@
 
 namespace Feenance\controllers\Api;
 
-use Feenance\Model\BankString;
+use Feenance\models\eloquent\BankString;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\BankStringTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

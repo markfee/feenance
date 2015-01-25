@@ -6,7 +6,7 @@
  * Time: 08:09
  */
 
-namespace Feenance\Model;
+namespace Feenance\models\eloquent;
 
 
 class TransactionStatus extends \Eloquent {

@@ -1,7 +1,7 @@
 <?php
 
 use Feenance\MMEX\Payee as mmexPayee;
-use Feenance\Model\Category;
+use Feenance\models\eloquent\Category;
 
 class PayeesTableSeeder extends Seeder {
 
@@ -16,7 +16,7 @@ class PayeesTableSeeder extends Seeder {
         $category = Category::where("mmex_subcatid", "=", $record->SUBCATEGID)->firstOrFail();
         $categoryId = $category->id;
       }
-			\Feenance\Model\Payee::create([
+			\Feenance\models\eloquent\Payee::create([
         "id" => $record->PAYEEID,
         "name" => $record->PAYEENAME,
         "category_id" => $categoryId

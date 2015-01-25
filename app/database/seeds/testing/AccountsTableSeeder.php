@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Factory as Faker;
-use Feenance\Model\Account;
+use Feenance\models\eloquent\Account;
 
 class testAccountsTableSeeder extends Seeder {
 

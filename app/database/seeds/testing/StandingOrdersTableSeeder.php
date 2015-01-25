@@ -2,7 +2,7 @@
 
 // Composer: "fzaninotto/faker": "v1.3.0"
 use Faker\Factory as Faker;
-use Feenance\Model\StandingOrder;
+use Feenance\models\eloquent\StandingOrder;
 
 class testStandingOrdersTableSeeder extends Seeder {
 

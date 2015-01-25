@@ -8,7 +8,7 @@
 
 namespace Feenance\controllers\Api;
 
-use Feenance\Model\Transaction;
+use Feenance\models\eloquent\Transaction;
 use Markfee\Responder\Respond;
 use Markfee\Responder\Transformer;
 //use Feenance\Misc\Transformers\TransactionReportTransformer;

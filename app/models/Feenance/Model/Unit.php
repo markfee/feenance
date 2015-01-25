@@ -1,6 +1,6 @@
 <?php
 
-namespace Feenance\Model;
+namespace Feenance\models\eloquent;
 class Unit extends \Eloquent {
 //  protected $table = "units";
   protected $fillable = [];

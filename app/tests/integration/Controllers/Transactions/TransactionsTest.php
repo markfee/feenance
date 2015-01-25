@@ -5,7 +5,7 @@ use Illuminate\Http\Response;
 use Carbon\Carbon;
 use \SplFileObject;
 use Feenance\controllers\Api\TransactionsController;
-use Feenance\Model\Transaction;
+use Feenance\models\eloquent\Transaction;
 
 class TransactionsTest extends TestCase {
   private $API_ROOT  = "api/v1/transactions";
@@ -97,8 +97,8 @@ class TransactionsTest extends TestCase {
    */
   public function test_map_update() {
     $this->runMigrations();
-    \Feenance\Model\BankString::create(["account_id" =>1, "name"  => "This will be updated"]);
-    \Feenance\Model\BankString::create(["account_id" =>1, "name"  => "This will not be updated"]);
+    \Feenance\models\eloquent\BankString::create(["account_id" =>1, "name"  => "This will be updated"]);
+    \Feenance\models\eloquent\BankString::create(["account_id" =>1, "name"  => "This will not be updated"]);
     $transactionModel = new Transaction;
     $transactionModel->fillable([ "date", "amount", "account_id", "reconciled", "payee_id", "category_id", "notes", "bank_string_id"]);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feenance\Model;
+namespace Feenance\models\eloquent;
 class StandingOrder extends \Eloquent {
 
   protected $fillable = [
@@ -54,15 +54,15 @@ class StandingOrder extends \Eloquent {
 
 
   public function payee() {
-    return $this->hasOne('Feenance\Model\Payee', "id", "payee_id");
+    return $this->hasOne('Feenance\models\eloquent\Payee', "id", "payee_id");
   }
 
   public function category() {
-    return $this->hasOne('Feenance\Model\Category', "id", "category_id");
+    return $this->hasOne('Feenance\models\eloquent\Category', "id", "category_id");
   }
 
   public function unit() {
-    return $this->hasOne('Feenance\Model\Unit', "id", "unit_id");
+    return $this->hasOne('Feenance\models\eloquent\Unit', "id", "unit_id");
   }
 
   public function getFrequencyAttribute() {
@@ -79,11 +79,11 @@ class StandingOrder extends \Eloquent {
   }
 
   public function account() {
-    return $this->hasOne('Feenance\Model\Account', "id", "account_id");
+    return $this->hasOne('Feenance\models\eloquent\Account', "id", "account_id");
   }
 
   public function destination() {
-    return $this->hasOne('Feenance\Model\Account', "id", "destination_account_id");
+    return $this->hasOne('Feenance\models\eloquent\Account', "id", "destination_account_id");
   }
 
 

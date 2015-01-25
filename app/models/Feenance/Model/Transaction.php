@@ -1,4 +1,4 @@
-<?php namespace Feenance\Model;
+<?php namespace Feenance\models\eloquent;
 
 use DB;
 use Eloquent;
@@ -43,37 +43,37 @@ class Transaction extends Eloquent {
   }
 
   public function balance() {
-    return $this->hasOne('Feenance\Model\Balance');
+    return $this->hasOne('Feenance\models\eloquent\Balance');
   }
 
   public function destination() {
     // If this is the source the transfer->destination is the destination
-    return $this->hasOne('Feenance\Model\Transfer', 'source');
+    return $this->hasOne('Feenance\models\eloquent\Transfer', 'source');
   }
 
   public function source() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Feenance\Model\Transfer', 'destination');
+    return $this->hasOne('Feenance\models\eloquent\Transfer', 'destination');
   }
 
   public function bankString() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Feenance\Model\BankString', "id", "bank_string_id");
+    return $this->hasOne('Feenance\models\eloquent\BankString', "id", "bank_string_id");
   }
 
   public function payee() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Feenance\Model\Payee', "id", "payee_id");
+    return $this->hasOne('Feenance\models\eloquent\Payee', "id", "payee_id");
   }
 
   public function category() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Feenance\Model\Category', "id", "category_id");
+    return $this->hasOne('Feenance\models\eloquent\Category', "id", "category_id");
   }
 
   public function status() {
     // If this is the destination the transfer->source is the source
-    return $this->hasOne('Feenance\Model\TransactionStatus', "id", "status_id");
+    return $this->hasOne('Feenance\models\eloquent\TransactionStatus', "id", "status_id");
   }
 
 }

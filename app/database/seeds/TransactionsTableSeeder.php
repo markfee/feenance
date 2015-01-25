@@ -1,8 +1,8 @@
 <?php
 
 use Feenance\MMEX\Transaction as mmexTransaction;
-use Feenance\Model\Category;
-use Feenance\Model\Transfer;
+use Feenance\models\eloquent\Category;
+use Feenance\models\eloquent\Transfer;
 
 class TransactionsTableSeeder extends Seeder {
 
@@ -27,7 +27,7 @@ class TransactionsTableSeeder extends Seeder {
         $categoryId = $category->id;
       }
 //      print "\nrecord->ACCOUNTID: {$record->ACCOUNTID}";
-      $src = \Feenance\Model\Transaction::create([
+      $src = \Feenance\models\eloquent\Transaction::create([
         "date"              => $record->TRANSDATE,
         "amount"            => $amount * 100,
         "account_id"        => $record->ACCOUNTID,
@@ -39,7 +39,7 @@ class TransactionsTableSeeder extends Seeder {
 
       if ($record->TOACCOUNTID != "-1") { // transfer
 //        print "\nrecord->TOACCOUNTID : {$record->ACCOUNTID}";
-        $destination = \Feenance\Model\Transaction::create([
+        $destination = \Feenance\models\eloquent\Transaction::create([
           "date"              => $record->TRANSDATE,
           "amount"            => $amount * -100,
           "account_id"        => $record->TOACCOUNTID,

@@ -2,7 +2,7 @@
 
 namespace Feenance\controllers\Api;
 
-use Feenance\Model\Payee;
+use Feenance\models\eloquent\Payee;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\PayeeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

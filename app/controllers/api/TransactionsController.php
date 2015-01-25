@@ -1,10 +1,10 @@
 <?php
 namespace Feenance\controllers\Api;
 
-use Feenance\Model\Transaction;
-use Feenance\Model\Transfer;
-use Feenance\Model\BankString;
-use Feenance\Model\TransactionStatus;
+use Feenance\models\eloquent\Transaction;
+use Feenance\models\eloquent\Transfer;
+use Feenance\models\eloquent\BankString;
+use Feenance\models\eloquent\TransactionStatus;
 
 use Markfee\Responder\Respond;
 use Markfee\Responder\Transformer;

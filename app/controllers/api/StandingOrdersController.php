@@ -2,9 +2,9 @@
 
 namespace Feenance\controllers\Api;
 
-use Feenance\Model\StandingOrder;
-use Feenance\Model\Transaction;
-use Feenance\Model\TransactionStatus;
+use Feenance\models\eloquent\StandingOrder;
+use Feenance\models\eloquent\Transaction;
+use Feenance\models\eloquent\TransactionStatus;
 use Markfee\Responder\Respond;
 use Feenance\Misc\Transformers\StandingOrderTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

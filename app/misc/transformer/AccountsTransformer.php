@@ -12,10 +12,6 @@ use Markfee\Responder\Transformer;
 
 class AccountsTransformer extends Transformer {
 
-  private function transformAmount($account, $amount) {
-    return $account ? ["acount_id" => $account, "amount" => $amount] : null;
-  }
-
   public static function transform($record) {
     return $record ? [
       "id"                => (int)$record->id,

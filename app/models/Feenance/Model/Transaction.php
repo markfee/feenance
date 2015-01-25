@@ -1,4 +1,5 @@
 <?php namespace Feenance\Model;
+
 use DB;
 use Eloquent;
 
@@ -74,6 +75,5 @@ class Transaction extends Eloquent {
     // If this is the destination the transfer->source is the source
     return $this->hasOne('Feenance\Model\TransactionStatus', "id", "status_id");
   }
-
 
 }

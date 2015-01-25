@@ -4,7 +4,7 @@ namespace Feenance\tests;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
 use \SplFileObject;
-use Feenance\Api\TransactionsController;
+use Feenance\controllers\Api\TransactionsController;
 use Feenance\Model\Transaction;
 
 class TransactionsTest extends TestCase {
@@ -84,7 +84,7 @@ class TransactionsTest extends TestCase {
 
   public function test_import_csv() {
     $this->runMigrations();
-    $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Controllers/Transactions/test_firstdirect.csv", "r");
+    $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Controllers/Transactions/test_statement.csv", "r");
 //    $controller = new TransactionsController();
     TransactionsController::uploadFile(1, $file);
 

@@ -1,6 +1,5 @@
-<?php
+<?php namespace Feenance\tests;
 
-namespace Feenance\tests;
 use \Illuminate\Http\Response;
 use Markfee\Responder\Respond;
 use \Eloquent;

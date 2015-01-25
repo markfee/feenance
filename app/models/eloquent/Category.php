@@ -1,6 +1,5 @@
-<?php
+<?php namespace Feenance\models\eloquent;
 
-namespace Feenance\models\eloquent;
 class Category extends \Eloquent {
   protected $fillable = ["name", "parent_id"];
   static public $rules = ["name" => "required"];

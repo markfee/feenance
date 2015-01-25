@@ -1,12 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 08/11/14
- * Time: 08:09
- */
-
-namespace Feenance\models\eloquent;
+<?php namespace Feenance\models\eloquent;
 
 
 class TransactionStatus extends \Eloquent {

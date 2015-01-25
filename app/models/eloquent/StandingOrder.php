@@ -1,6 +1,5 @@
-<?php
+<?php namespace Feenance\models\eloquent;
 
-namespace Feenance\models\eloquent;
 class StandingOrder extends \Eloquent {
 
   protected $fillable = [

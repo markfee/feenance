@@ -1,6 +1,4 @@
-<?php
-
-namespace Feenance\models\eloquent;
+<?php namespace Feenance\models\eloquent;
 
 class PotentialTransfer extends \Eloquent {
   protected $table = "v_potential_transfers";

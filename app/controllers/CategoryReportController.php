@@ -1,13 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 22/10/14
- * Time: 06:58
- */
-
-namespace Feenance;
-
+<?php namespace Feenance;
 
 use Feenance\controllers\Api\BaseController;
 

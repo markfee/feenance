@@ -15,10 +15,10 @@
   "require": {
     "laravel/framework": "4.2.*",
     "markfee/responder": "dev-master",
-    "barryvdh/laravel-ide-helper": "1.*",
     "ddeboer/data-import": "0.17.*"
   },
   "require-dev": {
+    "barryvdh/laravel-ide-helper": "1.*",
     "way/generators": "2.*",
     "mockery/mockery": "dev-master@dev",
     "itsgoingd/clockwork": "1.*",
@@ -34,7 +34,8 @@
       "app/database/seeds",
       "app/tests/TestCase.php",
       "app/misc",
-      "app/services"
+      "app/services",
+      "app/repositories"
     ]
   },
   "scripts": {

@@ -1,10 +1,13 @@
-<?php namespace Feenance\Repositories;
+<?php namespace Feenance\repositories;
 /**
  * Created by PhpStorm.
  * User: mark
  * Date: 24/01/15
  * Time: 09:10
  */
+
+use Markfee\Responder\Transformer;
+use Markfee\Responder\TransformerInterface;
 
 interface RepositoryInterface {
 
@@ -21,4 +24,5 @@ interface RepositoryInterface {
   public function updateWithIdAndInput($id, array $input);
 
   public function destroy($id);
+
 }

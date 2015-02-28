@@ -1,4 +1,4 @@
-<?php
+<?php namespace Feenance\Misc\Transformers;
 /**
  * Created by PhpStorm.
  * User: mark
@@ -6,11 +6,11 @@
  * Time: 07:40
  */
 
-namespace Feenance\Misc\Transformers;
 use Markfee\Responder\Transformer;
+use Markfee\Responder\TransformerInterface;
 
 
-class AccountsTransformer extends Transformer {
+class AccountsTransformer extends Transformer implements TransformerInterface{
 
   public static function transform($record) {
     return $record ? [

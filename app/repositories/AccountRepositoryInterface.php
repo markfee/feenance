@@ -1,14 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 24/01/15
- * Time: 09:19
- */
+<?php namespace Feenance\repositories;
 
-namespace Feenance\repositories;
-
-
-interface AccountRepositoryInterfaceInterface extends RepositoryInterface {
-
+interface AccountRepositoryInterface extends RepositoryInterface {
 }

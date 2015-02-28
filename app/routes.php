@@ -35,20 +35,34 @@ Route::group(['before' => ''],        function()  {
   Route::get('/potential_transfers',  function()  {  return View::make('potential_transfers'); });
   Route::get('/transfers',            function()  {  return View::make('transfers'); });
 
-  Route::get('/reports/categories/{year?}', function($year=null) {
-    return CategoryReportController::category_report($year);
-  });
-  Route::get('/reports/categories/{year}/{month}', function($year, $month) {
-    return CategoryReportController::category_report($year, $month);
-  });
-  Route::get('/reports/categories/{year}-{month}', function($year, $month) {
-    return CategoryReportController::category_report($year, $month);
-  });
-  Route::get('/reports/categories/{year}-{month}/{endYear}-{endMonth}', function($year, $month, $endYear, $endMonth)  {
-    return CategoryReportController::category_report($year, $month, $endYear, $endMonth);
-  });
-  Route::get('/reports/categories/{year}/{month}/{endYear}/{endMonth?}', function($year, $month, $endYear, $endMonth=12)  {
-    return CategoryReportController::category_report($year, $month, $endYear, $endMonth);
+  Route::group(['prefix' =>  'reports/'], function()
+  {
+
+    Route::get('categories/{year?}', function ($year = null)
+    {
+      return CategoryReportController::category_report($year);
+    });
+
+    Route::get('categories/{year}/{month}', function ($year, $month)
+    {
+      return CategoryReportController::category_report($year, $month);
+    });
+
+    Route::get('categories/{year}-{month}', function ($year, $month)
+    {
+      return CategoryReportController::category_report($year, $month);
+    });
+
+    Route::get('categories/{year}-{month}/{endYear}-{endMonth}', function ($year, $month, $endYear, $endMonth)
+    {
+      return CategoryReportController::category_report($year, $month, $endYear, $endMonth);
+    });
+
+    Route::get('categories/{year}/{month}/{endYear}/{endMonth?}', function ($year, $month, $endYear, $endMonth = 12)
+    {
+      return CategoryReportController::category_report($year, $month, $endYear, $endMonth);
+    });
+
   });
 
   Route::group(['prefix' =>  'api/v1/'], function()
@@ -62,12 +76,12 @@ Route::group(['before' => ''],        function()  {
     Route::get('transfers/{id}',         $NAMESPACE.'TransfersController@show');
     Route::delete('transfers/{id}',      $NAMESPACE.'TransfersController@destroy');
 
-    Route::get('accounts/{id}/transactions',                  $NAMESPACE.'TransactionsController@index');
-    Route::get('accounts/{id}/transactions/reconciled',       $NAMESPACE.'TransactionsController@reconciled');
-    Route::get('accounts/{id}/transactions/unreconciled',     $NAMESPACE.'TransactionsController@unreconciled');
-    Route::delete('accounts/{id}/transactions/unreconciled',  $NAMESPACE.'TransactionsController@deleteUnreconciled');
-    Route::get('accounts/{id}/transactions/unreconciled/count',     $NAMESPACE.'TransactionsController@unreconciledCount');
-    Route::post('accounts/{id}/transactions/reconcile',  $NAMESPACE.'TransactionsController@reconcileAll');
+    Route::get('accounts/{id}/transactions',                    $NAMESPACE.'TransactionsController@index');
+    Route::get('accounts/{id}/transactions/reconciled',         $NAMESPACE.'TransactionsController@reconciled');
+    Route::get('accounts/{id}/transactions/unreconciled',       $NAMESPACE.'TransactionsController@unreconciled');
+    Route::delete('accounts/{id}/transactions/unreconciled',    $NAMESPACE.'TransactionsController@deleteUnreconciled');
+    Route::get('accounts/{id}/transactions/unreconciled/count', $NAMESPACE.'TransactionsController@unreconciledCount');
+    Route::post('accounts/{id}/transactions/reconcile',         $NAMESPACE.'TransactionsController@reconcileAll');
 
     Route::post('accounts/upload',              $NAMESPACE.'TransactionsController@upload');
     Route::resource('accounts',                 $NAMESPACE.'AccountsController');
@@ -132,4 +146,5 @@ Route::group(['before' => ''],        function()  {
     Route::get('sub_categories',    $NAMESPACE.'MmexController@sub_categories');
     Route::get('transactions',      $NAMESPACE.'MmexController@transactions');
   });
+
 });

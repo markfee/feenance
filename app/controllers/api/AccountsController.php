@@ -1,4 +1,6 @@
 <?php namespace Feenance\controllers\Api;
+
+use Feenance\repositories\EloquentAccountRepository;
 use Feenance\models\eloquent\Account;
 use Markfee\Responder\Respond;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -8,13 +10,19 @@ use \Exception;
 use \Input;
 use \Validator;
 
-class AccountsController extends BaseController {
+class AccountsController extends RestfulController {
+
+  /* @var EloquentAccountRepository; */   protected $repository;
+  function __construct(EloquentAccountRepository $repository) {
+    parent::__construct($repository);
+  }
 
   protected function getTransformer() {    return $this->transformer ?: new AccountsTransformer;  }
 
   public function index()
   {
-//    dd(\URL::previous());
+    return $this->repository->all();
+
     $records = Account::orderBy("open", "DESC")->paginate();
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }

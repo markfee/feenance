@@ -1,24 +1,39 @@
+feenance.directive('reconciledFilter', function() {
+  return {
+    restrict: 'E',
+    scope: {
+      reconciled_filter: "=ngModel"
+    },
+    templateUrl: '/view/reconciled_filter.html'
+    , link: function (scope) {
+      var my_filter = {
+        reconciled_all:     true,
+        reconciled_only:    false,
+        unreconciled_only:  false
+      };
+
+      scope.showReconciled = function(val) {
+        my_filter.reconciled_all     = (val == undefined);
+        my_filter.reconciled_only    = !my_filter.reconciled_all && (val == "reconciled");
+        my_filter.unreconciled_only  = !my_filter.reconciled_all && (val == "unreconciled");
+      };
+
+      scope.reconciled_filter = function(element) {
+        return  my_filter.reconciled_only   ? element.reconciled >  0 ?  true : false
+          :     my_filter.unreconciled_only ? element.reconciled <= 0 ?  true : false
+          : true;
+      };
+      scope.my_filter = my_filter;
+    }
+  };
+});
+
 feenance.controller('AccountTransactionsController', function($scope, TransactionsApi, AccountsApi, $timeout) {
 
   $scope.account_id = -1;
   $scope.transactions = null;
   $scope.predicate    = ["date", "id"];
   $scope.reverse      = true;
-  $scope.reconciled_all     = true;
-  $scope.reconciled_only    = false;
-  $scope.unreconciled_only  = false;
-
-  $scope.showReconciled = function(val) {
-    $scope.reconciled_all     = (val == undefined);
-    $scope.reconciled_only    = !$scope.reconciled_all && (val == "reconciled");
-    $scope.unreconciled_only  = !$scope.reconciled_all && (val == "unreconciled");
-  };
-
-  $scope.reconciledFilter = function(element) {
-    return  $scope.reconciled_only   ? element.reconciled >  0 ?  true : false
-      :     $scope.unreconciled_only ? element.reconciled <= 0 ?  true : false
-      : true;
-  };
 
   $scope.$on('addTransactions', function($event, $transactions) {
     angular.forEach($transactions, function($transaction, $key) {

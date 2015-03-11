@@ -27,7 +27,7 @@ feenance.controller('TransactionsController', function ($scope, TransactionColle
 
     $scope.lastRecordToDisplay = function ()
     {
-        return $scope.firstRecordToDisplay() + $scope.pageSize;
+        return Math.min($scope.firstRecordToDisplay() + $scope.pageSize, $scope.filteredRecordCount());
     }
 
     $scope.filteredRecordCount = function()

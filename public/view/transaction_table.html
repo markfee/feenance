@@ -4,150 +4,137 @@
 
   <account-id-selector ng-model="account_id" account_id="2"></account-id-selector>
 
-  <h3><account-name ng-model="account_id"/></h3>
+  <h3>
+    <account-name ng-model="account_id"/>
+  </h3>
 
-  <select ng-model="page" ng-options="n for n in [] | range:1:paginator.last_page" ng-change="refresh()"></select>
-
-  <div class="btn-group" data-toggle="buttons">
-    <label class="btn btn-primary" ng-class="{active:reconciled_all==true}">
-      <input type="radio"  ng-model="reconciled_all"     ng-click="showReconciled()">
-        All
-      </input>
-    </label>
-
-    <label class="btn btn-primary" ng-class="{active:reconciled_only==true}">
-      <input type="radio" class="btn btn-default" ng-model="reconciled_only"    ng-click="showReconciled('reconciled')">
-        Reconciled
-      </input>
-    </label>
-
-    <label class="btn btn-primary" ng-class="{active:unreconciled_only==true}">
-      <input type="radio" class="btn btn-default" ng-model="unreconciled_only"  ng-click="showReconciled('unreconciled')">
-        Unreconciled
-      </input>
-    </label>
-  </div>
+  <reconciled_filter ng-model="reconciled_filter"></reconciled_filter>
 
   <button type="button" class="btn btn-default" ng-click="refresh()">Refresh</button>
 
-  <button type="button" class="btn btn-default" ng-click="nextPage()">Next Page</button>
-
   <button type="button" class="btn btn-danger" ng-click="deleteUnreconciled()"
-          title = "Delete all unreconciled transactions for this account">
+          title="Delete all unreconciled transactions for this account">
     Delete Unreconciled
   </button>
 
   <button type="button" class="btn btn-danger" ng-click="reconcileAll()"
-          title = "Reconcile all transactions for this account">
+          title="Reconcile all transactions for this account">
     Reconcile all
   </button>
 
-  <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-    Previous
-  </button>
-  {{currentPage+1}}/{{numberOfPages()}}
-  <button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
-    Next
-  </button>
+  <span class="paginator">
+    <button ng-disabled="currentPage == 0" ng-click="offsetPage(-1)">
+      Previous
+    </button>
 
-  <table class="table table-striped" >
+    <span>
+      Page {{currentPage+1}} of {{numberOfPages()}}.
+      Records: {{firstRecordToDisplay()+1}} to {{lastRecordToDisplay()}} of {{filteredRecordCount()}}
+    </span>
+
+    <button ng-disabled="currentPage >= numberOfPages()-1" ng-click="offsetPage(1)">
+      Next
+    </button>
+  </span>
+
+  <table class="table table-striped">
 
     <thead>
-      <tr>
-        <th>Page</th>
-        <th>Account</th>
-        <th><a href="" ng-click="predicate = ['date', 'id'];  reverse=!reverse">Date</a></th>
-        <th>
-          <a href="" ng-click="predicate = 'payee.name';    reverse=!reverse">Payee</a> /
-        ( <a href="" ng-click="predicate = 'bank_string';    reverse=!reverse">Bank String</a>  )
-        </th>
-        <th><a href="" ng-click="predicate = 'category.fullName'; reverse=!reverse">Category</a></th>
-        <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Credit</a></th>
-        <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Debit</a></th>
-        <th class="currency"><a href="" ng-click="predicate = 'balance';       reverse=!reverse">Balance</a></th>
-        <th >
-          <a href="" ng-click="predicate = 'status';       reverse=!reverse">Status</a></th>
-        <th colspan="2"></th>
-      </tr>
+    <tr>
+      <th>Account</th>
+      <th><a href="" ng-click="predicate = ['date', 'id'];  reverse=!reverse">Date</a></th>
+      <th>
+        <a href="" ng-click="predicate = 'payee.name';    reverse=!reverse">Payee</a> /
+        ( <a href="" ng-click="predicate = 'bank_string';    reverse=!reverse">Bank String</a> )
+      </th>
+      <th><a href="" ng-click="predicate = 'category.fullName'; reverse=!reverse">Category</a></th>
+      <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Credit</a></th>
+      <th class="currency"><a href="" ng-click="predicate = 'amount';        reverse=!reverse">Debit</a></th>
+      <th class="currency"><a href="" ng-click="predicate = 'balance';       reverse=!reverse">Balance</a></th>
+      <th>
+        <a href="" ng-click="predicate = 'status';       reverse=!reverse">Status</a></th>
+      <th colspan="2"></th>
+    </tr>
     </thead>
 
     <tbody ng-show="boundCollection">
-      <tr ng-repeat="transaction in boundCollection|orderBy:predicate:reverse|filter:filter| startFrom:currentPage*pageSize | limitTo:pageSize"
-          class="transaction"
-          ng-mouseover="showEdit=true"
-          ng-mouseout="showEdit=false">
+    <tr ng-repeat="transaction in boundCollection
+          |orderBy:predicate:reverse
+          | filter:transactionFilter | startFrom:currentPage*pageSize | limitTo:pageSize"
+        class="transaction"
+        ng-mouseover="showEdit=true"
+        ng-mouseout="showEdit=false">
 
-        <td>          {{transaction.page}}        </td>
-        <td>
-          <account-name ng-model="transaction.account_id"></account-name>
-        </td>
+      <td>
+        <account-name ng-model="transaction.account_id"></account-name>
+      </td>
 
-        <td title="transaction #{{transaction.id}}">{{transaction.date | date:'dd/MM/yy'}}</td>
+      <td title="transaction #{{transaction.id}}">{{transaction.date | date:'dd/MM/yy'}}</td>
 
-        <td>
-          {{transaction.payee.name}}
-          <!--<payee ng-model="transaction.payee" payeeid="transaction.payee_id" />-->
-          <a href=""
-             ng-click="onClickBankString(transaction.bank_string_id)"
-             ng-show="transaction.bank_string" class="bank_string">({{transaction.bank_string}})</a>
-        </td>
+      <td>
+        {{transaction.payee.name}}
+        <!--<payee ng-model="transaction.payee" payeeid="transaction.payee_id" />-->
+        <a href=""
+           ng-click="onClickBankString(transaction.bank_string_id)"
+           ng-show="transaction.bank_string" class="bank_string">({{transaction.bank_string}})</a>
+      </td>
 
-        <td> <!--Category OR Transfer Details-->
+      <td> <!--Category OR Transfer Details-->
 
           <span ng-if="transaction.destination.account_id">
-            TO: <account-name ng-model="transaction.destination.account_id"> </account-name>
+            TO: <account-name ng-model="transaction.destination.account_id"></account-name>
           </span>
 
           <span ng-if="transaction.source.account_id">
-            FROM: <account-name ng-model="transaction.source.account_id"> </account-name>
+            FROM: <account-name ng-model="transaction.source.account_id"></account-name>
           </span>
 
           <span ng-if="!transaction.source.account_id && !transaction.destination.account_id">
             {{transaction.category.fullName}}
           </span>
 
-        </td>
+      </td>
 
 
-        <td class="currency">
-          <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}</span>
-        </td>
+      <td class="currency">
+        <span ng-show="transaction.amount>0">{{ transaction.amount  | currency: "£" }}</span>
+      </td>
 
-        <td class="currency">
-          <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}</span>
-        </td>
+      <td class="currency">
+        <span ng-show="transaction.amount<0">{{-transaction.amount  | currency: "£" }}</span>
+      </td>
 
-        <td class="currency" ng-class="{ negative: transaction.balance < 0 }">{{transaction.balance | currency: "£" }}
-          <a hfref=""
-             ng-click="refreshBalances(transaction)"
-             ng-show="transaction.bank_balance && transaction.bank_balance !=transaction.balance"
-            >
-            ({{transaction.bank_balance | currency: "£" }})
-            {{transaction.balance - transaction.bank_balance | currency: "£" }}
-          </a>
-        </td>
+      <td class="currency" ng-class="{ negative: transaction.balance < 0 }">{{transaction.balance | currency: "£" }}
+        <a hfref=""
+           ng-click="refreshBalances(transaction)"
+           ng-show="transaction.bank_balance && transaction.bank_balance !=transaction.balance"
+          >
+          ({{transaction.bank_balance | currency: "£" }})
+          {{transaction.balance - transaction.bank_balance | currency: "£" }}
+        </a>
+      </td>
 
-        <td>
-          <a href="" title="Reconciled?" ng-click="toggleReconciled(transaction)">
-            <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>
-          </a>
-            {{transaction.status}}
-        </td>
+      <td>
+        <a href="" title="Reconciled?" ng-click="toggleReconciled(transaction)">
+          <i ng-class="(transaction.reconciled > 0) ? 'fa fa-check-circle fa-lg' : 'fa fa-circle-o fa-lg' "> </i>
+        </a>
+        {{transaction.status}}
+      </td>
 
-        <td>
-          <!--TODO: WHY WILL THIS ONLY SELECT ACCOUNT IF selectTransaction RUN TWICE-->
-          <a href="" title="Edit" ng-click="selectTransaction(transaction)">
-            <i ng-class="showEdit||transaction.edit ? 'fa fa-edit fa-lg' : 'fa fa-square-o fa-lg' "> </i>
-          </a>
-        </td>
+      <td>
+        <!--TODO: WHY WILL THIS ONLY SELECT ACCOUNT IF selectTransaction RUN TWICE-->
+        <a href="" title="Edit" ng-click="selectTransaction(transaction)">
+          <i ng-class="showEdit||transaction.edit ? 'fa fa-edit fa-lg' : 'fa fa-square-o fa-lg' "> </i>
+        </a>
+      </td>
 
-        <td>
-          <a href="" title="Delete" ng-click="deleteTransaction(transaction, $index)">
-            <i ng-class="showEdit||transaction.edit ? 'fa fa-minus fa-lg' : 'fa fa-square-o fa-lg' "> </i>
-          </a>
-        </td>
+      <td>
+        <a href="" title="Delete" ng-click="deleteTransaction(transaction, $index)">
+          <i ng-class="showEdit||transaction.edit ? 'fa fa-minus fa-lg' : 'fa fa-square-o fa-lg' "> </i>
+        </a>
+      </td>
 
-      </tr>
+    </tr>
     </tbody>
   </table>
 </div>

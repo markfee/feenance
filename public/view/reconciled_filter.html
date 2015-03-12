@@ -1,0 +1,23 @@
+<span>
+
+  <div class="btn-group" data-toggle="buttons">
+    <label class="btn btn-warning" ng-class="{active:reconciled_all==true}">
+      <input type="radio" ng-click="showReconciled()">
+      All
+      </input>
+    </label>
+
+    <label class="btn btn-primary" ng-class="{active:reconciled_only==true}">
+      <input type="radio" class="btn btn-default" ng-click="showReconciled('reconciled')">
+      Reconciled
+      </input>
+    </label>
+
+    <label class="btn btn-primary" ng-class="{active:unreconciled_only==true}">
+      <input type="radio" class="btn btn-default" ng-click="showReconciled('unreconciled')">
+      Unreconciled
+      </input>
+    </label>
+  </div>
+
+</span>

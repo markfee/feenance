@@ -1,14 +1,9 @@
 <?php namespace Feenance\repositories;
 
+use Markfee\Responder\RepositoryResponse;
+use Markfee\Responder\TransformableTrait;
 use Markfee\Responder\TransformerInterface;
-use Feenance\Misc\Transformers\TransformableTrait;
 
-abstract class BaseRepository implements RepositoryInterface{
-
-  use TransformableTrait;
-
-  function __construct(TransformerInterface $transformer) {
-    $this->transformer = $transformer;
-  }
+abstract class BaseRepository extends RepositoryResponse implements RepositoryInterface {
 
 }

@@ -2,7 +2,7 @@
 
 use \Event;
 use Illuminate\Support\Facades\Input;
-use Feenance\Misc\Transformers\TransformableTrait;
+use Markfee\Responder\TransformableTrait;
 
 
 class BaseController extends \Controller {

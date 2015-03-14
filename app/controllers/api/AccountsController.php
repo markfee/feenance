@@ -1,7 +1,7 @@
 <?php namespace Feenance\controllers\Api;
 
-use Feenance\repositories\EloquentAccountRepository;
 use Feenance\models\eloquent\Account;
+use Feenance\repositories\EloquentAccountRepository;
 use Markfee\Responder\Respond;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Feenance\Misc\Transformers\AccountsTransformer;
@@ -21,10 +21,12 @@ class AccountsController extends RestfulController {
 
   public function index()
   {
-    return $this->repository->all();
+      $this->repository->paginate();
+      return $this->respond();
 
-    $records = Account::orderBy("open", "DESC")->paginate();
-    return Respond::Paginated($records, $this->transformCollection($records->all()));
+
+        $records = Account::orderBy("open", "DESC")->paginate();
+      return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
 
   public function show($id)

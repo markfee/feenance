@@ -1,12 +1,10 @@
 <?php namespace Feenance\repositories;
 
-use Feenance\Misc\Transformer\TransformableInterface;
-use Feenance\Misc\Transformers\TransformableTrait;
 use Feenance\models\eloquent\Account;
 use Feenance\Misc\Transformers\AccountsTransformer;
 
 
-class EloquentAccountRepository extends BaseRepository implements AccountRepositoryInterface {
+class EloquentAccountRepository extends BaseRepository implements RepositoryInterface {
 
   function __construct(AccountsTransformer $transformer) {
     parent::__construct($transformer);
@@ -18,7 +16,8 @@ class EloquentAccountRepository extends BaseRepository implements AccountReposit
   }
 
   public function paginate($perPage = 15, $columns = array('*')) {
-    // TODO: Implement paginate() method.
+      $records = Account::orderBy("open", "DESC")->paginate();
+      return $this->Paginated($records);
   }
 
   public function newInstance(array $attributes = array()) {

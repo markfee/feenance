@@ -6,10 +6,11 @@
  * Time: 09:10
  */
 
+use Markfee\Responder\RepositoryResponseInterface;
 use Markfee\Responder\Transformer;
 use Markfee\Responder\TransformerInterface;
 
-interface RepositoryInterface {
+interface RepositoryInterface extends RepositoryResponseInterface {
 
   public function all($columns = array('*'));
 

@@ -3,6 +3,7 @@
 use Feenance\models\eloquent\Account;
 use Feenance\Misc\Transformers\AccountsTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use \Validator;
 
 class EloquentAccountRepository extends BaseRepository implements RepositoryInterface {
 
@@ -25,7 +26,13 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
   }
 
   public function create(array $attributes) {
-    // TODO: Implement create() method.
+      $validator = Validator::make($attributes, Account::$rules);
+
+      if ($validator->fails()) {
+          return $this->ValidationFailed();
+      }
+      $account = Account::create($attributes);
+      return $this->Created($this->transform($account));
   }
 
   public function find($id, $columns = array('*')) {

@@ -26,6 +26,24 @@ class AccountsTest extends TestCase {
         $this->assertValidSingleRecordJsonResponse($response, ['name', 'acc_number', 'sort_code', 'notes', 'open', 'bank', 'opening_balance']);
     }
 
+    public function test_add_new_account() {
+        $this->seed('AccountsTableSeeder');
+        $newAccount = [
+            "name" => "My Account",
+            "acc_number" => "1234554",
+            "sort_code" => "20-23-10",
+            "notes" => "Test Account",
+            "open" => true,
+            "bank" => "Bank of Test",
+            "opening_balance" => "123.32"
+        ];
+
+        $response = $this->call('POST', $this->API_ROOT, $newAccount, [], array('HTTP_ACCEPT' => 'application/json'));
+        $this->assertNoErrors($response->getData());
+        $this->assertExpectedStatus(Response::HTTP_CREATED);
+        $this->assertValidSingleRecordJsonResponse($response, ['name', 'acc_number', 'sort_code', 'notes', 'open', 'bank', 'opening_balance']);
+    }
+
 
 
 

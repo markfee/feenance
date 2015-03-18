@@ -55,11 +55,11 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
   }
 
     protected function assertNoErrors($jsonResponse) {
-    $this->assertEquals(true,  isset($jsonResponse->errors),    "Empty errors attribute expected: \n");
-    if ( count($jsonResponse->errors) ) {
-      $str = print_r($jsonResponse->errors, true);
-      $this->assertEquals(0,  count($jsonResponse->errors),    "Unexpected errors: \n{$str}");
-    }
+        if ( count($jsonResponse->errors) ) {
+            $str = print_r($jsonResponse->errors, true);
+            $this->assertEquals(0,  count($jsonResponse->errors),    "Unexpected errors: \n{$str}");
+        }
+    $this->assertEquals(true,  empty($jsonResponse->errors),    "Empty errors attribute expected: \n");
   }
 
   protected function assertHasErrors($jsonResponse) {
@@ -75,7 +75,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
     $this->assertInternalType('integer', $jsonResponse->data[0]->id, "Data is expected to contain the inserted items id:\n{$str}");
   }
 
-  protected function assertValidJsonError($response, $expectedResponse) {
+    protected function assertValidJsonError($response, $expectedResponse) {
     $this->assertEquals($expectedResponse, $response->getStatusCode(), "Expected response {$expectedResponse} got " . $response->getStatusCode());
 
     $this->assertEquals('application/json', $response->headers->get('Content-Type'));

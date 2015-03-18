@@ -31,14 +31,6 @@ class TransactionsController extends RestfulController {
         parent::__construct($repository);
     }
 
-
-  /**
-   * @return Transformer
-  protected function getTransformer() {
-    return $this->transformer ?: new TransactionTransformer;
-  }
-   */
-
   /**
    * Display a listing of transactions
    *

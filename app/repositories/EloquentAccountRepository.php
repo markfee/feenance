@@ -2,7 +2,7 @@
 
 use Feenance\models\eloquent\Account;
 use Feenance\Misc\Transformers\AccountsTransformer;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EloquentAccountRepository extends BaseRepository implements RepositoryInterface {
 
@@ -29,7 +29,12 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
   }
 
   public function find($id, $columns = array('*')) {
-    // TODO: Implement find() method.
+      try {
+          $record = Account::findOrFail($id);
+          return $this->Found($this->transform($record));
+      } catch (ModelNotFoundException $e) {
+          return $this->NotFound($e->getMessage());
+      }
   }
 
   public function updateWithIdAndInput($id, array $input) {

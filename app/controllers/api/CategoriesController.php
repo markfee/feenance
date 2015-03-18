@@ -17,7 +17,7 @@ class CategoriesController extends BaseController {
   protected $paginateCount = 50;
 
   /* @return Transformer */
-  protected function getTransformer() {    return $this->transformer ?: new CategoryTransformer;    }
+  public function getTransformer() {    return $this->transformer ?: new CategoryTransformer;    }
 
   /**
    * Display a listing of categories

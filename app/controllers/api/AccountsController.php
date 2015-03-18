@@ -17,7 +17,7 @@ class AccountsController extends RestfulController {
     parent::__construct($repository);
   }
 
-  protected function getTransformer() {    return $this->transformer ?: new AccountsTransformer;  }
+//  protected function getTransformer() {    return $this->transformer ?: new AccountsTransformer;  }
 
   public function index()
   {

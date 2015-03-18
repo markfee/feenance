@@ -44,7 +44,9 @@ class AccountsTest extends TestCase {
         $this->assertValidSingleRecordJsonResponse($response, ['name', 'acc_number', 'sort_code', 'notes', 'open', 'bank', 'opening_balance']);
     }
 
-
+    public function test_update_account() {
+        $this->assertTrue(false, "test_update_account not yet written");
+    }
 
 
 };

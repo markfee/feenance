@@ -1,6 +1,7 @@
 <?php namespace Feenance\controllers\Api;
 
 use Feenance\repositories\RepositoryInterface;
+use Markfee\Responder\TransformerInterface;
 
 class RestfulController extends BaseController {
 
@@ -8,6 +9,7 @@ class RestfulController extends BaseController {
 
     function __construct(RepositoryInterface $repository) {
         $this->repository = $repository;
+        $this->transformer = $this->repository->getTransformer();
     }
 
     function respond($headers = [])

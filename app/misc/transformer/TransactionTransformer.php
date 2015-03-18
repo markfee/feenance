@@ -10,8 +10,9 @@
 use Markfee\Responder\Transformer;
 use \Carbon\Carbon;
 use Mockery\CountValidator\Exception;
+use Markfee\Responder\TransformerInterface;
 
-class TransactionTransformer extends Transformer {
+class TransactionTransformer extends Transformer implements TransformerInterface {
 
   private function transformAmount($account, $amount, $transfer) {
     return $account ? ["account_id" => $account, "amount" => 0.01 * $amount, "transfer_id" => $transfer] : null;
@@ -46,13 +47,15 @@ class TransactionTransformer extends Transformer {
       "bank_balance"      => $record->bank_balance ? 0.01 * $record->bank_balance : null,
       "bank_string_id"    => $record->bank_string_id ? (int) $record->bank_string_id : null,
 
-      "bank_string"       => $record->bank_string_id ? $record->bankString->name : null,
+        "bank_string"       => $record->bank_string_id ? $record->bankString->name : null,
+        "bank_stringXX"       => $record->bank_string_id ? $record->bankString->name : null,
       "payee"             => $record->payee_id ? PayeeTransformer::transform($record->payee) : null,
       "category"          => $record->category_id ? CategoryTransformer::transform($record->category) : null,
       ];
   }
 
   public static function transformInput($record) {
+//    dd($record["amount"]);
     if (isset($record["amount"])) $record["amount"] *= 100;
     if (isset($record["date"])) {
       $record["date"] = substr($record["date"], 0, 10);

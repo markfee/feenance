@@ -55,11 +55,11 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
   }
 
     protected function assertNoErrors($jsonResponse) {
-        if ( count($jsonResponse->errors) ) {
+        if (!empty($jsonResponse->errors) && count($jsonResponse->errors)) {
             $str = print_r($jsonResponse->errors, true);
-            $this->assertEquals(0,  count($jsonResponse->errors),    "Unexpected errors: \n{$str}");
+            $this->assertEquals(0, count($jsonResponse->errors), "Unexpected errors: \n{$str}");
         }
-    $this->assertEquals(true,  empty($jsonResponse->errors),    "Empty errors attribute expected: \n");
+        $this->assertEquals(true,  empty($jsonResponse->errors),    "Empty errors attribute expected: \n");
   }
 
   protected function assertHasErrors($jsonResponse) {

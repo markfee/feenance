@@ -19,18 +19,25 @@ use \DB;
 use \SplFileObject;
 use Illuminate\Support\MessageBag;
 use \Carbon\Carbon;
+use Feenance\repositories\EloquentTransactionRepository;
 
-class TransactionsController extends BaseController {
+class TransactionsController extends RestfulController {
 
   protected $paginateCount = 110; // alter with ?perPage=nnn in url
   protected static $default_with = ["balance", "source.sourceAccount", "destination.destinationAccount", "bankString", "payee", "category.parent", "status"];
 
+    /* @var EloquentTransactionRepository; */   protected $repository;
+    function __construct(EloquentTransactionRepository $repository) {
+        parent::__construct($repository);
+    }
+
+
   /**
    * @return Transformer
-  */
   protected function getTransformer() {
     return $this->transformer ?: new TransactionTransformer;
   }
+   */
 
   /**
    * Display a listing of transactions
@@ -124,7 +131,6 @@ class TransactionsController extends BaseController {
   public function bank_strings($bank_string_id)
   {
     $records = Transaction::where("bank_string_id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with(TransactionsController::$default_with)->paginate($this->paginateCount);
-//    dd($records);
     return Respond::Paginated($records, $this->transformCollection($records->all()));
   }
 
@@ -186,8 +192,10 @@ class TransactionsController extends BaseController {
 	public function store()
 	{
     $transfer_id = (empty(Input::all()["transfer_id"]) ? null : Input::all()["transfer_id"]);
-
-    $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
+        /**
+         * @param Validartor $validator
+         */
+        $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
 
     if ($validator->fails())		{
       Respond::WithErrors($validator->getMessageBag());

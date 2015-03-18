@@ -22,8 +22,10 @@ class RestfulController extends BaseController {
             , "paginator"   => $this->repository->getPaginator()
         ],  $this->repository->getStatusCode(), $headers);
         return $response;
+    }
 
-
+    function respondRaw($headers = []) {
+        return \Response::json($this->repository->getData(),  $this->repository->getStatusCode(), $headers);
     }
 
 }

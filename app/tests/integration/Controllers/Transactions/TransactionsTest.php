@@ -158,7 +158,4 @@ class TransactionsTest extends TestCase {
             }
         }, $jsonResponse->data);
     }
-}
-
-;
-
+};

@@ -68,5 +68,13 @@ class AccountsTest extends TestCase {
         $this->assertTrue(0 === strcmp($newName, $post_response_data->name), "Name should match new name");
     }
 
-
-};
+    public function test_delete_account() {
+        $response = $this->call('DELETE', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertNoErrors($response->getData());
+        $this->assertExpectedStatus(Response::HTTP_OK);
+//        dd($response);
+        $this->refreshApplication();
+        $get_response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
+    }
+ };

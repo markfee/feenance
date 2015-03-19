@@ -57,6 +57,10 @@ class AccountsController extends RestfulController {
      * @return Response
      */
     public function destroy($id) {
+        $this->repository->destroy($id);
+        return $this->respondRaw();
+
+
         try {
             if (!Account::destroy($id)) {
                 return Respond::NotFound();

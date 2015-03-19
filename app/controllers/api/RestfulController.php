@@ -12,6 +12,10 @@ class RestfulController extends BaseController {
         $this->transformer = $this->repository->getTransformer();
     }
 
+    /**
+     * @param array $headers
+     * @return \Illuminate\Http\JsonResponse
+     */
     function respond($headers = [])
     {
         $response = \Response::json([
@@ -24,7 +28,15 @@ class RestfulController extends BaseController {
         return $response;
     }
 
+    /**
+     * respond with raw json, usually when a single record is to be returned
+     * @param array $headers
+     * @return \Illuminate\Http\JsonResponse
+     */
     function respondRaw($headers = []) {
+        if ($this->repository->hasErred()) {
+            return $this->respond($headers);
+        }
         return \Response::json($this->repository->getData(),  $this->repository->getStatusCode(), $headers);
     }
 

@@ -24,10 +24,8 @@ class AccountsController extends RestfulController {
     }
 
     public function show($id) {
-        if ($this->repository->find($id)->isFound()) {
-            return $this->respondRaw();
-        }
-        return $this->respond();
+        $this->repository->find($id);
+        return $this->respondRaw();
     }
 
     /**
@@ -36,10 +34,8 @@ class AccountsController extends RestfulController {
      * @return Respond
      */
     public function store() {
-        if ($this->repository->create(Input::all())->isCreated()) {
-            return $this->respondRaw();
-        }
-        return $this->respond();
+        $this->repository->create(Input::all());
+        return $this->respondRaw();
     }
 
     /**
@@ -49,14 +45,9 @@ class AccountsController extends RestfulController {
      * @return Response
      */
     public function update($id) {
-        $account = Account::findOrFail($id);
-        $validator = Validator::make($data = $this->transformInput(Input::all()), Account::$rules);
-        if ($validator->fails()) {
-            return Respond::ValidationFailed();
-        }
 
-        $account->update($data);
-        return Respond::Raw($this->transform($account));
+        $this->repository->updateWithIdAndInput($id, Input::all());
+        return $this->respondRaw();
     }
 
     /**

@@ -45,7 +45,18 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
   }
 
   public function updateWithIdAndInput($id, array $input) {
-    // TODO: Implement updateWithIdAndInput() method.
+      try {
+          $account = Account::findOrFail($id);
+          $validator = Validator::make($data = $this->transformInput($input), Account::$rules);
+          if ($validator->fails()) {
+              return $this->ValidationFailed();
+          }
+
+          $account->update($data);
+          return $this->Updated($this->transform($account));
+      } catch (ModelNotFoundException $e) {
+          return $this->NotFound($e->getMessage());
+      }
   }
 
   public function destroy($id) {

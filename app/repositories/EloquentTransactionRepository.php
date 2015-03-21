@@ -5,10 +5,12 @@ use Feenance\models\eloquent\Transaction;
 use Feenance\models\eloquent\Transfer;
 use \DB;
 
-class EloquentTransactionRepository  extends BaseRepository implements RepositoryInterface {
+class EloquentTransactionRepository extends BaseRepository implements RepositoryInterface {
 
     protected static $default_with = ["balance", "source.sourceAccount", "destination.destinationAccount", "bankString", "payee", "category.parent", "status"];
 
+    private $accountId = null;
+    private $reconciled = null;
 
     function __construct(TransactionTransformer $transformer) {
         parent::__construct($transformer);
@@ -22,15 +24,46 @@ class EloquentTransactionRepository  extends BaseRepository implements Repositor
         // TODO: Implement newInstance() method.
     }
 
-    public function paginateForAccount($accountId, $perPage = 15, $columns = array('*')) {
-        $records = Transaction::where("account_id", $account_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with(static::$default_with)->paginate($perPage);
-        return $this->Paginated($records, $this->transformCollection($records->all()));
+    public function filterAccount($accountId)   {   $this->accountId    = $accountId;   return $this; }
+    public function filterReconciled($val)      {   $this->reconciled   = $val;         return $this; }
+
+    private function Transactions()
+    {
+        $query = Transaction::
+              orderBy('date', "DESC")
+            ->orderBy('id', "DESC")
+            ->with(static::$default_with);
+        if (!empty($this->accountId)) {
+            $query = $query->where("account_id", $this->accountId);
+        }
+        if (!is_null($this->reconciled)) {
+            $query = $query->where("reconciled", $this->reconciled);
+        }
+        return $query;
+    }
+
+    public function paginateForAccount($account_id, $perPage = 15, $columns = array('*')) {
+        return $this->Paginated(
+            $this->Transactions()
+
+                ->paginate($perPage)
+        );
     }
 
     public function paginate($perPage = 15, $columns = array('*')) {
-        $records = Transaction::orderBy('date', "DESC")->orderBy('id', "DESC")->with(static::$default_with)->paginate($perPage);
-        return $this->Paginated($records, $this->transformCollection($records->all()));
+        return $this->Paginated(
+            $this->Transactions()
+                ->paginate($perPage)
+        );
     }
+
+    public function count()
+    {
+        return $this->setCount($this->Transactions()->count());
+    }
+
+
+
 
     public function create(array $input) {
         $transfer_id = (empty($input["transfer_id"]) ? null : $input["transfer_id"]);
@@ -84,8 +117,13 @@ class EloquentTransactionRepository  extends BaseRepository implements Repositor
     }
 
 
-    public function find($id, $columns = array('*')) {
-        // TODO: Implement find() method.
+    public function find($id, $columns = array('*'))
+    {
+        try {
+            return $this->Found(Transaction::findOrFail($id));
+        } catch (ModelNotFoundException $e) {
+            return $this->NotFound($e->getMessage());
+        }
     }
 
     public function updateWithIdAndInput($id, array $input) {

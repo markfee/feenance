@@ -1,22 +1,19 @@
-<?php
-namespace Feenance\controllers\Api;
+<?php namespace Feenance\controllers\Api;
+
+use Feenance\repositories\EloquentTransactionRepository;
 
 use Feenance\models\eloquent\BankString;
 use Feenance\models\eloquent\TransactionStatus;
 
 use Markfee\Responder\Respond;
-use Markfee\Responder\Transformer;
-use Feenance\Misc\Transformers\TransactionTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use \Exception;
 use \Input;
 use \Validator;
-use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 use \SplFileObject;
 use Illuminate\Support\MessageBag;
 use \Carbon\Carbon;
-use Feenance\repositories\EloquentTransactionRepository;
+
 
 class TransactionsController extends RestfulController {
 
@@ -36,48 +33,17 @@ class TransactionsController extends RestfulController {
      * @return \Illuminate\Support\Facades\Response
      */
     public function index($account_id = null) {
-        if (!empty($account_id)) {
-            $this->repository->paginateForAccount($this->paginateCount);
-        } else {
-            $this->repository->paginate();
-        }
+        $this->repository->filterAccount($account_id)->paginate($this->paginateCount);
         return $this->respond();
     }
-
-    /**
-     * Display a listing of transactions
-     * @param $reconciled : bool
-     * @param $account_id
-     * @return \Illuminate\Support\Facades\Response
-     */
-    private function _reconciled($reconciled, $account_id) {
-        $query = Transaction::where("reconciled", $reconciled);
-        if (!empty($account_id)) {
-            $query->where("account_id", $account_id);
-        }
-        $records = $query->orderBy('date', "DESC")->orderBy('id', "DESC")->with(TransactionsController::$default_with)->paginate($this->paginateCount);
-        return Respond::Paginated($records, $this->transformCollection($records->all()));
-    }
-
-    /**
-     * @param null $account_id
-     * @return mixed
-     */
-    public static function unreconciledCount($account_id = null) {
-        $query = Transaction::where("reconciled", false);
-        if (!empty($account_id)) {
-            $query->where("account_id", $account_id);
-        }
-        return $query->count();
-    }
-
 
     /**
      * @param null $account_id
      * @return mixed
      */
     public function reconciled($account_id = null) {
-        return $this->_reconciled(true, $account_id);
+        $this->repository->filterAccount($account_id)->filterReconciled(true)->paginate($this->paginateCount);
+        return $this->respond();
     }
 
     /**
@@ -85,7 +51,24 @@ class TransactionsController extends RestfulController {
      * @return mixed
      */
     public function unreconciled($account_id = null) {
-        return $this->_reconciled(false, $account_id);
+        $this->repository
+            ->filterAccount($account_id)
+            ->filterReconciled(false)
+            ->paginate($this->paginateCount);
+        return $this->respond();
+    }
+
+    /**
+     * @param null $account_id
+     * @return mixed
+     */
+    public function unreconciledCount($account_id = null) {
+        $this->repository
+            ->filterAccount($account_id)
+            ->filterReconciled(false)
+            ->count();
+        return $this->respondRaw();
+
     }
 
     /**
@@ -144,64 +127,6 @@ class TransactionsController extends RestfulController {
         return $this->respond();
 //        return Respond::Updated($transactionUpdateCount);
     }
-
-
-    /**
-     * Display the specified transaction.
-     *444
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id) {
-        try {
-            $transaction = Transaction::findOrFail($id);
-        } catch (ModelNotFoundException $ex) {
-            return Respond::NotFound("Transaction not found");
-        }
-        return Respond::Raw($this->transform($transaction));
-    }
-
-
-    /**
-     * Add a new Account
-     * @return Respond
-     */
-    public function store() {
-        $this->repository->create(Input::all());
-        return $this->respondRaw();
-    }
-
-
-    /**
-     * Store a newly created transaction in storage.
-     *
-     * @return Response
-     */
-//    public function store() {
-//
-//        $transfer_id = (empty(Input::all()["transfer_id"]) ? null : Input::all()["transfer_id"]);
-//        /**
-//         * @param Validartor $validator
-//         */
-//        $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
-//
-//        if ($validator->fails()) {
-//            Respond::WithErrors($validator->getMessageBag());
-//            return Respond::ValidationFailed();
-//        }
-//        if (!empty($transfer_id)) {
-//            return $this->createTransfer($data, $transfer_id);
-//        }
-//        try {
-//            $transaction = Transaction::create($data);
-//            Respond::setStatusCode(ResponseCodes::HTTP_CREATED);
-//            return Respond::Raw($this->transform($transaction));
-//        } catch (Exception $ex) {
-//            $messageBag = new MessageBag();
-//            $messageBag->add($ex->getCode(), $ex->getMessage());
-//            return Respond::WithErrors($messageBag);
-//        }
-//    }
 
     /**
      * Update the specified transaction in storage.
@@ -305,7 +230,6 @@ class TransactionsController extends RestfulController {
 //    print "</pre>";
 
     }
-
 
     /**
      * Remove the specified transaction from storage.

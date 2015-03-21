@@ -11,6 +11,7 @@ class testTransactionsTableSeeder extends Seeder {
 
   public function run()
   {
+//      Transaction::truncate();
     $faker = Faker::create('en_GB');
     $accounts=Account::all();
     $date = Carbon::now();

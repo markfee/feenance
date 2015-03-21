@@ -10,9 +10,15 @@ class RepositoriesServiceProvider extends ServiceProvider{
    * @return void
    */
   public function register() {
-    $this->app->bind('feenance.repositories.eloquent_account_repository', function()
-    {
-      return new EloquentAccountRepository;
-    });
+//      $this->app->bind('feenance.repositories.eloquent_account_repository', function()
+//      {
+//          return new EloquentAccountRepository;
+//      });
+
+//      $this->app->bind('feenance.repositories.eloquent_transaction_repository', function()
+//      {
+//          return new EloquentTransactionRepository;
+//      });
+
   }
 }

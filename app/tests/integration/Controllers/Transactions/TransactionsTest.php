@@ -15,8 +15,43 @@ class TransactionsTest extends TestCase {
         $this->seed('AccountsTableSeeder');
         $this->seed('TransactionsTableSeeder');
         $response = $this->call('GET', $this->API_ROOT, [], [], array('HTTP_ACCEPT' => 'application/json'));
-        $json = $this->assertValidJsonResponse($response, ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+        $this->assertValidJsonResponse($response,
+            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
     }
+
+    public function test_show_returns_a_records() {
+        $this->seed('AccountsTableSeeder');
+        $this->seed('TransactionsTableSeeder');
+        $response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json'));
+        $this->assertExpectedStatus(Response::HTTP_OK);
+        $this->assertValidSingleRecordJsonResponse($response,
+            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+    }
+
+    public function test_reconciled_returns_some_records() {
+        $this->seed('AccountsTableSeeder');
+        $this->seed('TransactionsTableSeeder');
+        $response = $this->call('GET', $this->API_ROOT ."/reconciled", [], [], array('HTTP_ACCEPT' => 'application/json'));
+        $this->assertValidJsonResponse($response,
+            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+    }
+
+    public function test_unreconciled_returns_some_records() {
+        $this->seed('AccountsTableSeeder');
+        $this->seed('TransactionsTableSeeder');
+        $response = $this->call('GET', $this->API_ROOT ."/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json'));
+        $this->assertValidJsonResponse($response,
+            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+    }
+
+    public function test_unreconciled_count_returns_a_count() {
+        $this->seed('AccountsTableSeeder');
+        $this->seed('TransactionsTableSeeder');
+        $response = $this->call('GET', $this->API_ROOT ."/unreconciled/count", [], [], array('HTTP_ACCEPT' => 'application/json'));
+        $count = $response->getData();
+        $this->assertTrue(is_integer($count));
+    }
+
 
     public function test_add_new_transaction() {
         $this->seed('AccountsTableSeeder');
@@ -48,7 +83,6 @@ class TransactionsTest extends TestCase {
                 "destination"
             ]
         );
-
     }
 
     public function test_adding_a_new_transaction_with_a_transfer_id_should_create_a_transfer() {

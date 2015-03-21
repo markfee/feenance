@@ -34,8 +34,7 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
 
   public function find($id, $columns = array('*')) {
       try {
-          $record = Account::findOrFail($id);
-          return $this->Found($record);
+          return $this->Found(Account::findOrFail($id));
       } catch (ModelNotFoundException $e) {
           return $this->NotFound($e->getMessage());
       }

@@ -143,5 +143,4 @@ class CategoriesController extends BaseController {
     }
 		return Respond::Success();
 	}
-
 }

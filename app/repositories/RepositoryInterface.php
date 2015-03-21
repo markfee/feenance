@@ -19,7 +19,7 @@ interface RepositoryInterface extends RepositoryResponseInterface {
 
     public function paginate($perPage = 15, $columns = array('*'));
 
-    public function create(array $attributes);
+    public function create(array $input);
 
     public function find($id, $columns = array('*'));
 

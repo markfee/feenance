@@ -25,20 +25,17 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
     // TODO: Implement newInstance() method.
   }
 
-  public function create(array $attributes) {
-      $validator = Validator::make($attributes, Account::$rules);
-
-      if ($validator->fails()) {
+  public function create(array $input) {
+      if (! $this->Validate($input, Account::$rules)->isValid()) {
           return $this->ValidationFailed();
       }
-      $account = Account::create($attributes);
-      return $this->Created($this->transform($account));
+      return $this->Created(Account::create($this->getData()));
   }
 
   public function find($id, $columns = array('*')) {
       try {
           $record = Account::findOrFail($id);
-          return $this->Found($this->transform($record));
+          return $this->Found($record);
       } catch (ModelNotFoundException $e) {
           return $this->NotFound($e->getMessage());
       }
@@ -47,16 +44,16 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
   public function updateWithIdAndInput($id, array $input) {
       try {
           $account = Account::findOrFail($id);
-          $validator = Validator::make($data = $this->transformInput($input), Account::$rules);
-          if ($validator->fails()) {
-              return $this->ValidationFailed();
-          }
-
-          $account->update($data);
-          return $this->Updated($this->transform($account));
       } catch (ModelNotFoundException $e) {
           return $this->NotFound($e->getMessage());
       }
+
+      if (! $this->Validate($input, Account::$rules)->isValid()) {
+          return $this->ValidationFailed();
+      }
+
+      $account->update($this->getData());
+      return $this->Updated($account);
   }
 
   public function destroy($id) {

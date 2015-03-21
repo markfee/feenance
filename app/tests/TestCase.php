@@ -102,14 +102,20 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
     }
 
     protected function assertValidJsonResponse($response, Array $expectedFields = null, Array $unexpectedFields = null) {
+
         $jsonResponse = $response->getData();
         $this->assertNoErrors($jsonResponse);
         $this->assertEquals($this->expected_status, $response->getStatusCode(), "Expected response {$this->expected_status} got " . $response->getStatusCode());
         $this->assertEquals('application/json', $response->headers->get('Content-Type'));
 //    $this->assertEquals(0,  count($jsonResponse->messages),  "Are there no messages?");
+
+        $this->assertTrue(isset($jsonResponse->data) > 0, "Is data item set?");
+
         $this->assertEquals(true, count($jsonResponse->data) > 0, "Is there at least one data item?");
+
         if ($this->expects_pagination)
             $this->assertEquals(1, count($jsonResponse->paginator), "Is there pagination data?");
+
         $this->assertExpectedFields($jsonResponse->data[0], $expectedFields);
         $this->assertUnExpectedFields($jsonResponse->data[0], $unexpectedFields);
         return $jsonResponse;

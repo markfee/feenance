@@ -24,7 +24,7 @@ class RestfulController extends BaseController {
     }
 
     /**
-     * Add a new Account
+     * Add a new Record
      * @return Respond
      */
     public function store() {
@@ -75,7 +75,7 @@ class RestfulController extends BaseController {
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondRaw($headers = []) {
-        if ($this->repository->hasErred()) {
+        if ($this->repository->hasErred() || $this->repository->isMultiple()) {
             return $this->respond($headers);
         }
         return \Response::json($this->repository->getData(),  $this->repository->getStatusCode(), $headers);

@@ -85,6 +85,10 @@ class TransactionsTest extends TestCase {
     }
 
     public function test_import_csv() {
+
+        $this->assertTrue(false, "rewrite test for bulk upload");
+        return;
+
         $this->runMigrations();
         $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Controllers/Transactions/test_statement.csv", "r");
 //    $controller = new TransactionsController();

@@ -26,10 +26,10 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
   }
 
   public function create(array $input) {
-      if (! $this->Validate($input, Account::$rules)->isValid()) {
-          return $this->ValidationFailed();
+      if ($this->Validate($input, Account::$rules)->isValid()) {
+          return $this->Created(Account::create($this->getData()));
       }
-      return $this->Created(Account::create($this->getData()));
+      return $this;
   }
 
   public function find($id, $columns = array('*')) {
@@ -48,12 +48,11 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
           return $this->NotFound($e->getMessage());
       }
 
-      if (! $this->Validate($input, Account::$rules)->isValid()) {
-          return $this->ValidationFailed();
+      if ($this->Validate($input, Account::$rules)->isValid()) {
+          $account->update($this->getData());
+          return $this->Updated($account);
       }
-
-      $account->update($this->getData());
-      return $this->Updated($account);
+      return $this;
   }
 
   public function destroy($id) {

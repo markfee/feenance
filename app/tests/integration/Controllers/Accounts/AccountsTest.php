@@ -23,7 +23,7 @@ class AccountsTest extends TestCase {
     public function test_index_with_id_returns_some_records() {
         $this->seed('AccountsTableSeeder');
         $response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
-        $this->assertExpectedStatus(Response::HTTP_FOUND);
+        $this->assertExpectedStatus(Response::HTTP_OK);
         $this->assertValidSingleRecordJsonResponse($response,
             ['name', 'acc_number', 'sort_code', 'notes', 'open', 'bank', 'opening_balance']);
     }
@@ -75,6 +75,8 @@ class AccountsTest extends TestCase {
 //        dd($response);
         $this->refreshApplication();
         $get_response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
+
+   //     dd($get_response);
         $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
     }
  };

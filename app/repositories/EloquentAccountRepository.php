@@ -60,7 +60,16 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
   }
 
   public function destroy($id) {
-    // TODO: Implement destroy() method.
+      try {
+          if (!Account::destroy($id)) {
+              return $this->NotFound();
+          }
+      } catch (QueryException $e) {
+          return $this->QueryException($e);
+      } catch (Exception $e) {
+          return $this->InternalError($e->getMessage());
+      }
+      return $this->Deleted();
   }
 
 }

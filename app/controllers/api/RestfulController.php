@@ -2,6 +2,7 @@
 
 use Feenance\repositories\RepositoryInterface;
 use Markfee\Responder\TransformerInterface;
+use \Input;
 
 class RestfulController extends BaseController {
 
@@ -12,11 +13,51 @@ class RestfulController extends BaseController {
         $this->transformer = $this->repository->getTransformer();
     }
 
+    public function index() {
+        $this->repository->paginate();
+        return $this->respond();
+    }
+
+    public function show($id) {
+        $this->repository->find($id);
+        return $this->respondRaw();
+    }
+
+    /**
+     * Add a new Account
+     * @return Respond
+     */
+    public function store() {
+        $this->repository->create(Input::all());
+        return $this->respondRaw();
+    }
+
+    /**
+     * Update a specific account.
+     * @param  int $id
+     * @return Response
+     */
+    public function update($id) {
+
+        $this->repository->updateWithIdAndInput($id, Input::all());
+        return $this->respondRaw();
+    }
+
+    /**
+     * delete a specific account.
+     * @param  int $id
+     * @return Response
+     */
+    public function destroy($id) {
+        $this->repository->destroy($id);
+        return $this->respondRaw();
+    }
+
     /**
      * @param array $headers
      * @return \Illuminate\Http\JsonResponse
      */
-    function respond($headers = [])
+    protected function respond($headers = [])
     {
         $response = \Response::json([
              "data"         => $this->repository->getData()
@@ -33,7 +74,7 @@ class RestfulController extends BaseController {
      * @param array $headers
      * @return \Illuminate\Http\JsonResponse
      */
-    function respondRaw($headers = []) {
+    protected function respondRaw($headers = []) {
         if ($this->repository->hasErred()) {
             return $this->respond($headers);
         }

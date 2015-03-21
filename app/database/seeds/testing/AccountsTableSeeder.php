@@ -5,25 +5,24 @@ use Feenance\models\eloquent\Account;
 
 class testAccountsTableSeeder extends Seeder {
 
-	public function run()
-	{
-    $faker = Faker::create('en_GB');
+    public function run() {
+        $faker = Faker::create('en_GB');
+        Account::truncate();
 
 //    foreach($records as $record)
-    foreach(range(1, 10) as $index)
-    {
-      $val =
-      [
+        foreach (range(1, 10) as $index) {
+            $val =
+                [
 //        "id"              => $record->ACCOUNTID,
-        "name"            => $faker->sentence(4),
-        'acc_number'      => $faker->creditCardNumber,
-        'notes'           => $faker->sentence(12),
-        'open'            => $faker->boolean(),
-        'bank'            => $faker->creditCardType,
-        'opening_balance' => $faker->numberBetween(0,3000)
-      ];
-      Account::create($val);
+                "name" => $faker->sentence(4),
+                'acc_number' => $faker->creditCardNumber,
+                'notes' => $faker->sentence(12),
+                'open' => $faker->boolean(),
+                'bank' => $faker->creditCardType,
+                'opening_balance' => $faker->numberBetween(0, 3000)
+            ];
+            Account::create($val);
+        }
     }
-	}
 
 }

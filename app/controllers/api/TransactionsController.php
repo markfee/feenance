@@ -3,7 +3,6 @@
 use Feenance\repositories\EloquentTransactionRepository;
 
 use Feenance\models\eloquent\BankString;
-use Feenance\models\eloquent\TransactionStatus;
 
 use Markfee\Responder\Respond;
 use Illuminate\Database\QueryException;
@@ -84,9 +83,9 @@ class TransactionsController extends RestfulController {
      * @return mixed
      */
     public function reconcileAll($account_id) {
-        Transaction::startBulk();
-        $query = Transaction::where("account_id", $account_id)->update(["reconciled" => true, "status_id" => TransactionStatus::RECONCILED]);
-        Transaction::finishBulk(true);
+        $this->repository->reconcileAll($account_id);
+        return $this->respond();
+
     }
 
     /**

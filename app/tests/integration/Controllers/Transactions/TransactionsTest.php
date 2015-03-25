@@ -140,6 +140,32 @@ class TransactionsTest extends TestCase {
         $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
     }
 
+    public function test_reconcile_all_transactions() {
+        //Route::post('accounts/{id}/transactions/reconcile',         $NAMESPACE.'TransactionsController@reconcileAll');
+        $API_PATH = "api/v1/accounts/1/transactions/reconcile";
+
+        $this->runMigrations();
+        $this->seed('AccountsTableSeeder');
+        $this->seed('TransactionsTableSeeder');
+
+        // Check There are some unreconciled transactions
+        $get_response = $this->call('GET', "api/v1/accounts/1/transactions/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertExpectedStatus(Response::HTTP_OK);
+
+        $this->refreshApplication();
+
+        // Now reconciled all transactions
+        $response = $this->call('POST', $API_PATH, [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertNoErrors($response->getData());
+        $this->assertExpectedStatus(Response::HTTP_OK);
+
+        $this->refreshApplication();
+
+        // Now Check There are NO unreconciled transactions
+        $get_response = $this->call('GET', "api/v1/accounts/1/transactions/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
+    }
+
 
     public function test_import_csv() {
 

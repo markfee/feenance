@@ -52,7 +52,6 @@ class TransactionsTest extends TestCase {
         $this->assertTrue(is_integer($count));
     }
 
-
     public function test_add_new_transaction() {
         $this->seed('AccountsTableSeeder');
         $newTransaction = [
@@ -117,6 +116,18 @@ class TransactionsTest extends TestCase {
             ]
         );
     }
+
+    public function test_delete_transaction() {
+        $response = $this->call('DELETE', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertNoErrors($response->getData());
+        $this->assertExpectedStatus(Response::HTTP_OK);
+        $this->refreshApplication();
+        $get_response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
+    }
+
+
+
 
     public function test_import_csv() {
 

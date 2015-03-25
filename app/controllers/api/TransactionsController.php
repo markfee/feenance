@@ -68,7 +68,6 @@ class TransactionsController extends RestfulController {
             ->filterReconciled(false)
             ->count();
         return $this->respondRaw();
-
     }
 
     /**
@@ -125,7 +124,6 @@ class TransactionsController extends RestfulController {
         $bankStringUpdateCount = $queryBuilder->update(Input::only(["payee_id", "category_id"]));
 
         return $this->respond();
-//        return Respond::Updated($transactionUpdateCount);
     }
 
     /**
@@ -230,24 +228,4 @@ class TransactionsController extends RestfulController {
 //    print "</pre>";
 
     }
-
-    /**
-     * Remove the specified transaction from storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function destroy($id) {
-        try {
-            if (!Transaction::destroy($id)) {
-                return Respond::NotFound();
-            }
-        } catch (QueryException $e) {
-            return Respond::QueryException($e);
-        } catch (Exception $e) {
-            return Respond::InternalError($e->getMessage());
-        }
-        return Respond::Success();
-    }
-
 }

@@ -3,6 +3,9 @@
 use Feenance\Misc\Transformers\TransactionTransformer;
 use Feenance\models\eloquent\Transaction;
 use Feenance\models\eloquent\Transfer;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use \Exception;
 use \DB;
 
 class EloquentTransactionRepository extends BaseRepository implements RepositoryInterface {
@@ -61,8 +64,6 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
     {
         return $this->setCount($this->Transactions()->count());
     }
-
-
 
 
     public function create(array $input) {
@@ -131,7 +132,16 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
     }
 
     public function destroy($id) {
-        // TODO: Implement destroy() method.
+        try {
+            if (!Transaction::destroy($id)) {
+                return $this->NotFound();
+            }
+        } catch (QueryException $e) {
+            return $this->QueryException($e);
+        } catch (Exception $e) {
+            return $this->InternalError($e->getMessage());
+        }
+        return $this->Deleted();
     }
 
 }

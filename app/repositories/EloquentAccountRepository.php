@@ -2,6 +2,7 @@
 
 use Feenance\models\eloquent\Account;
 use Feenance\Misc\Transformers\AccountsTransformer;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Validator;
 

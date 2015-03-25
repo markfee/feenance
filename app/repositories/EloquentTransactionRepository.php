@@ -131,6 +131,14 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         // TODO: Implement updateWithIdAndInput() method.
     }
 
+    public function deleteUnreconciled($account_id) {
+        Transaction::startBulk();
+        $query = Transaction::where("reconciled", false)->where("account_id", $account_id)->delete();
+        Transaction::finishBulk(true);
+        return $this->Deleted();
+    }
+
+
     public function destroy($id) {
         try {
             if (!Transaction::destroy($id)) {

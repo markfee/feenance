@@ -75,11 +75,8 @@ class TransactionsController extends RestfulController {
      * @return mixed
      */
     public function deleteUnreconciled($account_id) {
-//    return $this->unreconciled($account_id);
-
-        Transaction::startBulk();
-        $query = Transaction::where("reconciled", false)->where("account_id", $account_id)->delete();
-        Transaction::finishBulk(true);
+        $this->repository->deleteUnreconciled($account_id);
+        return $this->respond();
     }
 
     /**

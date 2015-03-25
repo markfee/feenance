@@ -72,11 +72,8 @@ class AccountsTest extends TestCase {
         $response = $this->call('DELETE', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
         $this->assertNoErrors($response->getData());
         $this->assertExpectedStatus(Response::HTTP_OK);
-//        dd($response);
         $this->refreshApplication();
         $get_response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
-
-   //     dd($get_response);
         $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
     }
  };

@@ -126,7 +126,19 @@ class TransactionsTest extends TestCase {
         $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
     }
 
+    public function test_delete_unreconciled_transactions() {
+        //Route::delete('accounts/{id}/transactions/unreconciled',    $NAMESPACE.'TransactionsController@deleteUnreconciled');
+        $API_PATH = "api/v1/accounts/1/transactions/unreconciled";
 
+        $this->seed('AccountsTableSeeder');
+        $this->seed('TransactionsTableSeeder');
+        $response = $this->call('DELETE', $API_PATH, [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertNoErrors($response->getData());
+        $this->assertExpectedStatus(Response::HTTP_OK);
+        $this->refreshApplication();
+        $get_response = $this->call('GET', $API_PATH, [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
+    }
 
 
     public function test_import_csv() {

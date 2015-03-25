@@ -1,12 +1,5 @@
 <?php namespace Feenance\repositories;
 
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 24/01/15
- * Time: 09:10
- */
-
 use Markfee\Responder\RepositoryResponseInterface;
 use Markfee\Responder\Transformer;
 use Markfee\Responder\TransformerInterface;

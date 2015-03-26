@@ -21,7 +21,6 @@ class StatementImporterTest extends TestCase {
     $file = new \SplFileObject(base_path() . "/app/tests/unit/StatementImporter/test_tesco.csv", "r");
     $statementImport = new StatementImporter(1, $file);
 //    $this->assertTrue($statementImport)
-
   }
 
 

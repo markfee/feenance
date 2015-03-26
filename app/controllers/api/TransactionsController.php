@@ -194,7 +194,7 @@ class TransactionsController extends RestfulController {
 //          print "\nReturned: (id: {$bank_string->id} account_id: {$bank_string->account_id}, name: {$bank_string->name})";
 
                     $transaction = Transaction::create([
-                        "date" => Carbon::createFromFormat("d/m/Y", $line[0])
+                          "date" => Carbon::createFromFormat("d/m/Y", $line[0])
                         , "amount" => $line[2] * 100
                         , "account_id" => $account_id
                         , "reconciled" => false

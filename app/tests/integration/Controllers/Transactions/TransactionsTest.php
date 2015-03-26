@@ -149,7 +149,8 @@ class TransactionsTest extends TestCase {
         $this->seed('TransactionsTableSeeder');
 
         // Check There are some unreconciled transactions
-        $get_response = $this->call('GET', "api/v1/accounts/1/transactions/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $get_response = $this->call('GET',
+            "api/v1/accounts/1/transactions/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json') );
         $this->assertExpectedStatus(Response::HTTP_OK);
 
         $this->refreshApplication();
@@ -162,7 +163,8 @@ class TransactionsTest extends TestCase {
         $this->refreshApplication();
 
         // Now Check There are NO unreconciled transactions
-        $get_response = $this->call('GET', "api/v1/accounts/1/transactions/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $get_response = $this->call('GET',
+            "api/v1/accounts/1/transactions/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json') );
         $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
     }
 

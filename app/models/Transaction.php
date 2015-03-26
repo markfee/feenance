@@ -12,16 +12,16 @@ use \JsonSerializable;
 
 class Transaction implements JsonSerializable {
     /*** @var Carbon    */  private $date;
-    /*** @var int       */  private $amount         = 0; // in pence
-    /*** @var int       */  private $balance        = 0; // Bank Balance at the time of the transaction
+    /*** @var int       */  private $amount         = 0;    // in pence
+    /*** @var int       */  private $balance        = 0;    // Bank Balance at the time of the transaction
     /*** @var int       */  private $account_id     = null;
     /*** @var bool      */  private $reconciled     = false;
     /*** @var string    */  private $notes          = null;
     /*** @var string    */  private $bank_string    = null; // The line from the bank statement
 
-    function __construct($date, $amount)
+    function __construct($date = null, $amount = 0)
     {
-        $this->date     = $date;
+        $this->date     = $date ?:Carbon::now();
         $this->amount   = $amount;
     }
 

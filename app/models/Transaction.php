@@ -32,7 +32,8 @@ class Transaction implements JsonSerializable {
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      */
-    function jsonSerialize() {
+    public function jsonSerialize()
+    {
         return [
             "date" =>           $this->date,
             "amount" =>         $this->amount,
@@ -42,10 +43,6 @@ class Transaction implements JsonSerializable {
             "bank_string" =>    $this->bank_string,
             "notes" =>          $this->notes,
         ];
-    }
-    public function __toArray()
-    {
-        return (Array)$this;
     }
 
     public function __toString()
@@ -150,6 +147,4 @@ class Transaction implements JsonSerializable {
     public function setBalance($balance) {
         $this->balance = $balance;
     }
-
-
 }

@@ -37,7 +37,6 @@ Route::group(['before' => ''],        function()  {
 
   Route::group(['prefix' =>  'reports/'], function()
   {
-
     Route::get('categories/{year?}', function ($year = null)
     {
       return CategoryReportController::category_report($year);

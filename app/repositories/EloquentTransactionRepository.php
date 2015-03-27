@@ -66,7 +66,6 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         return $this->setCount($this->Transactions()->count());
     }
 
-
     public function create(array $input) {
         $transfer_id = (empty($input["transfer_id"]) ? null : $input["transfer_id"]);
 

@@ -1,12 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 26/03/15
- * Time: 07:19
- */
-
-namespace Feenance\models;
+<?php namespace Feenance\models;
 use \Carbon\Carbon;
 use \JsonSerializable;
 
@@ -34,6 +26,11 @@ class Transaction implements JsonSerializable {
      */
     public function jsonSerialize()
     {
+        return $this->toArray();
+    }
+
+    public function toArray()
+    {
         return [
             "date" =>           $this->date,
             "amount" =>         $this->amount,
@@ -44,6 +41,8 @@ class Transaction implements JsonSerializable {
             "notes" =>          $this->notes,
         ];
     }
+
+
 
     public function __toString()
     {

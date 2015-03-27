@@ -1,14 +1,33 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 24/01/15
- * Time: 08:44
- */
+<?php namespace Feenance\Services;
 
-namespace Feenance\Services;
+use Markfee\Responder\RepositoryResponse;
+use Markfee\Responder\ErrorBagTrait;
 
+class StatementImporter  {
+    /*** @var RepositoryInterface */
+    private $repository;
+    use ErrorBagTrait;
+    /**
+     * @param RepositoryInterface $repository
+     */
+    function __construct($repository)
+    {
+        $this->repository = $repository;
+    }
 
-class StatementImporter {
-
+    /**
+     * @param Integer $account_id
+     * @param Feenance\repositories\file_readers\FileReaderInterface $reader
+     */
+    function importTransactionsToAccount($account_id, $reader)
+    {
+        /*** @var Feenance\models\Transaction $transaction **/
+        foreach($reader as $transaction) {
+            /*** @var ErrorBagTrait $response **/
+            $response = $this->repository->create($transaction->toArray());
+            if ($response->hasErrors()) {
+                $this->addErrors($response->getErrors());
+            }
+        }
+    }
 }

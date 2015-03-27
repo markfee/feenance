@@ -3,39 +3,37 @@
 use Feenance\models\Transaction;
 use Feenance\repositories\file_readers\FirstDirectCSVReader;
 use Feenance\tests\TestCase;
-use Feenance\Services\StatementImporter;
 
 class FirstDirectFileReaderTest extends TestCase {
 
-    private $file_path;
-
-    protected function getReader() {
-        $this->file_path = base_path() . "/app/tests/unit/StatementImporter/test_firstdirect.csv";
+    static public function getReader()
+    {
+        $file_path = base_path() . "/app/tests/unit/StatementImporter/test_firstdirect.csv";
         $reader = new FirstDirectCSVReader();
-        $this->AssertTrue($reader->open($this->file_path), "Failed to open {$this->file_path}");
+        $reader->open($file_path);
         return $reader;
 
     }
 
-    public function test_I_can_create_an_instance() {
+    public function test_I_can_create_an_instance()
+    {
         $reader = $this->getReader();
-        $this->AssertTrue($reader->valid(), "Reader is Not Valid! {$this->file_path}");
+        $this->AssertTrue($reader->valid(), "Reader is Not Valid!");
     }
 
-    public function test_I_can_iterate_over_the_file() {
+    public function test_I_can_iterate_over_the_file()
+    {
         $count = 0;
         $reader = $this->getReader();
-        print ("\n");
 
         foreach($reader as $key=>$record) {
-            print "\n" . $record;
             $count++;
         }
         $this->assertTrue($count > 0, "Expecting more than 0 lines");
     }
 
-    public function test_each_iteration_should_be_a_transaction() {
-        $count = 0;
+    public function test_each_iteration_should_be_a_transaction()
+    {
         $reader = $this->getReader();
 
         foreach($reader as $transaction) {
@@ -43,7 +41,8 @@ class FirstDirectFileReaderTest extends TestCase {
         }
     }
 
-    public function test_each_transaction_has_a_non_zero_amount() {
+    public function test_each_transaction_has_a_non_zero_amount()
+    {
         $count = 0;
         $reader = $this->getReader();
 
@@ -51,10 +50,4 @@ class FirstDirectFileReaderTest extends TestCase {
             $this->AssertTrue($transaction->getAmount() != 0.0, "Amount Should be non Zero");
         }
     }
-
-
-
-
-}
-
-;
+};

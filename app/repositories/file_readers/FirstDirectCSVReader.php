@@ -6,7 +6,8 @@ use \Carbon\Carbon;
 
 class FirstDirectCSVReader extends BaseFileReader {
 
-    public function current() {
+    public function current()
+    {
         $line = $this->file->current();
 
         $transaction = new Transaction(

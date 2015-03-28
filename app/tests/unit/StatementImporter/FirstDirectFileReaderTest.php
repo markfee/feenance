@@ -6,7 +6,7 @@ use Feenance\tests\TestCase;
 
 class FirstDirectFileReaderTest extends TestCase {
 
-    static public function getReader()
+    public function getReader()
     {
         $file_path = base_path() . "/app/tests/unit/StatementImporter/test_firstdirect.csv";
         $reader = new FirstDirectCSVReader();

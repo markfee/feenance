@@ -25,19 +25,28 @@ class StatementImporterTest extends TestCase {
 //    $this->assertTrue($statementImport)
 //  }
 
-    public function test_I_can_create_an_importer_with_a_file_reader()
+    private function _test_I_can_create_an_importer_with_a_file_reader($reader)
     {
-        $reader = FirstDirectFileReaderTest::getReader();
         $repository = new EloquentTransactionRepository(new TransactionTransformer);
 
-        print $repository->count()->getData();
+        $count = $repository->count()->getData();
+
         $statementImport = new StatementImporter($repository);
         $statementImport->importTransactionsToAccount(1, $reader);
+
         if ($statementImport->hasErrors()) {
             dd($statementImport->getJsonErrors());
         }
+
         $this->assertFalse($statementImport->hasErrors());
-        print $repository->count()->getData();
+        $newCount = $repository->count()->getData();
+        $this->assertTrue($newCount > $count);
+    }
+
+    public function testAllReaders()
+    {
+        $this->_test_I_can_create_an_importer_with_a_file_reader((new FirstDirectFileReaderTest)->getReader());
+
     }
 
 };

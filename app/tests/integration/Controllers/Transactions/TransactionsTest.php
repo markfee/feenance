@@ -147,12 +147,21 @@ class TransactionsTest extends TestCase {
         $this->runMigrations();
         $this->seed('AccountsTableSeeder');
         $this->seed('TransactionsTableSeeder');
+        // Make sure ther is at least one unreconciled Transaction!
+        $src = Transaction::create([
+            "date"              =>  Carbon::now(),
+            "amount"            =>  10.99,
+            "account_id"        =>  1,
+            "reconciled"        =>  false,
+            "payee_id"          =>  null,
+            "category_id"       =>  null,
+            "notes"             =>  "",
+        ]);
 
         // Check There are some unreconciled transactions
         $get_response = $this->call('GET',
             "api/v1/accounts/1/transactions/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json') );
         $this->assertExpectedStatus(Response::HTTP_OK);
-
         $this->refreshApplication();
 
         // Now reconciled all transactions

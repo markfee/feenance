@@ -24,15 +24,15 @@ class testTransactionsTableSeeder extends Seeder {
       if (empty($accountBalances[$account])) $accountBalances[$account] = 0;
       $accountBalances[$account] += $amount;
 
-      $src = Transaction::create([
-        "date"              =>  $date,
-        "amount"            =>  $amount,
-        "account_id"        =>  $account,
-        "reconciled"        =>  $faker->boolean(),
-        "payee_id"          =>  null,
-        "category_id"       =>  null,
-        "notes"             =>  $faker->sentence(),
-      ]);
+        $src = Transaction::create([
+            "date"              =>  $date,
+            "amount"            =>  $amount,
+            "account_id"        =>  $account,
+            "reconciled"        =>  $faker->boolean(),
+            "payee_id"          =>  null,
+            "category_id"       =>  null,
+            "notes"             =>  $faker->sentence(),
+        ]);
       if ($src->amount > 0 && $faker->boolean()) {
         $account = $accounts->random(1)->id;
         if (empty($accountBalances[$account])) $accountBalances[$account] = 0;

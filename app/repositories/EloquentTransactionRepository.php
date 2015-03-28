@@ -79,9 +79,7 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         try {
             return $this->Created(Transaction::create($this->getData()));
         } catch (\Exception $ex) {
-            $messageBag = new MessageBag();
-            $messageBag->add($ex->getCode(), $ex->getMessage());
-            return $this->WithErrors($messageBag);
+            return $this->InternalError($ex->getMessage());
         }
     }
 

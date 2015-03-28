@@ -2,6 +2,7 @@
 
 use Markfee\Responder\RepositoryResponse;
 use Markfee\Responder\ErrorBagTrait;
+use Feenance\models\Transaction;
 
 class StatementImporter  {
     /*** @var RepositoryInterface */
@@ -21,8 +22,11 @@ class StatementImporter  {
      */
     function importTransactionsToAccount($account_id, $reader)
     {
-        /*** @var Feenance\models\Transaction $transaction **/
+        /*** @var Transaction $transaction **/
         foreach($reader as $transaction) {
+
+            $transaction->setAccountId($account_id);
+
             /*** @var ErrorBagTrait $response **/
             $response = $this->repository->create($transaction->toArray());
             if ($response->hasErrors()) {

@@ -33,7 +33,9 @@ class StatementImporterTest extends TestCase {
         print $repository->count()->getData();
         $statementImport = new StatementImporter($repository);
         $statementImport->importTransactionsToAccount(1, $reader);
-        dd($statementImport->getJsonErrors());
+        if ($statementImport->hasErrors()) {
+            dd($statementImport->getJsonErrors());
+        }
         $this->assertFalse($statementImport->hasErrors());
         print $repository->count()->getData();
     }

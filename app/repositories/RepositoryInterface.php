@@ -8,8 +8,6 @@ interface RepositoryInterface extends RepositoryResponseInterface {
 
     public function all($columns = array('*'));
 
-    public function newInstance(array $attributes = array());
-
     public function paginate($perPage = 15, $columns = array('*'));
 
     public function create(array $input);

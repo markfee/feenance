@@ -27,11 +27,6 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         // TODO: Implement all() method.
     }
 
-    public function newInstance(array $attributes = array())
-    {
-        // TODO: Implement newInstance() method.
-    }
-
     public function filterAccount($accountId)
     {
         $this->accountId = $accountId;

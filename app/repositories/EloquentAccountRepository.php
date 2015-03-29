@@ -22,10 +22,6 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
       return $this->Paginated($records);
   }
 
-  public function newInstance(array $attributes = array()) {
-    // TODO: Implement newInstance() method.
-  }
-
   public function create(array $input) {
       if ($this->Validate($input, Account::$rules)->isValid()) {
           return $this->Created(Account::create($this->getData()));

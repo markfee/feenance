@@ -27,8 +27,8 @@ class StatementImporter  {
         foreach($reader as $transaction) {
 
             $transaction->setAccountId($account_id);
-            /*** @var ErrorBagTrait $response **/
 
+            /*** @var ErrorBagTrait $response **/
             $response = $this->repository->create($transaction->toInternalArray());
 
             if ($response->hasErrors()) {

@@ -4,8 +4,9 @@ use Feenance\repositories\EloquentTransactionRepository;
 
 use Feenance\models\eloquent\BankString;
 
+use Feenance\repositories\file_readers\BaseFileReader;
+use Feenance\Services\StatementImporter;
 use Markfee\Responder\Respond;
-use Illuminate\Database\QueryException;
 use \Exception;
 use \Input;
 use \Validator;
@@ -143,16 +144,26 @@ class TransactionsController extends RestfulController {
      *
      * @return Response
      */
-    public function upload() {
+    public function upload()
+    {
         try {
             $file = Input::file('file');
+
             $account_id = Input::get("account_id");
-            if (empty($file) || empty($account_id)) {
+
+            if (empty($file)) {
                 return Respond::ValidationFailed("Invalid file uploaded");
             }
 
-            $SplFileObject = $file->openFile('r');
-            $this->uploadFile($account_id, $SplFileObject);
+            if (empty($account_id)) {
+                return Respond::ValidationFailed("No Account Id Specified");
+            }
+
+            if ($reader = BaseFileReader::getReaderForFile($file)) {
+                $statementImport = new StatementImporter($this->repository);
+                $statementImport->importTransactionsToAccount($account_id, $reader);
+            }
+
         } catch (Exception $ex) {
             $messageBag = new MessageBag();
             $messageBag->add("badFormat", "Unable to process uploaded csv file");
@@ -161,67 +172,5 @@ class TransactionsController extends RestfulController {
             return Respond::WithErrors($messageBag);
 
         }
-    }
-
-    /**
-     * Upload a file to the server for import.
-     *
-     * @param  SplFileObject $SplFileObject
-     * @return Response
-     */
-    static public function uploadFile($account_id, $SplFileObject) {
-        try {
-            // TODO - UNCOMMENT THESE PRINTS AND CREATE A LOG
-            $header = $SplFileObject->getCurrentLine();
-            $collection = [];
-            Transaction::startBulk();
-
-//      print "<pre>";
-            $count = 0;
-            $file = [];
-            while (!$SplFileObject->eof()) {
-                $file[$count] = $SplFileObject->getCurrentLine();
-                $SplFileObject->next();
-//        print "\n$count";
-                $count++;
-            }
-            while ($count > 0) {
-                $count--;
-                $line = array_map("trim", str_getcsv($file[$count], ",", '"'));
-                if (count($line) == 4) {
-                    $name = trim($line[1], '"');
-                    $bank_string = BankString::findOrCreate($account_id, $name)->first();
-//          print "\nReturned: (id: {$bank_string->id} account_id: {$bank_string->account_id}, name: {$bank_string->name})";
-
-                    $transaction = Transaction::create([
-                          "date" => Carbon::createFromFormat("d/m/Y", $line[0])
-                        , "amount" => $line[2] * 100
-                        , "account_id" => $account_id
-                        , "reconciled" => false
-                        , "payee_id" => $bank_string->payee_id ? $bank_string->payee_id : null
-                        , "category_id" => $bank_string->category_id ? $bank_string->category_id : null
-                        , "notes" => "imported from bank statement"
-                    ]);
-
-                    $transaction->bank_string_id = $bank_string->id;
-                    $transaction->bank_balance = $line[3] * 100;
-                    $transaction->save();
-
-                }
-            }
-            Transaction::finishBulk(true);
-        } catch (Exception $ex) {
-
-            dd($ex->getMessage());
-
-            Transaction::finishBulk(false);
-            $messageBag = new MessageBag();
-            $messageBag->add("badFormat", "Unable to process uploaded csv file");
-            $messageBag->add($ex->getCode(), $ex->getMessage());
-//      print $ex->getMessage();
-            return Respond::WithErrors($messageBag);
-        }
-//    print "</pre>";
-
     }
 }

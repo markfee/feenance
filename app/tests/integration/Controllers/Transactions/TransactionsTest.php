@@ -179,21 +179,6 @@ class TransactionsTest extends TestCase {
         $this->assertExpectedStatus(Response::HTTP_NOT_FOUND);
     }
 
-
-    public function test_import_csv() {
-
-        $this->assertTrue(false, "rewrite test for bulk upload");
-        return;
-
-        $this->runMigrations();
-        $file = new SplFileObject("/home/mark/www/feenance/app/tests/integration/Controllers/Transactions/test_statement.csv", "r");
-//    $controller = new TransactionsController();
-        TransactionsController::uploadFile(1, $file);
-
-        $response = $this->call('GET', $this->API_ROOT, [], [], array('HTTP_ACCEPT' => 'application/json'));
-        $this->assertEquals($response->getData()->paginator->total, 25);
-    }
-
     /*
      * When I post to bank_strings/{id}/transactions with a map object, I expect all transactions with that
      * bank_string_id to be updated, provided they do not already have some different map data applied.

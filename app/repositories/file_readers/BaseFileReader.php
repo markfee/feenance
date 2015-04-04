@@ -12,9 +12,14 @@ class BaseFileReader implements FileReaderInterface {
 
     protected $header;
 
-    private function open($filePath)
+    private function open($file)
     {
-        $this->file = new SplFileObject($filePath, "r");
+        if ($file instanceof Symfony\Component\HttpFoundation\File\UploadedFile) {
+            $this->file = $file->openFile('r');
+        } else {
+            $this->file = new SplFileObject($file, "r");
+        }
+
         $this->file->setFlags(SplFileObject::READ_CSV | SplFileObject::READ_AHEAD | SplFileObject::SKIP_EMPTY | SplFileObject::DROP_NEW_LINE);
     }
 
@@ -25,13 +30,13 @@ class BaseFileReader implements FileReaderInterface {
         }
     }
 
-    static public function getReaderForFile($filePath)
+    static public function getReaderForFile($file)
     {
         $reader = new BaseFileReader();
-        $reader->open($filePath);
+        $reader->open($file);
         if ($reader->file->isReadable()) {
-            if ( $instance = (new FirstDirectCSVReader($reader))->readHeader() ) return $instance;
-            if ( $instance = (new TescoCSVReader($reader))->readHeader() ) return $instance;
+            if ( $instance = (new FirstDirectCSVReader($reader))->readHeader()  )   return $instance;
+            if ( $instance = (new TescoCSVReader($reader))->readHeader()        )   return $instance;
         }
         return null;
     }

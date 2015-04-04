@@ -158,7 +158,19 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
 
     public function updateWithIdAndInput($id, array $input)
     {
-        // TODO: Implement updateWithIdAndInput() method.
+        try {
+            /** @var Transaction $t
+             * ransaction */
+            $transaction = EloquentTransaction::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->NotFound($e->getMessage());
+        }
+
+        if ($this->Validate($input, EloquentTransaction::$rules) ) {
+            $transaction->update($this->getData());
+            return $this->Updated($transaction);
+        }
+        return $this;
     }
 
     public function reconcileAll($account_id)

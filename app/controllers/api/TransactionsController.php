@@ -1,7 +1,7 @@
 <?php namespace Feenance\controllers\Api;
 
 use Feenance\repositories\EloquentTransactionRepository;
-
+use Feenance\models\Transaction;
 use Feenance\models\eloquent\BankString;
 
 use Feenance\repositories\file_readers\BaseFileReader;
@@ -10,9 +10,7 @@ use Markfee\Responder\Respond;
 use \Exception;
 use \Input;
 use \Validator;
-use \SplFileObject;
 use Illuminate\Support\MessageBag;
-use \Carbon\Carbon;
 
 
 class TransactionsController extends RestfulController {
@@ -128,7 +126,6 @@ class TransactionsController extends RestfulController {
      *
      * @param  int $id
      * @return Response
-     */
     public function update($id) {
         $transaction = Transaction::findOrFail($id);
         $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
@@ -138,6 +135,7 @@ class TransactionsController extends RestfulController {
         $transaction->update($data);
         return Respond::Raw($this->transform($transaction));
     }
+    */
 
     /**
      * Upload a file to the server for import.

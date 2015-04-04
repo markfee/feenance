@@ -243,4 +243,23 @@ class TransactionsTest extends TestCase {
             }
         }, $jsonResponse->data);
     }
+
+    public function test_update() {
+        $get_response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json') );
+        $get_response_data = $get_response->getData();
+        $oldAmount = $get_response_data->amount;
+        $newAmount = $oldAmount + 100;
+
+        $get_response_data->amount = $newAmount;
+
+        // call refreshApplication to allow a second http request.
+        $this->refreshApplication();
+        $post_response = $this->call('PUT', $this->API_ROOT ."/1", (Array) $get_response_data, [], array('HTTP_ACCEPT' => 'application/json') );
+        $post_response_data = $this->assertValidSingleRecordJsonResponse($post_response,
+            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+        $this->assertTrue($post_response_data->amount == $newAmount, "Name amount match old + 100");
+    }
+
+
+
 };

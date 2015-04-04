@@ -1,10 +1,11 @@
 <?php namespace Feenance\repositories;
 
-use Feenance\models\eloquent\Account;
+use Feenance\models\eloquent\Account as EloquentAccount;
 use Feenance\Misc\Transformers\AccountsTransformer;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Validator;
+use \Exception;
 
 class EloquentAccountRepository extends BaseRepository implements RepositoryInterface {
 
@@ -14,24 +15,24 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
 
   public function all($columns = array('*'))
   {
-    return $this->transform(Account::all());
+    return $this->Found(EloquentAccount::all());
   }
 
   public function paginate($perPage = 15, $columns = array('*')) {
-      $records = Account::orderBy("open", "DESC")->paginate();
+      $records = EloquentAccount::orderBy("open", "DESC")->paginate();
       return $this->Paginated($records);
   }
 
   public function create(array $input) {
-      if ($this->Validate($input, Account::$rules)->isValid()) {
-          return $this->Created(Account::create($this->getData()));
+      if ($this->Validate($input, EloquentAccount::$rules)->isValid()) {
+          return $this->Created(EloquentAccount::create($this->getData()));
       }
       return $this;
   }
 
   public function find($id, $columns = array('*')) {
       try {
-          return $this->Found(Account::findOrFail($id));
+          return $this->Found(EloquentAccount::findOrFail($id));
       } catch (ModelNotFoundException $e) {
           return $this->NotFound($e->getMessage());
       }
@@ -39,12 +40,13 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
 
   public function updateWithIdAndInput($id, array $input) {
       try {
-          $account = Account::findOrFail($id);
+          /** @var EloquentAccount $account */
+          $account = EloquentAccount::findOrFail($id);
       } catch (ModelNotFoundException $e) {
           return $this->NotFound($e->getMessage());
       }
 
-      if ($this->Validate($input, Account::$rules)->isValid()) {
+      if ($this->Validate($input, EloquentAccount::$rules)->isValid()) {
           $account->update($this->getData());
           return $this->Updated($account);
       }
@@ -53,7 +55,7 @@ class EloquentAccountRepository extends BaseRepository implements RepositoryInte
 
   public function destroy($id) {
       try {
-          if (!Account::destroy($id)) {
+          if (!EloquentAccount::destroy($id)) {
               return $this->NotFound();
           }
       } catch (QueryException $e) {

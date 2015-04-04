@@ -32,6 +32,8 @@ class StatementImporterTest extends TestCase {
         $this->assertFalse($statementImport->hasErrors());
         $newCount = $repository->count()->getData();
         $this->assertTrue($newCount > $count);
+
+        $this->assertTrue(is_integer($statementImport->getBatchId()));
     }
 
     public function testAllReaders()

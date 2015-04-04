@@ -18,4 +18,7 @@ interface RepositoryInterface extends RepositoryResponseInterface {
 
     public function destroy($id);
 
+    /** @return int */ public function startBatch();
+    public function finishBatch();
+
 }

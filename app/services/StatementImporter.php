@@ -8,6 +8,10 @@ use Feenance\repositories\RepositoryInterface;
 class StatementImporter  {
     /*** @var RepositoryInterface */
     private $repository;
+    private $batchId = null;
+
+    /** @return int */ public function getBatchId()    {        return $this->batchId;    }
+
     use ErrorBagTrait;
     /**
      * @param RepositoryInterface $repository
@@ -23,6 +27,8 @@ class StatementImporter  {
      */
     function importTransactionsToAccount($account_id, $reader)
     {
+        $this->batchId = $this->repository->startBatch();
+
         /*** @var Transaction $transaction **/
         foreach($reader as $transaction) {
 
@@ -34,7 +40,9 @@ class StatementImporter  {
             if ($response->hasErrors()) {
                 $this->addErrors($response->getErrors());
             }
-
         }
+
+        $this->repository->finishBatch();
+
     }
 }

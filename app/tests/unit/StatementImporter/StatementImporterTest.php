@@ -6,7 +6,9 @@
  * Time: 07:03
  */
 
+use Feenance\Misc\Transformers\BankStringTransformer;
 use Feenance\Misc\Transformers\TransactionTransformer;
+use Feenance\repositories\EloquentBankStringRepository;
 use Feenance\repositories\EloquentTransactionRepository;
 use Feenance\repositories\file_readers\FirstDirectCSVReader;
 use Feenance\tests\TestCase;
@@ -27,7 +29,7 @@ class StatementImporterTest extends TestCase {
 
     private function _test_I_can_create_an_importer_with_a_file_reader($reader)
     {
-        $repository = new EloquentTransactionRepository(new TransactionTransformer);
+        $repository = new EloquentTransactionRepository(new TransactionTransformer, new EloquentBankStringRepository(new BankStringTransformer()));
 
         $count = $repository->count()->getData();
 

@@ -48,10 +48,10 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
     public function runMigrations() {
         static $count = 0;
         $count++;
-        fwrite(STDERR, print_r("\nCALLING MIGRATE ( {$count} ) FOR " . get_class($this), true));
+//        fwrite(STDERR, print_r("\nCALLING MIGRATE ( {$count} ) FOR " . get_class($this), true));
         Artisan::call('migrate:refresh');
         Eloquent::reguard();
-        print "\n";
+//        print "\n";
     }
 
     protected function assertNoErrors($jsonResponse) {

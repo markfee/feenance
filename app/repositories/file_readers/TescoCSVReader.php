@@ -16,7 +16,7 @@ class TescoCSVReader extends BaseFileReader {
 
         $transaction = new Transaction(
             Carbon::createFromFormat("d/m/Y", $line[0]),
-            $amount * 100
+            $amount
         );
         $transaction->setBankString(trim($line[3] . $line[4] . $line[5] . $line[6], '"'));
         return $transaction;

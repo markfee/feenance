@@ -1,20 +1,69 @@
 <?php namespace Feenance\models;
+
 use \Carbon\Carbon;
 use \JsonSerializable;
 
-class Transaction implements JsonSerializable {
-    /*** @var Carbon    */  private $date;
-    /*** @var int       */  private $amount         = 0;    // in pence
-    /*** @var int       */  private $balance        = 0;    // Bank Balance at the time of the transaction
-    /*** @var int       */  private $account_id     = null;
-    /*** @var bool      */  private $reconciled     = false;
-    /*** @var string    */  private $notes          = null;
-    /*** @var string    */  private $bank_string    = null; // The line from the bank statement
+class Transaction implements JsonSerializable, BankTransactionInterface, CategorisableInterface {
+    use BankStringTrait;
+    use CategorisableTrait;
 
-    function __construct($date = null, $amount = 0)
+    /*** @var Carbon    */  private $date           = null;
+    /*** @var int       */  private $amount         = null;    // in pence
+    /*** @var int       */  private $balance        = null;    // Bank Balance at the time of the transaction
+    /*** @var int       */  private $account_id     = null;
+    /*** @var int       */  private $transfer_id    = null;
+    /*** @var bool      */  private $reconciled     = null;
+    /*** @var string    */  private $notes          = null;
+
+    function __construct($param = null, $amount = 0)
     {
-        $this->date     = $date ?:Carbon::now();
-        $this->amount   = $amount;
+       if ( is_a($param, "\Carbon\Carbon") ) {
+            $this->date     = $param ?:Carbon::now();
+            $this->amount   = $amount;
+        } elseif ( is_array($param) ) {
+           $this->fromArray($param);
+        }
+    }
+
+    public function toArray()
+    {
+        return  [
+            "date" =>           $this->getDate(),
+            "amount" =>         $this->getAmount(),
+            "balance" =>        $this->getBalance(),
+            "account_id" =>     $this->getAccountId(),
+            "transfer_id" =>    $this->getTransferId(),
+            "reconciled" =>     $this->isReconciled(),
+            "bank_string" =>    $this->getBankString(),
+            "notes" =>          $this->getNotes(),
+
+            "category_id" =>    $this->getCategoryId(),
+            "payee_id" =>       $this->getPayeeId(),
+
+            "bank_string" =>    $this->getBankString(),
+        ];
+    }
+
+    public function fromArray($setValues)
+    {
+        // First make sure we have all of the required elements in our array
+        // by creating a valid empty structure
+        $param = array_merge($this->toArray(), $setValues);
+
+        // Then call the setters.
+        $this->setDate($param["date"]);
+        $this->setAmount($param["amount"]);
+        $this->setBalance($param["balance"]);
+        $this->setAccountId($param["account_id"]);
+        $this->setTransferId($param["transfer_id"]);
+        $this->setReconciled($param["reconciled"]);
+        $this->setNotes($param["notes"]);
+
+        $this->setCategoryId($param["category_id"]);
+        $this->setPayeeId($param["payee_id"]);
+
+        $this->setBankString($param["bank_string"]);
+
     }
 
     /**
@@ -29,121 +78,141 @@ class Transaction implements JsonSerializable {
         return $this->toArray();
     }
 
-    public function toArray()
-    {
-        return [
-            "date" =>           $this->date,
-            "amount" =>         $this->amount,
-            "balance" =>        $this->balance,
-            "account_id" =>     $this->account_id,
-            "reconciled" =>     $this->reconciled,
-            "bank_string" =>    $this->bank_string,
-            "notes" =>          $this->notes,
-        ];
-    }
-
-
-
     public function __toString()
     {
         return json_encode($this);
     }
 
-    /**
-     * @return Carbon
-     */
-    public function getDate() {
+    /*** @return Carbon */
+    public function getDate()
+    {
         return $this->date;
     }
 
     /**
      * @param Carbon $date
      */
-    public function setDate($date) {
+    public function setDate($date)
+    {
         $this->date = $date;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getAmount() {
-        return $this->amount;
+    public function getAmount()
+    {
+        return 0.01 * $this->amount;
     }
 
     /**
-     * @param int $amount
+     * @param float $amount
      */
-    public function setAmount($amount) {
-        $this->amount = $amount;
+    public function setAmount($amount)
+    {
+        $this->amount = (int) ($amount * 100);
     }
 
     /**
      * @return int
      */
-    public function getAccountId() {
+    public function getAccountId()
+    {
         return $this->account_id;
     }
 
     /**
      * @param int $account_id
      */
-    public function setAccountId($account_id) {
+    public function setAccountId($account_id)
+    {
         $this->account_id = $account_id;
     }
 
     /**
      * @return boolean
      */
-    public function isReconciled() {
+    public function isReconciled()
+    {
         return $this->reconciled;
     }
 
     /**
      * @param boolean $reconciled
      */
-    public function setReconciled($reconciled) {
+    public function setReconciled($reconciled)
+    {
         $this->reconciled = $reconciled;
     }
 
     /**
      * @return string
      */
-    public function getNotes() {
+    public function getNotes()
+    {
         return $this->notes;
     }
 
     /**
      * @param string $notes
      */
-    public function setNotes($notes) {
+    public function setNotes($notes)
+    {
         $this->notes = $notes;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBankString() {
-        return $this->bank_string;
-    }
-
-    /**
-     * @param string $bank_string
-     */
-    public function setBankString($bank_string) {
-        $this->bank_string = $bank_string;
     }
 
     /**
      * @return int
      */
-    public function getBalance() {
+    public function getBalance()
+    {
         return $this->balance;
     }
 
     /**
      * @param int $balance
      */
-    public function setBalance($balance) {
+    public function setBalance($balance)
+    {
         $this->balance = $balance;
+    }
+
+    public function negateAmount()
+    {
+        $this->amount *= -1;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTransferId()
+    {
+        return $this->transfer_id;
+    }
+
+    /**
+     * @param int $transfer_id
+     */
+    public function setTransferId($transfer_id)
+    {
+        $this->transfer_id = $transfer_id;
+    }
+
+    /*** @return bool */
+    public function isTransfer()
+    {
+        return !empty($this->transfer_id);
+    }
+
+    /*** @return BankTransactionInterface */
+    public function getTransfer()
+    {
+        if ( ! $this->isTransfer() ) {
+            return null;
+        }
+        $transfer = clone($this);
+        $transfer->setAccountId($this->getTransferId());
+        $transfer->negateAmount();
+        return $transfer;
     }
 }

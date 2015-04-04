@@ -12,7 +12,7 @@ class FirstDirectCSVReader extends BaseFileReader {
 
         $transaction = new Transaction(
             Carbon::createFromFormat("d/m/Y", $line[0]),
-            $line[2] * 100
+            $line[2]
         );
         $transaction->setBankString(trim($line[1], '"'));
         $transaction->setBalance(trim($line[3], '"'));

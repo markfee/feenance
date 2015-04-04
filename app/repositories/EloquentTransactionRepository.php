@@ -2,6 +2,7 @@
 
 use Feenance\Misc\Transformers\TransactionTransformer;
 use Feenance\models\eloquent\Transaction as EloquentTransaction;
+use Feenance\models\Transaction;
 use Feenance\models\eloquent\Transfer;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -16,10 +17,12 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
 
     private $accountId = null;
     private $reconciled = null;
+    private $bankStringRepository = null;
 
-    function __construct(TransactionTransformer $transformer)
+    function __construct(TransactionTransformer $transformer, EloquentBankStringRepository $bankStringRepository)
     {
         parent::__construct($transformer);
+        $this->bankStringRepository = $bankStringRepository;
     }
 
     public function all($columns = array('*'))
@@ -77,22 +80,30 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
 
     public function create(array $input)
     {
-        $transfer_id = (empty($input["transfer_id"]) ? null : $input["transfer_id"]);
-
+/*      $transfer_id = (empty($input["transfer_id"]) ? null : $input["transfer_id"]); */
         if (!$this->Validate($input, EloquentTransaction::$rules)->isValid()) {
             return $this;
         }
         try {
+            /*** @var Transaction $transaction **/
+            $transaction = new Transaction($this->getData());
 
-            // TODO infer payee_id and category_id if they are missing - mainly using the bank string
-            // TODO inform Standing Orders that a standing order may have been payed
-            // TODO try to find a matched payment in another account and mark both as a transfer if found
-
-            if (!empty($transfer_id)) {
-                return $this->createTransfer($this->getData(), $transfer_id);
+            if (! $transaction->isCategorised() ) {
+                // DONE infer payee_id and category_id if they are missing - mainly using the bank string
+                $bankString = $this->bankStringRepository->find_or_create($transaction);
+                $transaction->setCategoryId($bankString->getCategoryId());
+                $transaction->setPayeeId($bankString->getPayeeId());
             }
 
-            return $this->Created(EloquentTransaction::create($this->getData()));
+            // TODO inform Standing Orders that a standing order may have been payed
+
+            if ( $transaction->isTransfer() ) {
+                return $this->createTransfer($transaction);
+            }
+            // TODO try to infer a matched payment in another account and mark both as a transfer if found
+
+            return $this->Created(EloquentTransaction::create($transaction->toArray()));
+
         } catch (\Exception $ex) {
             return $this->InternalError($ex->getMessage());
         }
@@ -108,27 +119,31 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         return $this->BulkUpdated($transactionUpdateCount);
     }
 
-    private function createTransfer($data, $transfer_id)
+    /**
+     * @param Transaction $transaction
+     * @return \Markfee\Responder\RepositoryResponse
+     */
+    private function createTransfer($transaction)
     {
-        $transfer = $data;
-        $transfer["account_id"] = $transfer_id;
-        $data["amount"] *= -1;
-        DB::beginTransaction();
-        {
+        try {
+            DB::beginTransaction();
+            {
+                $source         = EloquentTransaction::create($transaction->toArray());
+                $destination    = EloquentTransaction::create($transaction->getTransfer()->toArray());
+                $transfer = new Transfer();
+                $transfer->source = $source->id;
+                $transfer->destination = $destination->id;
+                $transfer->save();
+            }
+            DB::commit();
+            $collection = [];
+            $collection[] = $source->first();
+            $collection[] = $destination->first();
 
-            $source = EloquentTransaction::create($data);
-            $destination = EloquentTransaction::create($transfer);
-            $transfer = new Transfer();
-            $transfer->source = $source->id;
-            $transfer->destination = $destination->id;
-            $transfer->save();
+            return $this->CreatedMultiple($collection);
+        } catch(Exception $ex) {
+            dd($ex);
         }
-        DB::commit();
-        $collection = [];
-        $collection[] = $source->first();
-        $collection[] = $destination->first();
-
-        return $this->CreatedMultiple($collection);
     }
 
 

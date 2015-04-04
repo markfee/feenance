@@ -1,6 +1,8 @@
 <?php namespace Feenance\tests;
 
+use Feenance\Misc\Transformers\BankStringTransformer;
 use Feenance\Misc\Transformers\TransactionTransformer;
+use Feenance\repositories\EloquentBankStringRepository;
 use Feenance\repositories\EloquentTransactionRepository;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
@@ -239,7 +241,7 @@ class TransactionsTest extends TestCase {
         $response = $this->call('POST', "api/v1/bank_strings/1/transactions", $map_update, [], array('HTTP_ACCEPT' => 'application/json'));
         $jsonResponse = $this->assertMultipleUpdate($response, 2);
 //  Now check all of the updated records.
-        $controller = new TransactionsController(new EloquentTransactionRepository( new TransactionTransformer));
+        $controller = new TransactionsController(new EloquentTransactionRepository( new TransactionTransformer, new EloquentBankStringRepository(new BankStringTransformer())));
 
         $jsonResponse = $controller->index()->getData();
 

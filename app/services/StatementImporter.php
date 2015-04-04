@@ -3,6 +3,7 @@
 use Markfee\Responder\RepositoryResponse;
 use Markfee\Responder\ErrorBagTrait;
 use Feenance\models\Transaction;
+use Feenance\repositories\RepositoryInterface;
 
 class StatementImporter  {
     /*** @var RepositoryInterface */
@@ -28,7 +29,7 @@ class StatementImporter  {
             $transaction->setAccountId($account_id);
             /*** @var ErrorBagTrait $response **/
 
-            $response = $this->repository->create($transaction->toArray());
+            $response = $this->repository->create($transaction->toInternalArray());
 
             if ($response->hasErrors()) {
                 $this->addErrors($response->getErrors());

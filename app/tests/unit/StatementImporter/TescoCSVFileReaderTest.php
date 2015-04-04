@@ -1,17 +1,15 @@
 <?php namespace Feenance\tests\unit\StatementImporter;
 
-use Feenance\models\Transaction;
-use Feenance\repositories\file_readers\FirstDirectCSVReader;
+use Feenance\repositories\file_readers\BaseFileReader;
 use Feenance\repositories\file_readers\TescoCSVReader;
 
-class TescoCSVFileReaderTest extends FirstDirectFileReaderTest {
+class TescoCSVFileReaderTest extends FileReaderTest {
 
     public function getReader()
     {
         $file_path = base_path() . "/app/tests/unit/StatementImporter/test_tesco.csv";
-        $reader = new TescoCSVReader();
-        $reader->open($file_path);
+        $reader = BaseFileReader::getReaderForFile($file_path);
+        $this->assertTrue(($reader instanceof TescoCSVReader), "Expects an instance of TescoCSVReader");
         return $reader;
-
     }
 };

@@ -12,14 +12,15 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
     /*** @var int       */  private $balance        = null;    // Bank Balance at the time of the transaction
     /*** @var int       */  private $account_id     = null;
     /*** @var int       */  private $transfer_id    = null;
-    /*** @var bool      */  private $reconciled     = null;
+
+    /*** @var bool      */  private $reconciled     = false;
     /*** @var string    */  private $notes          = null;
 
     function __construct($param = null, $amount = 0)
     {
        if ( is_a($param, "\Carbon\Carbon") ) {
-            $this->date     = $param ?:Carbon::now();
-            $this->amount   = $amount;
+           $this->setDate($param);
+           $this->amount   = $amount;
         } elseif ( is_array($param) ) {
            $this->fromArray($param);
         }
@@ -43,6 +44,14 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
             "bank_string" =>    $this->getBankString(),
         ];
     }
+
+    public function toInternalArray()
+    {
+        $array = $this->toArray();
+        $array["amount"] = $this->amount;
+        return $array;
+    }
+
 
     public function fromArray($setValues)
     {

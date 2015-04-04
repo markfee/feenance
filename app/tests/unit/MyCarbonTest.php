@@ -26,7 +26,7 @@ class MyCarbonTest extends TestCase {
       $expectedDate = clone($date);
       $expectedDate->previousWorkingDay();
 
-      print "\n" . $date . "(". $date->format("D") .  ") --- " . $expectedDate . "(". $expectedDate->format("D") .")";
+//      print "\n" . $date . "(". $date->format("D") .  ") --- " . $expectedDate . "(". $expectedDate->format("D") .")";
 
       $this->assertTrue($date->diff($expectedDate)->days > 0, "Are the days different?");
 

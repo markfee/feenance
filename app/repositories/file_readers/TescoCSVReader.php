@@ -6,6 +6,23 @@ use \Carbon\Carbon;
 
 class TescoCSVReader extends BaseFileReader {
 
+    /** @return array */ function getExpectedHeader()
+    {
+        return [
+            "Transaction Date",
+            "Posting Date",
+            "Billing Amount",
+            "Merchant",
+            "Merchant City ",
+            "Merchant State",
+            "Merchant Zip",
+            "Reference Number",
+            "Debit/Credit Flag",
+            "SICMCC Code",
+            ];
+    }
+    /** @return int */    function getExpectedFieldCount()    {        return 10;    }
+
     public function current()
     {
         $line = array_map("utf8_encode", $this->file->current());
@@ -21,5 +38,4 @@ class TescoCSVReader extends BaseFileReader {
         $transaction->setBankString(trim($line[3] . $line[4] . $line[5] . $line[6], '"'));
         return $transaction;
     }
-
 }

@@ -5,6 +5,17 @@ use Feenance\models\Transaction;
 use \Carbon\Carbon;
 
 class FirstDirectCSVReader extends BaseFileReader {
+    /** @return array */ function getExpectedHeader()
+    {
+        return [
+            "Date",
+            "Description",
+            "Amount",
+            "Balance",
+        ];
+    }
+
+    /** @return int */    function getExpectedFieldCount()    {        return 4;    }
 
     public function current()
     {

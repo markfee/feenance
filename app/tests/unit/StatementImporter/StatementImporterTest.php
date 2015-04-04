@@ -16,17 +16,6 @@ use Feenance\Services\StatementImporter;
 
 class StatementImporterTest extends TestCase {
 
-    public function test_exists() {
-    $file = new \SplFileObject(base_path() . "/app/tests/unit/StatementImporter/test_firstdirect.csv", "r");
-    $file = new \SplFileObject(base_path() . "/app/tests/unit/StatementImporter/test_tesco.csv", "r");
-  }
-
-//  public function test_will_import_a_file_to_an_account() {
-//    $file = new \SplFileObject(base_path() . "/app/tests/unit/StatementImporter/test_tesco.csv", "r");
-//    $statementImport = new StatementImporter(1, $file);
-//    $this->assertTrue($statementImport)
-//  }
-
     private function _test_I_can_create_an_importer_with_a_file_reader($reader)
     {
         $repository = new EloquentTransactionRepository(new TransactionTransformer, new EloquentBankStringRepository(new BankStringTransformer()));
@@ -37,7 +26,7 @@ class StatementImporterTest extends TestCase {
         $statementImport->importTransactionsToAccount(1, $reader);
 
         if ($statementImport->hasErrors()) {
-            dd($statementImport->getJsonErrors());
+            dd($statementImport->getErrors());
         }
 
         $this->assertFalse($statementImport->hasErrors());
@@ -47,8 +36,7 @@ class StatementImporterTest extends TestCase {
 
     public function testAllReaders()
     {
-        $this->_test_I_can_create_an_importer_with_a_file_reader((new FirstDirectFileReaderTest)->getReader());
-
+        $this->_test_I_can_create_an_importer_with_a_file_reader((new FirstDirectFileReaderTest())->getReader());
+        $this->_test_I_can_create_an_importer_with_a_file_reader((new TescoCSVFileReaderTest())->getReader());
     }
-
 };

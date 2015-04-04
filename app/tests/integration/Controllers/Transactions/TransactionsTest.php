@@ -21,7 +21,7 @@ class TransactionsTest extends TestCase {
             ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
     }
 
-    public function test_show_returns_a_records() {
+    public function test_show_returns_a_record() {
         $this->seed('AccountsTableSeeder');
         $this->seed('TransactionsTableSeeder');
         $response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json'));
@@ -37,6 +37,17 @@ class TransactionsTest extends TestCase {
         $this->assertValidJsonResponse($response,
             ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
     }
+
+    public function test_bankstrings_returns_some_records() {
+        $this->seed('AccountsTableSeeder');
+        $this->seed('TransactionsTableSeeder');
+        $API_PATH = "api/v1/bank_strings/1/transactions";
+        $response = $this->call('GET', $API_PATH, [], [], array('HTTP_ACCEPT' => 'application/json'));
+        $this->assertValidJsonResponse($response,
+            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+    }
+
+
 
     public function test_unreconciled_returns_some_records() {
         $this->seed('AccountsTableSeeder');

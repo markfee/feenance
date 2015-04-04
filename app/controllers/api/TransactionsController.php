@@ -84,7 +84,6 @@ class TransactionsController extends RestfulController {
     public function reconcileAll($account_id) {
         $this->repository->reconcileAll($account_id);
         return $this->respond();
-
     }
 
     /**
@@ -93,8 +92,11 @@ class TransactionsController extends RestfulController {
      * @return Response
      */
     public function bank_strings($bank_string_id) {
-        $records = Transaction::where("bank_string_id", $bank_string_id)->orderBy('date', "DESC")->orderBy('id', "DESC")->with(TransactionsController::$default_with)->paginate($this->paginateCount);
-        return Respond::Paginated($records, $this->transformCollection($records->all()));
+
+        $this->repository
+            ->filterBankString($bank_string_id)
+            ->paginate($this->paginateCount);
+        return $this->respond();
     }
 
     /**
@@ -120,22 +122,6 @@ class TransactionsController extends RestfulController {
 
         return $this->respond();
     }
-
-    /**
-     * Update the specified transaction in storage.
-     *
-     * @param  int $id
-     * @return Response
-    public function update($id) {
-        $transaction = Transaction::findOrFail($id);
-        $validator = Validator::make($data = $this->transformInput(Input::all()), Transaction::$rules);
-        if ($validator->fails()) {
-            return Respond::ValidationFailed();
-        }
-        $transaction->update($data);
-        return Respond::Raw($this->transform($transaction));
-    }
-    */
 
     /**
      * Upload a file to the server for import.
@@ -168,7 +154,6 @@ class TransactionsController extends RestfulController {
             $messageBag->add($ex->getCode(), $ex->getMessage());
 
             return Respond::WithErrors($messageBag);
-
         }
     }
 }

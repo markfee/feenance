@@ -17,6 +17,7 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
 
     private $accountId = null;
     private $reconciled = null;
+    private $bank_string_id = null;
     private $bankStringRepository = null;
 
     function __construct(TransactionTransformer $transformer, EloquentBankStringRepository $bankStringRepository)
@@ -36,6 +37,13 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         return $this;
     }
 
+    public function filterBankString($bank_string_id)
+    {
+        $this->bank_string_id = $bank_string_id;
+        return $this;
+    }
+
+
     public function filterReconciled($val)
     {
         $this->reconciled = $val;
@@ -53,6 +61,9 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         }
         if (!is_null($this->reconciled)) {
             $query = $query->where("reconciled", $this->reconciled);
+        }
+        if (!empty($this->bank_string_id)) {
+            $query = $query->where("bank_string_id", $this->bank_string_id);
         }
         return $query;
     }

@@ -32,6 +32,7 @@ class testTransactionsTableSeeder extends Seeder {
             "payee_id"          =>  null,
             "category_id"       =>  null,
             "notes"             =>  $faker->sentence(),
+            "bank_string_id"    =>  $index % 3,
         ]);
       if ($src->amount > 0 && $faker->boolean()) {
         $account = $accounts->random(1)->id;

@@ -10,7 +10,7 @@ class StatementImporter  {
     private $repository;
     private $batchId = null;
 
-    /** @return int */ public function getBatchId()    {        return $this->batchId;    }
+    /** @return int */ public function getBatchId()    {        return (int) $this->batchId;    }
 
     use ErrorBagTrait;
     /**

@@ -16,6 +16,12 @@ use Feenance\Services\StatementImporter;
 
 class StatementImporterTest extends TestCase {
 
+    public function testAllReaders()
+    {
+        $this->_test_I_can_create_an_importer_with_a_file_reader((new FirstDirectFileReaderTest())->getReader());
+        $this->_test_I_can_create_an_importer_with_a_file_reader((new TescoCSVFileReaderTest())->getReader());
+    }
+
     private function _test_I_can_create_an_importer_with_a_file_reader($reader)
     {
         $repository = new EloquentTransactionRepository(new TransactionTransformer, new EloquentBankStringRepository(new BankStringTransformer()));
@@ -31,14 +37,27 @@ class StatementImporterTest extends TestCase {
 
         $this->assertFalse($statementImport->hasErrors());
         $newCount = $repository->count()->getData();
-        $this->assertTrue($newCount > $count);
+        $this->assertTrue($newCount > $count, "Test New Count ($newCount) > Count ($count)");
 
-        $this->assertTrue(is_integer($statementImport->getBatchId()));
+        $this->assertTrue(is_integer($batchId = $statementImport->getBatchId()), "statementImport Should return an integer Batch Id ({$batchId})");
+
+        $expectedCount = $newCount - $count;
+        $this->_test_batch_result_matches_expected_count($repository, $batchId, $expectedCount);
     }
 
-    public function testAllReaders()
+    /**
+     * @param EloquentTransactionRepository $repository
+     * @param integer $batchId
+     * @param integer $expectedCount
+     */
+    private function _test_batch_result_matches_expected_count($repository, $batchId, $expectedCount)
     {
-        $this->_test_I_can_create_an_importer_with_a_file_reader((new FirstDirectFileReaderTest())->getReader());
-        $this->_test_I_can_create_an_importer_with_a_file_reader((new TescoCSVFileReaderTest())->getReader());
+        $count = $repository->filterBatch($batchId)->count()->getData();
+        $this->assertTrue(
+            $expectedCount ==   $count
+            , "Get batch result count ({$count}) does not match expected {$expectedCount} for batch {$batchId}"
+        );
     }
+
+
 };

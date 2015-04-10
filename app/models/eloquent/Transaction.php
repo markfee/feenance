@@ -4,7 +4,7 @@ use DB;
 use Eloquent;
 
 class Transaction extends Eloquent {
-  protected $fillable = ["date", "amount", "account_id", "reconciled", "payee_id", "category_id", "notes", "bank_string_id"];
+  protected $fillable = ["date", "amount", "account_id", "reconciled", "payee_id", "category_id", "notes", "bank_string_id", "batch_id"];
   protected $dates = ["date"];
   static public $rules = [
     "date" => "required|date"

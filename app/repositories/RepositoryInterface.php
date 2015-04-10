@@ -20,5 +20,7 @@ interface RepositoryInterface extends RepositoryResponseInterface {
 
     /** @return int */ public function startBatch();
     public function finishBatch();
+    /** @return int */ public function getBatchId();
+    /** @param $batchId int */ public function setBatchId($batchId);
 
 }

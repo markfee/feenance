@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-interface BankTransactionInterface {
+interface BankTransactionInterface extends BatchInterface {
     /**
      * @return string
      */

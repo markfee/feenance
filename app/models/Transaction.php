@@ -6,6 +6,7 @@ use \JsonSerializable;
 class Transaction implements JsonSerializable, BankTransactionInterface, CategorisableInterface {
     use BankStringTrait;
     use CategorisableTrait;
+    use BatchTrait;
 
     /*** @var Carbon    */  private $date           = null;
     /*** @var int       */  private $amount         = null;    // in pence
@@ -42,6 +43,8 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
             "payee_id" =>       $this->getPayeeId(),
 
             "bank_string" =>    $this->getBankString(),
+
+            "batch_id" =>       $this->getBatchId(),
         ];
     }
 
@@ -72,6 +75,8 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
         $this->setPayeeId($param["payee_id"]);
 
         $this->setBankString($param["bank_string"]);
+
+        $this->setBatchId($param["batch_id"]);
 
     }
 

@@ -15,9 +15,10 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
 
     protected static $default_with = ["balance", "source.sourceAccount", "destination.destinationAccount", "bankString", "payee", "category.parent", "status"];
 
-    private $accountId = null;
-    private $reconciled = null;
-    private $bank_string_id = null;
+    private $accountId_filter = null;
+    private $batchId_filter = null;
+    private $reconciled_filter = null;
+    private $bank_string_id_filter = null;
     private $bankStringRepository = null;
 
     function __construct(TransactionTransformer $transformer, EloquentBankStringRepository $bankStringRepository)
@@ -33,20 +34,27 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
 
     public function filterAccount($accountId)
     {
-        $this->accountId = $accountId;
+        $this->accountId_filter = $accountId;
         return $this;
     }
 
+    public function filterBatch($batchId)
+    {
+        $this->batchId_filter = $batchId;
+        return $this;
+    }
+
+
     public function filterBankString($bank_string_id)
     {
-        $this->bank_string_id = $bank_string_id;
+        $this->bank_string_id_filter = $bank_string_id;
         return $this;
     }
 
 
     public function filterReconciled($val)
     {
-        $this->reconciled = $val;
+        $this->reconciled_filter = $val;
         return $this;
     }
 
@@ -56,14 +64,17 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         orderBy('date', "DESC")
             ->orderBy('id', "DESC")
             ->with(static::$default_with);
-        if (!empty($this->accountId)) {
-            $query = $query->where("account_id", $this->accountId);
+        if (!empty($this->accountId_filter)) {
+            $query = $query->where("account_id", $this->accountId_filter);
         }
-        if (!is_null($this->reconciled)) {
-            $query = $query->where("reconciled", $this->reconciled);
+        if (!is_null($this->reconciled_filter)) {
+            $query = $query->where("reconciled", $this->reconciled_filter);
         }
-        if (!empty($this->bank_string_id)) {
-            $query = $query->where("bank_string_id", $this->bank_string_id);
+        if (!empty($this->bank_string_id_filter)) {
+            $query = $query->where("bank_string_id", $this->bank_string_id_filter);
+        }
+        if (!empty($this->batchId_filter)) {
+            $query = $query->where("batch_id", $this->batchId_filter);
         }
         return $query;
     }
@@ -98,6 +109,7 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         try {
             /*** @var Transaction $transaction **/
             $transaction = new Transaction($this->getData());
+            $transaction->setBatchId($this->getBatchId());
 
             if (! $transaction->isCategorised() ) {
                 // DONE infer payee_id and category_id if they are missing - mainly using the bank string
@@ -214,4 +226,20 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         return $this->Deleted();
     }
 
+    /** @return int */
+    public function startBatch()
+    {
+        DB::beginTransaction();
+        EloquentTransaction::startBulk();
+        $results = DB::select( DB::raw("SELECT COALESCE(MAX(batch_id),0)+1 batch_id FROM transactions") );
+        $this->setBatchId($results[0]->batch_id);
+        return $this->getBatchId();
+    }
+
+    public function finishBatch()
+    {
+        EloquentTransaction::finishBulk();
+        DB::commit();
+        parent::finishBatch();
+    }
 }

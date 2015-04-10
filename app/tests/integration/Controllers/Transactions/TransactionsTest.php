@@ -12,13 +12,13 @@ use Feenance\models\eloquent\Transaction;
 
 class TransactionsTest extends TestCase {
     private $API_ROOT = "api/v1/transactions";
-
+    private static $EXPECTED_FIELDS =
+        ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance', 'batch_id'];
     public function test_index_returns_some_records() {
         $this->seed('AccountsTableSeeder');
         $this->seed('TransactionsTableSeeder');
         $response = $this->call('GET', $this->API_ROOT, [], [], array('HTTP_ACCEPT' => 'application/json'));
-        $this->assertValidJsonResponse($response,
-            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+        $this->assertValidJsonResponse($response, static::$EXPECTED_FIELDS);
     }
 
     public function test_show_returns_a_record() {
@@ -26,16 +26,14 @@ class TransactionsTest extends TestCase {
         $this->seed('TransactionsTableSeeder');
         $response = $this->call('GET', $this->API_ROOT ."/1", [], [], array('HTTP_ACCEPT' => 'application/json'));
         $this->assertExpectedStatus(Response::HTTP_OK);
-        $this->assertValidSingleRecordJsonResponse($response,
-            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+        $this->assertValidSingleRecordJsonResponse($response, static::$EXPECTED_FIELDS);
     }
 
     public function test_reconciled_returns_some_records() {
         $this->seed('AccountsTableSeeder');
         $this->seed('TransactionsTableSeeder');
         $response = $this->call('GET', $this->API_ROOT ."/reconciled", [], [], array('HTTP_ACCEPT' => 'application/json'));
-        $this->assertValidJsonResponse($response,
-            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+        $this->assertValidJsonResponse($response, static::$EXPECTED_FIELDS);
     }
 
     public function test_bankstrings_returns_some_records() {
@@ -43,8 +41,7 @@ class TransactionsTest extends TestCase {
         $this->seed('TransactionsTableSeeder');
         $API_PATH = "api/v1/bank_strings/1/transactions";
         $response = $this->call('GET', $API_PATH, [], [], array('HTTP_ACCEPT' => 'application/json'));
-        $this->assertValidJsonResponse($response,
-            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+        $this->assertValidJsonResponse($response, static::$EXPECTED_FIELDS);
     }
 
 
@@ -53,8 +50,7 @@ class TransactionsTest extends TestCase {
         $this->seed('AccountsTableSeeder');
         $this->seed('TransactionsTableSeeder');
         $response = $this->call('GET', $this->API_ROOT ."/unreconciled", [], [], array('HTTP_ACCEPT' => 'application/json'));
-        $this->assertValidJsonResponse($response,
-            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+        $this->assertValidJsonResponse($response, static::$EXPECTED_FIELDS);
     }
 
     public function test_unreconciled_count_returns_a_count() {
@@ -266,8 +262,7 @@ class TransactionsTest extends TestCase {
         // call refreshApplication to allow a second http request.
         $this->refreshApplication();
         $post_response = $this->call('PUT', $this->API_ROOT ."/1", (Array) $get_response_data, [], array('HTTP_ACCEPT' => 'application/json') );
-        $post_response_data = $this->assertValidSingleRecordJsonResponse($post_response,
-            ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance']);
+        $post_response_data = $this->assertValidSingleRecordJsonResponse($post_response, static::$EXPECTED_FIELDS);
         $this->assertTrue($post_response_data->amount == $newAmount, "Name amount match old + 100");
     }
 

@@ -5,6 +5,7 @@ use Feenance\tests\TestCase;
 abstract class FileReaderTest extends TestCase {
 
     abstract public function getReader();
+    abstract public function getExpectedFields();
 
     public function test_I_can_create_an_instance()
     {

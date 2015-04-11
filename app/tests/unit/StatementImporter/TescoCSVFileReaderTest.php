@@ -12,4 +12,10 @@ class TescoCSVFileReaderTest extends FileReaderTest {
         $this->assertTrue(($reader instanceof TescoCSVReader), "Expects an instance of TescoCSVReader");
         return $reader;
     }
+
+    public function getExpectedFields()
+    {
+        return ["bank_string_id"];
+    }
+
 };

@@ -14,4 +14,9 @@ class FirstDirectFileReaderTest extends FileReaderTest {
         $this->assertTrue(($reader instanceof FirstDirectCSVReader), "Expects an instance of FirstDirectCSVReader");
         return $reader;
     }
+
+    public function getExpectedFields()
+    {
+        return ["bank_string_id", "bank_balance"];
+    }
 };

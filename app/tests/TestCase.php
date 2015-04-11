@@ -137,6 +137,15 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
         return $jsonResponse;
     }
 
+    protected function assertNonEmptyFields($record, $expectedFields) {
+        if (!empty($expectedFields)) {
+            foreach ($expectedFields as $field) {
+                $this->assertEquals(true, array_key_exists($field, $record), "Does the data have the field: '{$field}'?");
+                $this->assertFalse(empty($record[$field]), "Does the field have data: '{$field}'?");
+            }
+        }
+    }
+
     protected function assertExpectedFields($record, $expectedFields) {
         if (!empty($expectedFields)) {
             foreach ($expectedFields as $field) {

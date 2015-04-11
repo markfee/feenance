@@ -15,15 +15,17 @@ use Feenance\tests\TestCase;
 use Feenance\Services\StatementImporter;
 
 class StatementImporterTest extends TestCase {
-
+    private static $EXPECTED_FIELDS = [];
     public function testAllReaders()
     {
-        $this->_test_I_can_create_an_importer_with_a_file_reader((new FirstDirectFileReaderTest())->getReader());
-        $this->_test_I_can_create_an_importer_with_a_file_reader((new TescoCSVFileReaderTest())->getReader());
+        $this->_test_I_can_create_an_importer_with_a_file_reader((new FirstDirectFileReaderTest()));
+        $this->_test_I_can_create_an_importer_with_a_file_reader((new TescoCSVFileReaderTest()));
     }
 
-    private function _test_I_can_create_an_importer_with_a_file_reader($reader)
+    private function _test_I_can_create_an_importer_with_a_file_reader($readerTest)
     {
+        $reader = $readerTest->getReader();
+        static::$EXPECTED_FIELDS = $readerTest->getExpectedFields();
         $repository = new EloquentTransactionRepository(new TransactionTransformer, new EloquentBankStringRepository(new BankStringTransformer()));
 
         $count = $repository->count()->getData();
@@ -64,7 +66,7 @@ class StatementImporterTest extends TestCase {
     {
         $transactions = $repository->filterBatch($batchId)->paginate()->getData();
         foreach($transactions as $transaction) {
-            $this->assertFalse(empty($transaction["bank_string_id"]), "A bank string is expected");
+            $this->assertNonEmptyFields($transaction, static::$EXPECTED_FIELDS);
         }
     }
 

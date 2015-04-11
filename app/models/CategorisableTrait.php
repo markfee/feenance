@@ -6,6 +6,22 @@ trait CategorisableTrait {
     /*** @var integer    */  private $category_id = null;
     /*** @var integer    */  private $payee_id    = null;
 
+    /*** @return array*/
+    public function toCategorisableArray()
+    {
+        return [
+            "category_id" =>    $this->getCategoryId(),
+            "payee_id" =>       $this->getPayeeId(),
+        ];
+    }
+
+    /*** @param $param */
+    public function fromCategorisableArray($param)
+    {
+        $this->setCategoryId($param["category_id"]);
+        $this->setPayeeId($param["payee_id"]);
+    }
+
     /**
      * @return int
      */
@@ -41,7 +57,7 @@ trait CategorisableTrait {
     /*** @return bool*/
     public function isCategorised()
     {
-        return empty($this->category_id) && empty($this->payee_id);
+        return !(empty($this->category_id) && empty($this->payee_id));
     }
 
 }

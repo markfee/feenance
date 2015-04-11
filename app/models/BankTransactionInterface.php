@@ -1,8 +1,9 @@
 <?php namespace Feenance\models;
 
 use Carbon\Carbon;
+use Feenance\models\CategorisableInterface;
 
-interface BankTransactionInterface extends BatchInterface {
+interface BankTransactionInterface extends BatchInterface, CategorisableInterface {
     /**
      * @return string
      */

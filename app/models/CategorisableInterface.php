@@ -17,6 +17,9 @@ interface CategorisableInterface {
     /*** @return int*/                  public function getPayeeId();
     /*** @param int $payee_id*/         public function setPayeeId($payee_id);
 
-    /*** @return bool*/                  public function isCategorised();
+    /*** @return bool*/                 public function isCategorised();
+
+    /*** @return array*/                public function toCategorisableArray();
+    /*** @param $param*/                 public function fromCategorisableArray($param);
 
 }

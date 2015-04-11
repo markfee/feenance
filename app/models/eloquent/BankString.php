@@ -8,7 +8,7 @@ class BankString extends \Eloquent {
   ];
 
   // Don't forget to fill this array
-  protected $fillable = ["account_id", "name"];
+  protected $fillable = ["account_id", "name", "category_id", "payee_id"];
 
   public static function findOrCreate($account_id, $name) {
     $bank_string = BankString::where("name", "=", "{$name}")->where("account_id", "=", $account_id);

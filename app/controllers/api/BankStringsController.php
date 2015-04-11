@@ -118,26 +118,25 @@ class BankStringsController extends BaseController {
 		return Respond::Raw($this->transform($bankString));
 	}
 
-	/**
-	 * Update a specific bankstring.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		$bankString = BankString::findOrFail($id);
+    /**
+     * Update a specific bankstring.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function update($id)
+    {
+        $bankString = BankString::findOrFail($id);
 
-		$validator = Validator::make($data = Input::all(), BankString::$rules);
+        $validator = Validator::make($data = Input::all(), BankString::$rules);
 
-		if ($validator->fails())
-		{
-      return Respond::ValidationFailed();
-		}
+        if ($validator->fails()) {
+            return Respond::ValidationFailed();
+        }
 
-		$bankString->update($data);
-    return Respond::Raw($this->transform($bankString));
-	}
+        $bankString->update($data);
+        return Respond::Raw($this->transform($bankString));
+    }
 
 	/**
 	 * Remove the specified bankstring from storage.

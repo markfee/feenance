@@ -24,7 +24,23 @@ class EloquentBankStringRepository extends BaseRepository {
         } else {
             $results = EloquentBankString::findOrCreate($transaction->getAccountId(), $transaction->getBankString())->firstOrFail();
         }
-        return $this->toBankString($results);
+        $bankString = $this->toBankString($results);
+        if (!$bankString->isCategorised() && $transaction->isCategorised() ) {
+            $bankString->setCategoryId($transaction->getCategoryId());
+            $bankString->setPayeeId($transaction->getPayeeId());
+            try {
+                $this->updateWithIdAndInput(
+                    $bankString->getBankStringId(),
+                    array_merge(
+                        $bankString->toBankStringArray(),
+                        $bankString->toCategorisableArray()
+                    )
+                );
+            } catch(Exception $e) {
+                dd($e);
+            }
+        }
+        return $bankString;
     }
 
     private function toBankString(EloquentBankString $eloquentBankString) {
@@ -59,7 +75,16 @@ class EloquentBankStringRepository extends BaseRepository {
 
     public function updateWithIdAndInput($id, array $input)
     {
-        // TODO: Implement updateWithIdAndInput() method.
+        try {
+            $bankString = EloquentBankString::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->NotFound($e->getMessage());
+        }
+
+        if ($this->Validate($input, EloquentBankString::$rules) ) {
+            $bankString->update($this->getData());
+            return $this->Updated($bankString);
+        }
     }
 
     public function destroy($id)

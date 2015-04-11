@@ -3,7 +3,7 @@
 use \Carbon\Carbon;
 use \JsonSerializable;
 
-class Transaction implements JsonSerializable, BankTransactionInterface, CategorisableInterface {
+class Transaction implements JsonSerializable, BankTransactionInterface {
     use BankStringTrait;
     use CategorisableTrait;
     use BatchTrait;
@@ -41,11 +41,10 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
             "bank_string" =>    $this->getBankString(),
             "notes" =>          $this->getNotes(),
 
-            "category_id" =>    $this->getCategoryId(),
-            "payee_id" =>       $this->getPayeeId(),
-
             "batch_id" =>       $this->getBatchId(),
-        ], $this->toBankStringArray());
+        ],  $this->toBankStringArray(),
+            $this->toCategorisableArray()
+        );
     }
 
     public function toInternalArray()
@@ -74,12 +73,10 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
         $this->setReconciled($param["reconciled"]);
         $this->setNotes($param["notes"]);
 
-        $this->setCategoryId($param["category_id"]);
-        $this->setPayeeId($param["payee_id"]);
-
         $this->setBatchId($param["batch_id"]);
 
         $this->fromBankStringArray($param);
+        $this->fromCategorisableArray($param);
     }
 
     /**

@@ -1,10 +1,5 @@
 <?php namespace Feenance\tests\unit\StatementImporter;
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 22/10/14
- * Time: 07:03
- */
+
 
 use Feenance\Misc\Transformers\BankStringTransformer;
 use Feenance\Misc\Transformers\TransactionTransformer;

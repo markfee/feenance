@@ -186,8 +186,7 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
     public function updateWithIdAndInput($id, array $input)
     {
         try {
-            /** @var Transaction $t
-             * ransaction */
+            /** @var Transaction $transaction */
             $transaction = EloquentTransaction::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return $this->NotFound($e->getMessage());

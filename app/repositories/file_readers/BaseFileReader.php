@@ -54,7 +54,7 @@ class BaseFileReader implements FileReaderInterface {
         }
         $diff = array_udiff($this->getExpectedHeader(), $this->header, "self::strcmp_with_trim");
         if (empty($diff)) {
-            $this->next();
+            $this->advanceFromHeader();
             return $this;
         }
         return null;
@@ -67,6 +67,10 @@ class BaseFileReader implements FileReaderInterface {
 
     public function current() {
         return $this->file->current();
+    }
+
+    protected function advanceFromHeader() {
+        $this->next();
     }
 
     public function next() {

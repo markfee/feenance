@@ -4,6 +4,7 @@ use Markfee\Responder\RepositoryResponse;
 use Markfee\Responder\ErrorBagTrait;
 use Feenance\models\Transaction;
 use Feenance\repositories\RepositoryInterface;
+use Feenance\repositories\file_readers\FileReaderInterface;
 
 class StatementImporter  {
     /*** @var RepositoryInterface */
@@ -23,7 +24,7 @@ class StatementImporter  {
 
     /**
      * @param Integer $account_id
-     * @param Feenance\repositories\file_readers\FileReaderInterface $reader
+     * @param FileReaderInterface $reader
      */
     function importTransactionsToAccount($account_id, $reader)
     {

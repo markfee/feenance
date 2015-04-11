@@ -4,7 +4,7 @@
 use Feenance\models\Transaction;
 use \Carbon\Carbon;
 
-class FirstDirectCSVReader extends BaseFileReader {
+class FirstDirectCSVReader extends ReverseFileReader {
     /** @return array */ function getExpectedHeader()
     {
         return [

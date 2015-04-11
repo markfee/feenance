@@ -17,8 +17,6 @@ class BankString extends \Eloquent {
     }
 
     $newRecord = BankString::create(["account_id" => $account_id, "name" => $name]);
-    if ($newRecord->name != $name)
-      dd($newRecord);
     return BankString::where("id", "=", "{$newRecord->id}");
   }
 

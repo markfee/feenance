@@ -29,7 +29,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
 
     public function toArray()
     {
-        return  [
+        return  array_merge([
             "date" =>           $this->getDate(),
             "amount" =>         $this->getAmount(),
             "balance" =>        $this->getBalance(),
@@ -42,10 +42,8 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
             "category_id" =>    $this->getCategoryId(),
             "payee_id" =>       $this->getPayeeId(),
 
-            "bank_string" =>    $this->getBankString(),
-
             "batch_id" =>       $this->getBatchId(),
-        ];
+        ], $this->toBankStringArray());
     }
 
     public function toInternalArray()
@@ -54,7 +52,6 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
         $array["amount"] = $this->amount;
         return $array;
     }
-
 
     public function fromArray($setValues)
     {
@@ -74,9 +71,9 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
         $this->setCategoryId($param["category_id"]);
         $this->setPayeeId($param["payee_id"]);
 
-        $this->setBankString($param["bank_string"]);
-
         $this->setBatchId($param["batch_id"]);
+
+        $this->fromBankStringArray($param);
 
     }
 

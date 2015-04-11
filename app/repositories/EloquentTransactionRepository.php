@@ -111,11 +111,16 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
             $transaction = new Transaction($this->getData());
             $transaction->setBatchId($this->getBatchId());
 
-            if (! $transaction->isCategorised() ) {
-                // DONE infer payee_id and category_id if they are missing - mainly using the bank string
+            if ($transaction->hasBankString()) {
                 $bankString = $this->bankStringRepository->find_or_create($transaction);
-                $transaction->setCategoryId($bankString->getCategoryId());
-                $transaction->setPayeeId($bankString->getPayeeId());
+
+                $transaction->setBankStringId($bankString->getBankStringId());
+
+                if (!$transaction->isCategorised()) {
+                    // infer payee_id and category_id if they are missing - using the bank string
+                    $transaction->setCategoryId($bankString->getCategoryId());
+                    $transaction->setPayeeId($bankString->getPayeeId());
+                }
             }
 
             // TODO inform Standing Orders that a standing order may have been payed
@@ -124,7 +129,6 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
                 return $this->createTransfer($transaction);
             }
             // TODO try to infer a matched payment in another account and mark both as a transfer if found
-
             return $this->Created(EloquentTransaction::create($transaction->toArray()));
 
         } catch (\Exception $ex) {

@@ -43,6 +43,7 @@ class StatementImporterTest extends TestCase {
 
         $expectedCount = $newCount - $count;
         $this->_test_batch_result_matches_expected_count($repository, $batchId, $expectedCount);
+        $this->_test_results($repository, $batchId);
     }
 
     /**
@@ -59,5 +60,12 @@ class StatementImporterTest extends TestCase {
         );
     }
 
+    private function _test_results($repository, $batchId)
+    {
+        $transactions = $repository->filterBatch($batchId)->paginate()->getData();
+        foreach($transactions as $transaction) {
+            $this->assertFalse(empty($transaction["bank_string_id"]), "A bank string is expected");
+        }
+    }
 
 };

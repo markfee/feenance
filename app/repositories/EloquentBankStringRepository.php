@@ -19,14 +19,22 @@ class EloquentBankStringRepository extends BaseRepository {
      */
     public function find_or_create(BankTransactionInterface $transaction)
     {
-        return $this->toBankString(EloquentBankString::findOrCreate($transaction->getAccountId(), $transaction->getBankString()));
+        if ($transaction->hasBankStringId()) {
+            $results = EloquentBankString::findOrFail($transaction->getBankStringId())->firstOrFail();
+        } else {
+            $results = EloquentBankString::findOrCreate($transaction->getAccountId(), $transaction->getBankString())->firstOrFail();
+        }
+        return $this->toBankString($results);
     }
 
     private function toBankString(EloquentBankString $eloquentBankString) {
         $bankString = new BankString();
+        // TODO Move this to the BankString Object and implement a to and from array
+        $bankString->setBankStringId($eloquentBankString->id);
         $bankString->setBankString($eloquentBankString->name);
         $bankString->setCategoryId($eloquentBankString->category_id);
         $bankString->setPayeeId($eloquentBankString->payee_id);
+        return $bankString;
     }
 
     public function all($columns = array('*'))

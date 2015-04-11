@@ -125,7 +125,8 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
      */
     private function to_pence($amount, $transformed = false)
     {
-        return is_null($amount) ? $amount : (int) ($amount * ($transformed ? 1 : 100));
+        return ($transformed || is_null($amount)) ? $amount
+            : (int) round($amount * 100, 0);
     }
 
     /**

@@ -15,7 +15,7 @@ class TescoCSVFileReaderTest extends FileReaderTest {
 
     public function getExpectedFields()
     {
-        return ["bank_string_id"];
+        return array_merge([], parent::getExpectedFields());
     }
 
 };

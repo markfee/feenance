@@ -17,6 +17,6 @@ class FirstDirectFileReaderTest extends FileReaderTest {
 
     public function getExpectedFields()
     {
-        return ["bank_string_id", "bank_balance"];
+        return array_merge(["bank_balance"], parent::getExpectedFields());
     }
 };

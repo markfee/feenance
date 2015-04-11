@@ -5,7 +5,10 @@ use Feenance\tests\TestCase;
 abstract class FileReaderTest extends TestCase {
 
     abstract public function getReader();
-    abstract public function getExpectedFields();
+    public function getExpectedFields()
+    {
+        return ["bank_string_id", "amount"];
+    }
 
     public function test_I_can_create_an_instance()
     {

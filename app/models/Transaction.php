@@ -135,7 +135,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
      */
     private function to_pounds($amount, $transformed = false)
     {
-        return is_null($amount) ? $amount : (int) ($amount * ($transformed ? 1.0 : 0.01));
+        return is_null($amount) ? $amount : (float) ($amount * ($transformed ? 1.0 : 0.01));
     }
 
 

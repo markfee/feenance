@@ -241,7 +241,7 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
 
     public function finishBatch()
     {
-        EloquentTransaction::finishBulk();
+        EloquentTransaction::finishBulk(true);
         DB::commit();
         parent::finishBatch();
     }

@@ -8,15 +8,9 @@
 return array(
   'connections' => array(
     'mysql' => array(
-      'driver'    => 'mysql',
       'host'      => 'localhost',
       'engine'    => 'MEMORY',
       'database'  => 'feenance_testing',
-      'username'  => 'feenance_s',
-      'password'  => 'titduWigsojnefateej',
-      'charset'   => 'utf8',
-      'collation' => 'utf8_unicode_ci',
-      'prefix'    => '',
     ),
   )
 );

@@ -49,10 +49,16 @@ class TransactionTransformer extends Transformer implements TransformerInterface
 
     public static function transformInput($record)
     {
-//    dd($record["amount"]);
+        $record["transformed"] = true; // Stop transforming input twice;
         if (isset($record["amount"])) $record["amount"] *= 100;
         if (isset($record["date"])) {
             $record["date"] = substr($record["date"], 0, 10);
+        }
+        if ( isset($record["balance"]) && is_numeric($record["balance"]) ) {
+            $record["bank_balance"] = $record["balance"];
+        }
+        if ( isset($record["bank_balance"]) && is_numeric($record["bank_balance"]) ) {
+            $record["bank_balance"] *= 100;
         }
         return $record;
     }

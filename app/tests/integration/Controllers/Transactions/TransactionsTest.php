@@ -13,7 +13,7 @@ use Feenance\models\eloquent\Transaction;
 class TransactionsTest extends TestCase {
     private $API_ROOT = "api/v1/transactions";
     private static $EXPECTED_FIELDS =
-        ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance', 'batch_id'];
+        ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance', 'bank_balance', 'batch_id'];
     public function test_index_returns_some_records() {
         $this->seed('AccountsTableSeeder');
         $this->seed('TransactionsTableSeeder');
@@ -70,13 +70,14 @@ class TransactionsTest extends TestCase {
             "reconciled" => true,
             "payee_id" => null,
             "category_id" => null,
-            "notes" => "this is a test"
+            "notes" => "this is a test",
+            "bank_balance" => 100.23
         ];
 
         $response = $this->call('POST', $this->API_ROOT, $newTransaction, [], array('HTTP_ACCEPT' => 'application/json'));
         $this->assertNoErrors($response->getData());
         $this->assertExpectedStatus(Response::HTTP_CREATED);
-        $this->assertValidSingleRecordJsonResponse($response
+        $jsonResponse = $this->assertValidSingleRecordJsonResponse($response
             , [
                 "id",
                 "date",
@@ -88,9 +89,14 @@ class TransactionsTest extends TestCase {
                 "category_id",
                 "notes",
                 "source",
-                "destination"
+                "destination",
+                "bank_balance"
             ]
         );
+        if ($jsonResponse->bank_balance != 100.23)
+            dd($jsonResponse->bank_balance);
+        $this->assertTrue($jsonResponse->bank_balance == 100.23, "expecting a balance of 100.23");
+
     }
 
     public function test_adding_a_new_transaction_with_a_transfer_id_should_create_a_transfer() {

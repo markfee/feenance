@@ -10,7 +10,8 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
 
     /*** @var Carbon    */  private $date           = null;
     /*** @var int       */  private $amount         = null;    // in pence
-    /*** @var int       */  private $balance        = null;    // Bank Balance at the time of the transaction
+    /*** @var int       */  private $balance        = null;    // Calculated balance at the time of the transaction
+    /*** @var int       */  private $bank_balance   = null;    // Bank Balance at the time of the transaction
     /*** @var int       */  private $account_id     = null;
     /*** @var int       */  private $transfer_id    = null;
 
@@ -33,6 +34,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
             "date" =>           $this->getDate(),
             "amount" =>         $this->getAmount(),
             "balance" =>        $this->getBalance(),
+            "bank_balance" =>   $this->getBankBalance(),
             "account_id" =>     $this->getAccountId(),
             "transfer_id" =>    $this->getTransferId(),
             "reconciled" =>     $this->isReconciled(),
@@ -55,14 +57,16 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
 
     public function fromArray($setValues)
     {
+        $transformed = !empty($setValues["transformed"]);
         // First make sure we have all of the required elements in our array
         // by creating a valid empty structure
         $param = array_merge($this->toArray(), $setValues);
 
         // Then call the setters.
         $this->setDate($param["date"]);
-        $this->setAmount($param["amount"]);
-        $this->setBalance($param["balance"]);
+        $this->setAmount($param["amount"], $transformed);
+        $this->setBalance($param["balance"], $transformed);
+        $this->setBankBalance($param["bank_balance"], $transformed);
         $this->setAccountId($param["account_id"]);
         $this->setTransferId($param["transfer_id"]);
         $this->setReconciled($param["reconciled"]);
@@ -74,7 +78,6 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
         $this->setBatchId($param["batch_id"]);
 
         $this->fromBankStringArray($param);
-
     }
 
     /**
@@ -118,10 +121,21 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
 
     /**
      * @param float $amount
+     * @param bool $transformed
+     * @return int
      */
-    public function setAmount($amount)
+    private function to_pence($amount, $transformed = false)
     {
-        $this->amount = (int) ($amount * 100);
+        return is_null($amount) ? $amount : (int) ($amount * ($transformed ? 1 : 100));
+    }
+
+    /**
+     * @param float $amount
+     * @param bool $transformed
+     */
+    public function setAmount($amount, $transformed = false)
+    {
+        $this->amount = $this->to_pence($amount, $transformed);
     }
 
     /**
@@ -182,11 +196,30 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
 
     /**
      * @param int $balance
+     * @param bool $transformed
      */
-    public function setBalance($balance)
+    public function setBalance($balance, $transformed = false)
     {
-        $this->balance = $balance;
+        $this->balance = $this->to_pence($balance, $transformed);
     }
+
+    /**
+     * @return int
+     */
+    public function getBankBalance()
+    {
+        return $this->bank_balance;
+    }
+
+    /**
+     * @param int $bank_balance
+     * @param bool $transformed
+     */
+    public function setBankBalance($bank_balance, $transformed = false)
+    {
+        $this->bank_balance = $this->to_pence($bank_balance, $transformed);
+    }
+
 
     public function negateAmount()
     {

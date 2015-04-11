@@ -31,8 +31,9 @@ interface BankTransactionInterface extends BatchInterface {
 
     /**
      * @param int $amount
+     * @param bool $transformed
      */
-    public function setAmount($amount);
+    public function setAmount($amount, $transformed = false);
 
     /**
      * @return int
@@ -61,8 +62,21 @@ interface BankTransactionInterface extends BatchInterface {
 
     /**
      * @param int $balance
+     * @param bool $transformed
      */
-    public function setBalance($balance);
+    public function setBalance($balance, $transformed = false);
+
+    /**
+     * @return int
+     */
+    public function getBankBalance();
+
+    /**
+     * @param int $balance
+     * @param bool $transformed
+     */
+    public function setBankBalance($balance, $transformed = false);
+
 
     // Transferable
     /*** @return bool*/                     public function isTransfer();

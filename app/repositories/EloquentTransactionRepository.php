@@ -102,7 +102,7 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
 
     public function create(array $input)
     {
-/*      $transfer_id = (empty($input["transfer_id"]) ? null : $input["transfer_id"]); */
+        /*      $transfer_id = (empty($input["transfer_id"]) ? null : $input["transfer_id"]); */
         if (!$this->Validate($input, EloquentTransaction::$rules)->isValid()) {
             return $this;
         }

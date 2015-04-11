@@ -34,7 +34,7 @@ class CreateTransfersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('transfers');
+		Schema::dropIfExists('transfers');
 	}
 
 }

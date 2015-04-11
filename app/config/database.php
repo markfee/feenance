@@ -14,7 +14,7 @@ return array(
 
         'mysql' => array(
             'driver'    => 'mysql',
-            'host'      => 'mysqltest',
+            'host'      => 'localhost',
             'database'  => 'feenance',
             'username'  => 'feenance_s',
             'password'  => 'titduWigsojnefateej',
@@ -24,7 +24,7 @@ return array(
         ),
         'mysql_testing' => array(
             'driver'    => 'mysql',
-            'host'      => 'mysqltest',
+            'host'      => 'localhost',
             'engine'    => 'MEMORY',
             'database'  => 'feenance_testing',
             'username'  => 'feenance_s',

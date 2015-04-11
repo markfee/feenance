@@ -22,7 +22,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
     {
        if ( is_a($param, "\Carbon\Carbon") ) {
            $this->setDate($param);
-           $this->amount   = $amount;
+           $this->setAmount($amount);
         } elseif ( is_array($param) ) {
            $this->fromArray($param);
         }
@@ -52,6 +52,8 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
     {
         $array = $this->toArray();
         $array["amount"] = $this->amount;
+        $array["bank_balance"] = $this->bank_balance;
+        $array["balance"] = $this->balance;
         return $array;
     }
 
@@ -116,7 +118,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
      */
     public function getAmount()
     {
-        return 0.01 * $this->amount;
+        return $this->to_pounds($this->amount);
     }
 
     /**
@@ -128,6 +130,17 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
     {
         return is_null($amount) ? $amount : (int) ($amount * ($transformed ? 1 : 100));
     }
+
+    /**
+     * @param int $amount
+     * @param bool $transformed
+     * @return float
+     */
+    private function to_pounds($amount, $transformed = false)
+    {
+        return is_null($amount) ? $amount : (int) ($amount * ($transformed ? 1.0 : 0.01));
+    }
+
 
     /**
      * @param float $amount
@@ -191,7 +204,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
      */
     public function getBalance()
     {
-        return $this->balance;
+        return $this->to_pounds($this->balance);
     }
 
     /**
@@ -208,7 +221,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Categor
      */
     public function getBankBalance()
     {
-        return $this->bank_balance;
+        return $this->to_pounds($this->bank_balance);
     }
 
     /**

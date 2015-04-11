@@ -129,7 +129,7 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
                 return $this->createTransfer($transaction);
             }
             // TODO try to infer a matched payment in another account and mark both as a transfer if found
-            return $this->Created(EloquentTransaction::create($transaction->toArray()));
+            return $this->Created(EloquentTransaction::create($transaction->toInternalArray()));
 
         } catch (\Exception $ex) {
             return $this->InternalError($ex->getMessage());
@@ -155,8 +155,8 @@ class EloquentTransactionRepository extends BaseRepository implements Repository
         try {
             DB::beginTransaction();
             {
-                $source         = EloquentTransaction::create($transaction->toArray());
-                $destination    = EloquentTransaction::create($transaction->getTransfer()->toArray());
+                $source         = EloquentTransaction::create($transaction->toInternalArray());
+                $destination    = EloquentTransaction::create($transaction->getTransfer()->toInternalArray());
                 $transfer = new Transfer();
                 $transfer->source = $source->id;
                 $transfer->destination = $destination->id;

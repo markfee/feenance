@@ -26,7 +26,7 @@ class FirstDirectCSVReader extends BaseFileReader {
             $line[2]
         );
         $transaction->setBankString(trim($line[1], '"'));
-        $transaction->setBalance(trim($line[3], '"'));
+        $transaction->setBankBalance(trim($line[3], '"'));
         return $transaction;
     }
 

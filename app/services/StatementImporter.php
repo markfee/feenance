@@ -35,7 +35,7 @@ class StatementImporter  {
             $transaction->setAccountId($account_id);
 
             /*** @var ErrorBagTrait $response **/
-            $response = $this->repository->create($transaction->toInternalArray());
+            $response = $this->repository->create($transaction->toArray());
 
             if ($response->hasErrors()) {
                 $this->addErrors($response->getErrors());

@@ -14,7 +14,10 @@ class TransactionsTest extends TestCase {
     private $API_ROOT = "api/v1/transactions";
     private static $EXPECTED_FIELDS =
         ['date', 'amount', 'account_id', 'reconciled', 'payee_id', 'category_id', 'notes', 'balance', 'bank_balance', 'batch_id'];
+
     public function test_index_returns_some_records() {
+//        $this->test_add_new_transaction();
+//        dd("ABORT");
         $this->seed('AccountsTableSeeder');
         $this->seed('TransactionsTableSeeder');
         $response = $this->call('GET', $this->API_ROOT, [], [], array('HTTP_ACCEPT' => 'application/json'));
@@ -93,9 +96,8 @@ class TransactionsTest extends TestCase {
                 "bank_balance"
             ]
         );
-        if ($jsonResponse->bank_balance != 100.23)
-            dd($jsonResponse->bank_balance);
-        $this->assertTrue($jsonResponse->bank_balance == 100.23, "expecting a balance of 100.23");
+        $this->assertTrue($jsonResponse->amount == 10.25, "expecting an amount of 10.25 got {$jsonResponse->amount}");
+        $this->assertTrue($jsonResponse->bank_balance == 100.23, "expecting a balance of 100.23 got {$jsonResponse->bank_balance}");
 
     }
 

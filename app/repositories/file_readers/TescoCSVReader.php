@@ -26,9 +26,11 @@ class TescoCSVReader extends BaseFileReader {
     public function current()
     {
         $line = array_map("utf8_encode", $this->file->current());
-        sscanf($line[2], "£%f", $amount);
         if ($line[8] == "D") {
+            sscanf($line[2], "£%f", $amount);
             $amount *= -1;
+        } else {
+            sscanf($line[2], "-£%f", $amount);
         }
 
         $transaction = new Transaction(

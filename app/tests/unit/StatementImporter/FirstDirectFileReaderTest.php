@@ -2,8 +2,6 @@
 
 use Feenance\repositories\file_readers\BaseFileReader;
 use Feenance\repositories\file_readers\FirstDirectCSVReader;
-use Feenance\tests\unit\StatementImporter\FileReaderTest;
-use Feenance\tests\TestCase;
 
 class FirstDirectFileReaderTest extends FileReaderTest {
 
@@ -19,4 +17,15 @@ class FirstDirectFileReaderTest extends FileReaderTest {
     {
         return array_merge(["bank_balance"], parent::getExpectedFields());
     }
+
+    public function testFirstDirectCSVFileReader()
+    {
+        $this->_test_I_can_create_an_importer_with_a_file_reader($this);
+    }
+
+    public function getExpectedRowCount()
+    {
+        return 25;
+    }
+
 };

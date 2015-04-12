@@ -18,4 +18,13 @@ class TescoCSVFileReaderTest extends FileReaderTest {
         return array_merge([], parent::getExpectedFields());
     }
 
+    public function testTescoCSVFileReader()
+    {
+        $this->_test_I_can_create_an_importer_with_a_file_reader($this);
+    }
+
+    public function getExpectedRowCount()
+    {
+        return 13;
+    }
 };

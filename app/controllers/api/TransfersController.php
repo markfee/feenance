@@ -20,7 +20,7 @@ use \DB;
 class TransfersController extends BaseController {
 
   /* @return Transformer */
-  protected function getTransformer() {    return $this->transformer ?: new TransferTransformer;    }
+  public function getTransformer() {    return $this->transformer ?: new TransferTransformer;    }
 
   /**
    * Display a listing of transfers

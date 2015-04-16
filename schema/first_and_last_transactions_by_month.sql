@@ -2,7 +2,7 @@ use feenance;
 
 DROP VIEW IF EXISTS v_minmax_transaction_date_by_month;
 CREATE VIEW v_minmax_transaction_date_by_month AS 
-SELECT account_id, 
+SELECT DISTINCT account_id,
 	YEAR(date) year, 
 	MONTH(date) month, 
 	MIN(DATE(date)) first_date, 
@@ -13,18 +13,18 @@ GROUP BY account_id, year, month
 
 DROP VIEW IF EXISTS v_minmax_transaction_by_day;
 CREATE VIEW v_minmax_transaction_by_day AS 
-	SELECT 
+	SELECT DISTINCT
 	  MAX(id) last_transaction_id
 	, MIN(id) first_transaction_id
 	, account_id
-	, DATE(date) date 
+	, DATE(date) date
 FROM transactions
-GROUP BY account_id, date;
+GROUP BY account_id, DATE(date);
 
 DROP VIEW IF EXISTS v_minmax_transaction_by_month;
 CREATE VIEW v_minmax_transaction_by_month AS 
 
-SELECT 
+SELECT DISTINCT
 	v_minmax_transaction_date_by_month.account_id,
 	v_minmax_transaction_date_by_month.year,
 	v_minmax_transaction_date_by_month.month,

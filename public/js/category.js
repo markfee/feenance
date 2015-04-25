@@ -148,7 +148,6 @@ feenance.directive('categoryIdSelector', function() {
 
     scope: {
       category_id: "=ngModel"
-
     }
     , templateUrl: '/view/category_selector.html'
     , link: function (scope, element, attr) {

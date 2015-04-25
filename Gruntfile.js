@@ -30,12 +30,16 @@ module.exports = function(grunt) {
         //...
       },
       watch: {
-        //...
+          src: {
+              files: ["./app/assets/stylesheets/*.less"],
+              tasks: ["less"]
+          }
       }
     });
 
   // Plugin loading
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
 
   // Task definition

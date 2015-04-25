@@ -76,7 +76,7 @@ feenance.directive('accountName', function() {
       ngModel: "="
     },
     template: '{{selected.name}}',
-    link: function (scope, element, attr)
+      link: function (scope, element, attr)
     {
       scope.directive = "accountName_"  + global_count++;
       if (scope.ngModel) {
@@ -86,3 +86,27 @@ feenance.directive('accountName', function() {
     controller: "AccountController"
   };
 });
+
+
+feenance.directive('textInput', function() {
+    return {
+        restrict: 'AE',
+        scope: {
+            ngModel: "=",
+            label: "@"
+        },
+        template: '<div class="form-group"> <label>{{label}}</label>  <div class="input"> <input type="text" ng-model="ngModel"/> </div>   </div>'
+    }
+});
+
+feenance.directive('checkboxInput', function() {
+    return {
+        restrict: 'AE',
+        scope: {
+            ngModel: "=",
+            label: "@"
+        },
+        template: '<div class="checkbox"> <label><input type="checkbox" ng-model="ngModel"/>{{label}}</label>      </div>'
+    }
+});
+

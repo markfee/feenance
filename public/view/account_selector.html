@@ -1,35 +1,45 @@
-<div>
-  <div class="row">
-    <div class="col-sm-3" >
-      <label >{{title}}:</label>
-      <input name="{{name}}" type="number" ng-model="selected.id" ng-show="false">
+<div class="account_selector">
+    <form class="form-horizontal" role="form">
+        <input name="{{name}}" type="number" ng-model="selected.id" ng-show="false">
 
-    </div>
-    <div class="col-sm-9" >
 
-      <select
-        class="account"
-        ng-model="selected"
-        ng-options="item.name for item in boundCollection|orderBy:predicate:reverse"
-        options-class="{ 'open': open }"
-        ng-show="!editing">
-      </select>
+        <div class="form-group">
+            <label>{{title}}:</label>
 
-      <div ng-show="editing">
-        <br/>Name             <input type="text"      ng-model="selected.name" >
-        <br/>Opening Balance  <input type="text"      ng-model="selected.opening_balance" >
-        <br/>Sort Code        <input type="text"      ng-model="selected.sort_code" >
-        <br/>Account Number   <input type="text"      ng-model="selected.acc_number" >
-        <br/>Notes            <input type="text"      ng-model="selected.notes" >
-        <br/>Open             <input type="checkbox"  ng-model="selected.open" >
-      </div>
+            <div class="input">
+                <select
+                        class="account"
+                        ng-model="selected"
+                        ng-options="item.name for item in boundCollection|orderBy:predicate:reverse"
+                        options-class="{ 'open': open }"
+                        ng-show="!editing">
+                </select>
+            </div>
 
-      <button class="btn btn-default btn-sm" ng-click="edit()"    ng-show="!editing && selected.id">   <i class="fa fa-edit fa-lg">        </i>  </button>
-      <button class="btn btn-default btn-sm" ng-click="newItem()" ng-show="!editing">                  <i class="fa fa-plus-circle fa-lg"> </i>  </button>
-      <button class="btn btn-default btn-sm" ng-click="save()"    ng-show="editing" >                  <i class="fa fa-save fa-lg">        </i>  </button>
-      <button class="btn btn-default btn-sm" ng-click="cancel()"  ng-show="editing" >                  <i class="fa fa-undo fa-lg">        </i>  </button>
+            <div class="buttons">
 
-    </div>
-  </div>
-  <json-view ng-model="selected" title="account"></json-view>
+                <button class="btn btn-default btn-sm" ng-click="edit()" ng-show="!editing && selected.id"><i
+                        class="fa fa-edit fa-lg"> </i></button>
+                <button class="btn btn-default btn-sm" ng-click="newItem()" ng-show="!editing"><i
+                        class="fa fa-plus-circle fa-lg"> </i></button>
+                <button class="btn btn-default btn-sm" ng-click="save()" ng-show="editing"><i class="fa fa-save fa-lg"> </i>
+                </button>
+                <button class="btn btn-default btn-sm" ng-click="cancel()" ng-show="editing"><i
+                        class="fa fa-undo fa-lg"> </i></button>
+
+            </div>
+        </div>
+
+        <div class="account_editor" ng-show="editing">
+            <text-input ng-model="selected.name"            label="Account Name" ></text-input>
+            <text-input ng-model="selected.opening_balance" label="Opening Balance" ></text-input>
+            <text-input ng-model="selected.sort_code"       label="Sort Code" ></text-input>
+            <text-input ng-model="selected.acc_number"      label="Account Number"></text-input>
+            <text-input ng-model="selected.notes"           label="Notes"></text-input>
+            <checkbox-input ng-model="selected.open"        label="Open"></checkbox-input>
+            <category-id-selector ng-model="selected.category_id" >CATEGORY SELECTOR HERE  </category-id-selector>
+        </div>
+
+        <json-view ng-model="selected" title="account"></json-view>
+    </form>
 </div>

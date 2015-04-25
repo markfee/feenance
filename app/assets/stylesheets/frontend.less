@@ -1,3 +1,41 @@
 @import 'base.less';
+
 //styles specific for the frontend
-// ...
+
+.account_selector {
+  form {
+    .form-horizontal;
+  }
+  .form-group {
+    input, select {
+      .form-control;
+    }
+  }
+  .checkbox {
+    background-color: pink;
+    label {
+      .make-lg-column(4, 4);
+    }
+  }
+
+  label {
+    .make-lg-column(2);
+  }
+  div.input {
+    .make-lg-column(7);
+  }
+  div.buttons {
+    .make-lg-column(3);
+  }
+  .account_editor {
+      div.input {
+        .make-lg-column(10);
+      }
+  }
+}
+  transactions-table .account_selector {
+    .make-sm-column(12);
+    .make-md-column(6);
+    .make-lg-column(4);
+    /*  background-color: #3388ff;*/
+  }

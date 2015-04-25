@@ -23,6 +23,7 @@ class AccountsTransformer extends Transformer implements TransformerInterface {
             "open" => (boolean)$record->open,
             "opening_balance" => 0.01 * $record->opening_balance,
             "notes" => $record->notes ?: null,
+            "category_id" => $record->category_id,
         ] : null;
     }
 

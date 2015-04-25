@@ -29,10 +29,10 @@ class TransactionReportsController extends BaseController {
   }
 
   static function TRANSACTION_COUNT()   { return DB::raw('count(*) transaction_count'); }
-  static function RECONCILED_COUNT()    { return DB::raw('sum(reconciled) reconciled_count'); }
-  static function TOTAL_CREDIT()  { return DB::raw('SUM(IF(amount <= 0, null,  0.01 * 	amount)) credit_total'); }
-  static function TOTAL_DEBIT()   { return DB::raw('SUM(IF(amount >= 0, null, -0.01 * 	amount)) debit_total'); }
-  static function TOTAL_NET()     { return DB::raw('0.01 * SUM(amount) net_total'); }
+//  static function RECONCILED_COUNT()    { return DB::raw('sum(reconciled) reconciled_count'); }
+  static function TOTAL_CREDIT()  { return DB::raw('SUM(credit) credit_total'); }
+  static function TOTAL_DEBIT()   { return DB::raw('SUM(debit) debit_total'); }
+  static function TOTAL_NET()     { return DB::raw('SUM(movement) net_total'); }
   static function YEAR()          { return DB::raw('YEAR(date) year'); }
   static function MONTH()         { return DB::raw('DATE_FORMAT(date,"%Y-%m") month'); }
   static function CATEGORY_ID()   { return DB::raw("IFNULL(category_id, 'UNKNOWN') category_id"); }
@@ -40,10 +40,10 @@ class TransactionReportsController extends BaseController {
   private $query;
 
   private function resetQuery() {
-    $this->query = DB::table("transactions");
+    $this->query = DB::table("v_non_transfers");
     $this->get   = [
       TransactionReportsController::TRANSACTION_COUNT(),
-      TransactionReportsController::RECONCILED_COUNT(),
+//      TransactionReportsController::RECONCILED_COUNT(),
       TransactionReportsController::TOTAL_CREDIT(),
       TransactionReportsController::TOTAL_DEBIT(),
       TransactionReportsController::TOTAL_NET(),

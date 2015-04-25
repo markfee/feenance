@@ -3,7 +3,7 @@
 <!-- load bootstrap and jquery from a cdn -->
 {{--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">--}}
 
-<link rel="stylesheet" href="assets/stylesheets/frontend.css">
+<link rel="stylesheet" href="/assets/stylesheets/frontend.css">
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

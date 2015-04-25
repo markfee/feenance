@@ -1,20 +1,9 @@
-<?php
+use feenance;
 
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+DROP VIEW IF EXISTS v_potential_transfers;
 
-class CreatePotentialTransfersView extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-    DB::statement("
-      CREATE VIEW v_potential_transfers AS
-        SELECT
+CREATE VIEW v_potential_transfers AS
+  SELECT
           source.date,
           source.id               source_id,
           destination.id          destination_id,
@@ -31,20 +20,4 @@ class CreatePotentialTransfersView extends Migration {
             ON transfers.source = source.id
             OR transfers.source = destination.id
         WHERE
-            source.amount < 0
-        AND transfers.source IS NULL
-      "
-    );
-	}
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-    DB::statement("DROP VIEW IF EXISTS v_potential_transfers");
-	}
-
-}
+            source.amount < 0;

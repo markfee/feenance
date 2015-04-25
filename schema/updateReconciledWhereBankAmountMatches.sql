@@ -11,7 +11,9 @@ transactions.payee_id,
 transactions.category_id, 
 balances.* 
 FROM transactions, balances 
-WHERE balances.transaction_id = transactions.id AND reconciled = 0 AND transactions.bank_balance = balances.balance;
+WHERE balances.transaction_id = transactions.id
+      AND reconciled = 0
+      AND transactions.bank_balance = balances.balance;
 
 
 

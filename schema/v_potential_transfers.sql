@@ -13,11 +13,12 @@ CREATE VIEW v_potential_transfers AS
           destination.amount		  destination_amount
         FROM transactions source
           JOIN transactions destination
-            ON	DATEDIFF(source.date, destination.date) = 0
+            ON	ABS(DATEDIFF(source.date, destination.date)) <= 2
             AND source.amount + destination.amount = 0
             AND source.account_id <> destination.account_id
           LEFT JOIN transfers
             ON transfers.source = source.id
             OR transfers.source = destination.id
         WHERE
-            source.amount < 0;
+            source.amount < 0
+        AND transfers.id IS NULL;

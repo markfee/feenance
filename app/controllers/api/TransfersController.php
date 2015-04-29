@@ -106,8 +106,8 @@ class TransfersController extends BaseController {
       /** @var Carbon $destinationDate */
       $destinationDate = $destinationTransaction->date;
 
-      if (0 !== $srcDate->diffInDays($destinationDate)) {
-        return Respond::ValidationFailed("Source and destination transactions must be made on the same day");
+      if ($srcDate->diffInDays($destinationDate) > 2) {
+        return Respond::ValidationFailed("Source and destination transactions must be made within 2 days");
       }
 
 

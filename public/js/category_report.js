@@ -65,6 +65,11 @@ feenance.controller('CategoryReportController', function ($scope, CategoryReport
 
     }
 
+    $scope.fullName = function(item) {
+        var category = Categories.getCategory(item.category_id);
+        return category.fullName;
+    }
+
     Categories.onChange(function () {
         setCategoryDetails();
     });

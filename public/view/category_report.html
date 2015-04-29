@@ -1,71 +1,74 @@
 <table class="table table-striped finance">
-  <thead>
+    <thead>
     <tr>
-      <th class="left">   Category   </th>
-      <th>                Totals    </th>
-      <th ng-repeat="month in data.months">
-        {{month.month}}
-      </th>
+        <th class="left"> Category</th>
+        <th> Totals</th>
+        <th ng-repeat="month in data.months">
+            {{month.month}}
+        </th>
 
     </tr>
-  </thead>
+    </thead>
 
-  <tbody>
-    <tr ng-repeat="category in categories | filter: creditFilter | orderBy:predicate:reverse">
+    <tbody>
+        <tr ng-repeat="category in categories | filter: creditFilter | orderBy:fullName">
 
-      <th class="left">        <category ngModel="category.fullName" category_id="category.category_id" ></category>      </th>
+            <th class="left">
+                <category ngModel="category.fullName" category_id="category.category_id"></category>
+            </th>
 
-      <td>
-        <category-report-cell val="credit" category_id="category.category_id" > </category-report-cell>
-      </td>
+            <td>
+                <category-report-cell val="credit" category_id="category.category_id"></category-report-cell>
+            </td>
 
-      <td ng-repeat="month in data.months">
-        <category-report-cell val="credit" category_id="category.category_id" month="month.month" ></category-report-cell>
-      </td>
+            <td ng-repeat="month in data.months">
+                <category-report-cell val="credit" category_id="category.category_id"
+                                      month="month.month"></category-report-cell>
+            </td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th class="left"> Total credit</th>
+            <th> {{ data.credit_total | currency: "£" }}</th>
+            <th ng-repeat="month in data.months">
+                {{ month.credit_total | currency: "£" }}
+            </th>
+
+        </tr>
+    </thead>
+
+
+    <tbody>
+    <tr ng-repeat="category in categories | filter: debitFilter | orderBy:fullName">
+
+        <th class="left">
+            <category ngModel="category.fullName" category_id="category.category_id"/>
+        </th>
+
+        <td>
+            <category-report-cell val="debit" category_id="category.category_id"></category-report-cell>
+        </td>
+
+        <td ng-repeat="month in data.months">
+            <category-report-cell val="debit" category_id="category.category_id"
+                                  month="month.month"></category-report-cell>
+        </td>
 
     </tr>
-  </tbody>
+    </tbody>
 
-  <thead>
-  <tr>
-    <th class="left">  Total credit   </th>
-    <th>  {{ data.credit_total | currency: "£" }}    </th>
-    <th ng-repeat="month in data.months">
-      {{ month.credit_total | currency: "£" }}
-    </th>
-
-  </tr>
-  </thead>
-
-
-  <tbody>
-    <tr ng-repeat="category in categories | filter: debitFilter | orderBy:predicate:reverse">
-
-      <th class="left">        <category ngModel="category.fullName" category_id="category.category_id" />      </th>
-
-      <td>
-        <category-report-cell val="debit" category_id="category.category_id" > </category-report-cell>
-      </td>
-
-      <td ng-repeat="month in data.months">
-        <category-report-cell val="debit" category_id="category.category_id" month="month.month" > </category-report-cell>
-      </td>
+    <thead>
+    <tr>
+        <th class="left"> Total debit</th>
+        <th> {{data.debit_total | currency: "£" }}</th>
+        <th ng-repeat="month in data.months">
+            {{month.debit_total | currency: "£" }}
+        </th>
 
     </tr>
-  </tbody>
-
-  <thead>
-  <tr>
-    <th class="left">  Total debit   </th>
-    <th>  {{data.debit_total | currency: "£" }}    </th>
-    <th ng-repeat="month in data.months">
-      {{month.debit_total | currency: "£" }}
-    </th>
-
-  </tr>
-  </thead>
-
-
+    </thead>
 
 
 </table>

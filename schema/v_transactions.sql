@@ -9,7 +9,7 @@ CREATE VIEW v_transactions AS
     transaction.batch_id,
     transaction.account_id,
     transaction.payee_id,
-    transaction.category_id,
+    COALESCE(transaction.category_id, account.category_id) category_id,
     if((transaction.amount <= 0),NULL,(+0.01 * transaction.amount)) AS `credit`,
     if((transaction.amount >= 0),NULL,(-0.01 * transaction.amount)) AS `debit`,
     0.01 * transaction.amount movement,
@@ -18,4 +18,6 @@ CREATE VIEW v_transactions AS
     transactions transaction
     LEFT JOIN balances balance
       ON transaction.id = balance.transaction_id
+    LEFT JOIN accounts account
+      ON transaction.account_id = account.id
   ORDER BY transaction.date DESC;

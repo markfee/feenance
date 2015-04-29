@@ -35,7 +35,7 @@ class TransactionReportsController extends BaseController {
   static function TOTAL_NET()     { return DB::raw('SUM(movement) net_total'); }
   static function YEAR()          { return DB::raw('YEAR(date) year'); }
   static function MONTH()         { return DB::raw('DATE_FORMAT(date,"%Y-%m") month'); }
-  static function CATEGORY_ID()   { return DB::raw("IFNULL(category_id, 'UNKNOWN') category_id"); }
+  static function CATEGORY_ID()   { return DB::raw("COALESCE(category_id, 'UNKNOWN') category_id"); }
   /** @var \Illuminate\Database\Query\Builder $query */
   private $query;
 

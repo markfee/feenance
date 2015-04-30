@@ -26,3 +26,14 @@ CREATE FUNCTION fn_my_year(p_date DATE)  RETURNS INT
       RETURN  YEAR(p_date);
     END IF;
   END;
+
+DROP FUNCTION IF EXISTS fn_my_year_month;
+
+CREATE FUNCTION fn_my_year_month(p_date DATE)  RETURNS VARCHAR(7)
+BEGIN
+  RETURN CONCAT(
+      fn_my_year(p_date),
+      '-',
+      RIGHT(CONCAT('0', fn_my_month(p_date)), 2)
+  );
+END;

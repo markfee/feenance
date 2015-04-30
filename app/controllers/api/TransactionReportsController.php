@@ -33,8 +33,11 @@ class TransactionReportsController extends BaseController {
   static function TOTAL_CREDIT()  { return DB::raw('SUM(credit) credit_total'); }
   static function TOTAL_DEBIT()   { return DB::raw('SUM(debit) debit_total'); }
   static function TOTAL_NET()     { return DB::raw('SUM(movement) net_total'); }
-  static function YEAR()          { return DB::raw('YEAR(date) year'); }
-  static function MONTH()         { return DB::raw('DATE_FORMAT(date,"%Y-%m") month'); }
+//    static function YEAR()          { return DB::raw('YEAR(date) year'); }
+//    static function MONTH()         { return DB::raw('DATE_FORMAT(date,"%Y-%m") month'); }
+    static function YEAR()          { return DB::raw('FN_MY_YEAR(date) year'); }
+//    static function MONTH()         { return DB::raw('CONCAT(FN_MY_YEAR(date), '-', FN_MY_MONTH(date)) month'); }
+    static function MONTH()         { return DB::raw('fn_my_year_month(date) month'); }
   static function CATEGORY_ID()   { return DB::raw("COALESCE(category_id, 'UNKNOWN') category_id"); }
   /** @var \Illuminate\Database\Query\Builder $query */
   private $query;

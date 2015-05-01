@@ -55,7 +55,7 @@ class TransactionReportsController extends BaseController {
   }
   /* @return Transformer */
   /*
-  protected function getTransformer() {
+  public function getTransformer() {
     return $this->transformer ?: new TransactionReportTransformer;
   }
 */

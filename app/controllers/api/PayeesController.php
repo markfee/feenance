@@ -14,7 +14,7 @@ use \Validator;
 class PayeesController extends BaseController {
 
   /* @return Transformer */
-  protected function getTransformer() {    return $this->transformer ?: new PayeeTransformer;    }
+  public function getTransformer() {    return $this->transformer ?: new PayeeTransformer;    }
 
   /**
    * Display a listing of payees

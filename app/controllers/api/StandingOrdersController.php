@@ -17,7 +17,7 @@ use \Carbon\Carbon;
 class StandingOrdersController extends BaseController {
 
   /* @return Transformer */
-  protected function getTransformer() {    return $this->transformer ?: new StandingOrderTransformer;    }
+  public function getTransformer() {    return $this->transformer ?: new StandingOrderTransformer;    }
 
   /**
    * Display a listing of standingorders

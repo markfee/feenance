@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 class BankStringsController extends BaseController {
 
   /* @return Transformer */
-  protected function getTransformer() {    return $this->transformer ?: new BankStringTransformer;    }
+  public function getTransformer() {    return $this->transformer ?: new BankStringTransformer;    }
 
   /**
    * Display a listing of bankstrings

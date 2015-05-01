@@ -14,7 +14,7 @@ use \Validator;
 class MapsController extends BaseController {
 
   /* @return Transformer */
-  protected function getTransformer() {    return $this->transformer ?: new MapTransformer;    }
+  public function getTransformer() {    return $this->transformer ?: new MapTransformer;    }
 
   /**
    * Display a listing of maps

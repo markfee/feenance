@@ -14,7 +14,7 @@ use \Validator;
 class TransactionStatusesController extends BaseController {
 
   /* @return Transformer */
-  protected function getTransformer() {    return $this->transformer ?: new TransactionStatusTransformer;    }
+  public function getTransformer() {    return $this->transformer ?: new TransactionStatusTransformer;    }
 
   /**
    * Display a listing of transactionstatuses

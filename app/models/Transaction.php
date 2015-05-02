@@ -3,7 +3,7 @@
 use \Carbon\Carbon;
 use \JsonSerializable;
 
-class Transaction implements JsonSerializable, BankTransactionInterface {
+class Transaction implements JsonSerializable, BankTransactionInterface, ExtendedArrayableInterface {
     use BankStringTrait;
     use CategorisableTrait;
     use BatchTrait;
@@ -47,15 +47,6 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
         );
     }
 
-    public function toInternalArray()
-    {
-        $array = $this->toArray();
-        $array["amount"] = $this->amount;
-        $array["bank_balance"] = $this->bank_balance;
-        $array["balance"] = $this->balance;
-        return $array;
-    }
-
     public function fromArray($setValues)
     {
         $transformed = !empty($setValues["transformed"]);
@@ -65,9 +56,9 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
 
         // Then call the setters.
         $this->setDate($param["date"]);
-        $this->setAmount($param["amount"], $transformed);
-        $this->setBalance($param["balance"], $transformed);
-        $this->setBankBalance($param["bank_balance"], $transformed);
+        $this->setAmount($param["amount"],              $transformed);
+        $this->setBalance($param["balance"],            $transformed);
+        $this->setBankBalance($param["bank_balance"],   $transformed);
         $this->setAccountId($param["account_id"]);
         $this->setTransferId($param["transfer_id"]);
         $this->setReconciled($param["reconciled"]);
@@ -78,6 +69,27 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
         $this->fromBankStringArray($param);
         $this->fromCategorisableArray($param);
     }
+
+    public function toStorageArray()
+    {
+        $array = $this->toArray();
+        $array["amount"] = $this->amount;
+        $array["bank_balance"] = $this->bank_balance;
+        $array["balance"] = $this->balance;
+        return $array;
+    }
+
+    /**
+     * Create the model from an internally supplied array
+     * such as from an eloquent database query
+     * @param $setValues array
+     */
+    public function fromStorageArray($setValues)
+    {
+        // TODO: Implement fromStorageArray() method.
+    }
+
+
 
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
@@ -120,33 +132,33 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
 
     /**
      * @param float $amount
-     * @param bool $transformed
+     * @param bool $in_pence
      * @return int
      */
-    private function to_pence($amount, $transformed = false)
+    private function to_pence($amount, $in_pence = false)
     {
-        return ($transformed || is_null($amount)) ? $amount
+        return ($in_pence || is_null($amount)) ? $amount
             : (int) round($amount * 100, 0);
     }
 
     /**
      * @param int $amount
-     * @param bool $transformed
+     * @param bool $in_pounds
      * @return float
      */
-    private function to_pounds($amount, $transformed = false)
+    private function to_pounds($amount, $in_pounds = false)
     {
-        return is_null($amount) ? $amount : (float) ($amount * ($transformed ? 1.0 : 0.01));
+        return is_null($amount) ? $amount : (float) ($amount * ($in_pounds ? 1.0 : 0.01));
     }
 
 
     /**
      * @param float $amount
-     * @param bool $transformed
+     * @param bool $in_pence
      */
-    public function setAmount($amount, $transformed = false)
+    public function setAmount($amount, $in_pence = false)
     {
-        $this->amount = $this->to_pence($amount, $transformed);
+        $this->amount = $this->to_pence($amount, $in_pence);
     }
 
     /**
@@ -207,11 +219,11 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
 
     /**
      * @param int $balance
-     * @param bool $transformed
+     * @param bool $in_pence
      */
-    public function setBalance($balance, $transformed = false)
+    public function setBalance($balance, $in_pence = false)
     {
-        $this->balance = $this->to_pence($balance, $transformed);
+        $this->balance = $this->to_pence($balance, $in_pence);
     }
 
     /**
@@ -224,11 +236,11 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
 
     /**
      * @param int $bank_balance
-     * @param bool $transformed
+     * @param bool $in_pence
      */
-    public function setBankBalance($bank_balance, $transformed = false)
+    public function setBankBalance($bank_balance, $in_pence = false)
     {
-        $this->bank_balance = $this->to_pence($bank_balance, $transformed);
+        $this->bank_balance = $this->to_pence($bank_balance, $in_pence);
     }
 
 
@@ -270,4 +282,5 @@ class Transaction implements JsonSerializable, BankTransactionInterface {
         $transfer->negateAmount();
         return $transfer;
     }
+
 }

@@ -13,7 +13,7 @@ class AddCurrencyToTransaction extends Migration {
 	public function up()
 	{
         Schema::table('transactions', function(Blueprint $table) {
-            $table->char("currency_code", 12)->default("GBP_penny");
+            $table->char("currency_code", 12)->default("GBP");
         });
 	}
 

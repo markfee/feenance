@@ -1,7 +1,7 @@
 <?php namespace Feenance\services\Currency;
 
 
-class DecimalSubToMainConverter implements CurrencyConverterInterface {
+class DecimalSubToMainConverter extends BaseCurrencyConverter {
 
     public function convert($amount)
     {

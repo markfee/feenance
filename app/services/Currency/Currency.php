@@ -65,11 +65,13 @@ abstract class Currency implements CurrencyConverterInterface
 
     public static function get_sub_unit($currencyCode)
     {
+        $currencyCode = $currencyCode ?: Currency::defaultSub();
         return static::is_sub_unit($currencyCode) ? $currencyCode : $currencyCode . "_pence";
     }
 
     public static function get_main_unit($currencyCode)
     {
+        $currencyCode = $currencyCode ?: Currency::defaultMain();
         return substr($currencyCode, 0, 3);
     }
 

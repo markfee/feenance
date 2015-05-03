@@ -41,7 +41,7 @@ class TransactionTransformer extends Transformer implements TransformerInterface
             "payee" => $record->payee_id ? PayeeTransformer::transform($record->payee) : null,
             "category" => $record->category_id ? CategoryTransformer::transform($record->category) : null,
             "batch_id" => $record->batch_id,
-            "currency_code" => $record->currency_code,
+            "currency_code" => Currency::get_main_unit($record->currency_code),
         ];
     }
 
@@ -62,6 +62,7 @@ class TransactionTransformer extends Transformer implements TransformerInterface
         if (isset($record["bank_balance"]) && is_numeric($record["bank_balance"])) {
             $record["bank_balance"] =  $currencyConverter->convert($record["bank_balance"]);
         }
+        $record["currency_code"] = Currency::get_sub_unit($record->currency_code);
         return $record;
     }
 }

@@ -35,6 +35,7 @@ trait HasCurrencyTrait {
     }
 
     /**
+     * getCurrencyCode()
      * @return string
      */
     public function getCurrencyCode()

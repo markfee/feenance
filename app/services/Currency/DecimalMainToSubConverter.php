@@ -7,4 +7,10 @@ class DecimalMainToSubConverter extends BaseCurrencyConverter {
     {
         return is_null($amount) ? $amount : (integer) ($amount * 100);
     }
+
+    public function convertBack($amount)
+    {
+        return is_null($amount) ? $amount : (integer) ($amount * 100);
+    }
+
 }

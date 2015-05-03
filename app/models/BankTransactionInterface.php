@@ -4,6 +4,29 @@ use Carbon\Carbon;
 use Feenance\models\CategorisableInterface;
 
 interface BankTransactionInterface extends BatchInterface, CategorisableInterface {
+
+    /**
+     * @return CurrencyConverterInterface
+     */
+    public function getCurrencyConverter();
+    /**
+     * @param CurrencyConverterInterface $currencyConverter
+     */
+    public function setCurrencyConverter($currencyConverter);
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode();
+
+    /**
+     * @param string $currency_code
+     */
+    public function setCurrencyCode($currency_code);
+
+    public function convertToSubCurrency($amount);
+    public function convertToMainCurrency($amount);
+
     /**
      * @return string
      */
@@ -34,7 +57,7 @@ interface BankTransactionInterface extends BatchInterface, CategorisableInterfac
      * @param int $amount
      * @param bool $transformed
      */
-    public function setAmount($amount, $transformed = false);
+    public function setAmount($amount);
 
     /**
      * @return int
@@ -63,9 +86,8 @@ interface BankTransactionInterface extends BatchInterface, CategorisableInterfac
 
     /**
      * @param int $balance
-     * @param bool $transformed
      */
-    public function setBalance($balance, $transformed = false);
+    public function setBalance($balance);
 
     /**
      * @return int
@@ -74,9 +96,8 @@ interface BankTransactionInterface extends BatchInterface, CategorisableInterfac
 
     /**
      * @param int $balance
-     * @param bool $transformed
      */
-    public function setBankBalance($balance, $transformed = false);
+    public function setBankBalance($balance);
 
 
     // Transferable

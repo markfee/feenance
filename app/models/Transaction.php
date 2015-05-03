@@ -7,6 +7,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
     use BankStringTrait;
     use CategorisableTrait;
     use BatchTrait;
+    use HasCurrencyTrait;
 
     /*** @var Carbon    */  private $date           = null;
     /*** @var int       */  private $amount         = null;    // in pence
@@ -18,9 +19,10 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
     /*** @var bool      */  private $reconciled     = false;
     /*** @var string    */  private $notes          = null;
 
-    function __construct($param = null, $amount = 0)
+    function __construct($param = null, $amount = 0, $currency_code = null)
     {
        if ( is_a($param, "\Carbon\Carbon") ) {
+           $this->setCurrencyCode($currency_code);
            $this->setDate($param);
            $this->setAmount($amount);
         } elseif ( is_array($param) ) {
@@ -31,6 +33,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
     public function toArray()
     {
         return  array_merge([
+            "currency_code" =>  $this->getCurrencyCode(),
             "date" =>           $this->getDate(),
             "amount" =>         $this->getAmount(),
             "balance" =>        $this->getBalance(),
@@ -49,16 +52,16 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
 
     public function fromArray($setValues)
     {
-        $transformed = !empty($setValues["transformed"]);
         // First make sure we have all of the required elements in our array
         // by creating a valid empty structure
         $param = array_merge($this->toArray(), $setValues);
 
         // Then call the setters.
+        $this->setCurrencyCode($param["currency_code"]);
         $this->setDate($param["date"]);
-        $this->setAmount($param["amount"],              $transformed);
-        $this->setBalance($param["balance"],            $transformed);
-        $this->setBankBalance($param["bank_balance"],   $transformed);
+        $this->setAmount($param["amount"]);
+        $this->setBalance($param["balance"]);
+        $this->setBankBalance($param["bank_balance"]);
         $this->setAccountId($param["account_id"]);
         $this->setTransferId($param["transfer_id"]);
         $this->setReconciled($param["reconciled"]);
@@ -88,8 +91,6 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
     {
         // TODO: Implement fromStorageArray() method.
     }
-
-
 
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
@@ -127,28 +128,7 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
      */
     public function getAmount()
     {
-        return $this->to_pounds($this->amount);
-    }
-
-    /**
-     * @param float $amount
-     * @param bool $in_pence
-     * @return int
-     */
-    private function to_pence($amount, $in_pence = false)
-    {
-        return ($in_pence || is_null($amount)) ? $amount
-            : (int) round($amount * 100, 0);
-    }
-
-    /**
-     * @param int $amount
-     * @param bool $in_pounds
-     * @return float
-     */
-    private function to_pounds($amount, $in_pounds = false)
-    {
-        return is_null($amount) ? $amount : (float) ($amount * ($in_pounds ? 1.0 : 0.01));
+        return $this->convertToMainCurrency($this->amount);
     }
 
 
@@ -156,9 +136,9 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
      * @param float $amount
      * @param bool $in_pence
      */
-    public function setAmount($amount, $in_pence = false)
+    public function setAmount($amount)
     {
-        $this->amount = $this->to_pence($amount, $in_pence);
+        $this->amount = $this->convertToSubCurrency($amount);
     }
 
     /**
@@ -214,16 +194,15 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
      */
     public function getBalance()
     {
-        return $this->to_pounds($this->balance);
+        return $this->convertToMainCurrency($this->balance);
     }
 
     /**
      * @param int $balance
-     * @param bool $in_pence
      */
-    public function setBalance($balance, $in_pence = false)
+    public function setBalance($balance)
     {
-        $this->balance = $this->to_pence($balance, $in_pence);
+        $this->balance = $this->convertToSubCurrency($balance);
     }
 
     /**
@@ -231,18 +210,16 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
      */
     public function getBankBalance()
     {
-        return $this->to_pounds($this->bank_balance);
+        return $this->convertToMainCurrency($this->bank_balance);
     }
 
     /**
      * @param int $bank_balance
-     * @param bool $in_pence
      */
-    public function setBankBalance($bank_balance, $in_pence = false)
+    public function setBankBalance($bank_balance)
     {
-        $this->bank_balance = $this->to_pence($bank_balance, $in_pence);
+        $this->bank_balance = $this->convertToSubCurrency($bank_balance);
     }
-
 
     public function negateAmount()
     {

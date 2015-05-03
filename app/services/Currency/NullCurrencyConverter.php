@@ -6,4 +6,11 @@ class NullCurrencyConverter extends BaseCurrencyConverter {
     {
         return $amount;
     }
+
+    public function convertBack($amount)
+    {
+        return $amount;
+    }
+
+
 }

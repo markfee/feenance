@@ -1,9 +1,9 @@
 <?php namespace Feenance\models;
 
 use \Carbon\Carbon;
-use \JsonSerializable;
+use Feenance\services\Currency\NullCurrencyConverter;
 
-class Transaction implements JsonSerializable, BankTransactionInterface, ExtendedArrayableInterface {
+class Transaction extends DomainModel implements BankTransactionInterface {
     use BankStringTrait;
     use CategorisableTrait;
     use BatchTrait;
@@ -21,12 +21,13 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
 
     function __construct($param = null, $amount = 0, $currency_code = null)
     {
-       if ( is_a($param, "\Carbon\Carbon") ) {
+       if ($param instanceof Carbon) {
            $this->setCurrencyCode($currency_code);
            $this->setDate($param);
            $this->setAmount($amount);
-        } elseif ( is_array($param) ) {
-           $this->fromArray($param);
+        } else {
+           $this->setCurrencyCode($param);
+           parent::__construct();
         }
     }
 
@@ -75,33 +76,23 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
 
     public function toStorageArray()
     {
+        $oldConverter = $this->setCurrencyConverter(new NullCurrencyConverter());
         $array = $this->toArray();
-        $array["amount"] = $this->amount;
-        $array["bank_balance"] = $this->bank_balance;
-        $array["balance"] = $this->balance;
+        $this->setCurrencyConverter($oldConverter);
         return $array;
     }
 
     /**
-     * Create the model from an internally supplied array
-     * such as from an eloquent database query
+     * Create the model from an internally supplied array, such as from an eloquent database query
      * @param $setValues array
+     * @return array
      */
     public function fromStorageArray($setValues)
     {
-        // TODO: Implement fromStorageArray() method.
-    }
-
-    /**
-     * (PHP 5 &gt;= 5.4.0)<br/>
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     */
-    public function jsonSerialize()
-    {
-        return $this->toArray();
+        $oldConverter = $this->setCurrencyConverter(new NullCurrencyConverter());
+        $array = $this->toArray();
+        $this->setCurrencyConverter($oldConverter);
+        return $array;
     }
 
     public function __toString()
@@ -131,10 +122,8 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
         return $this->convertToMainCurrency($this->amount);
     }
 
-
     /**
      * @param float $amount
-     * @param bool $in_pence
      */
     public function setAmount($amount)
     {
@@ -259,5 +248,4 @@ class Transaction implements JsonSerializable, BankTransactionInterface, Extende
         $transfer->negateAmount();
         return $transfer;
     }
-
 }

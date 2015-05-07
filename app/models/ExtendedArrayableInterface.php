@@ -1,17 +1,9 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 02/05/15
- * Time: 08:18
- */
-
-namespace Feenance\models;
-
+<?php namespace Feenance\models;
 
 use Illuminate\Support\Contracts\ArrayableInterface;
+use \JsonSerializable;
 
-interface ExtendedArrayableInterface extends ArrayableInterface {
+interface ExtendedArrayableInterface extends ArrayableInterface, JsonSerializable {
 
     /**
      * Create the model from an externally supplied array

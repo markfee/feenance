@@ -11,6 +11,7 @@ interface BankTransactionInterface extends BatchInterface, CategorisableInterfac
     public function getCurrencyConverter();
     /**
      * @param CurrencyConverterInterface $currencyConverter
+     * @return CurrencyConverterInterface $old_currencyConverter
      */
     public function setCurrencyConverter($currencyConverter);
 
@@ -21,6 +22,7 @@ interface BankTransactionInterface extends BatchInterface, CategorisableInterfac
 
     /**
      * @param string $currency_code
+     * @return string $old_currency_code
      */
     public function setCurrencyCode($currency_code);
 

@@ -68,16 +68,6 @@ class StandingOrder extends DomainModel
         $this->setNotes($values["notes"]);
     }
 
-    /**
-     * Create the model from an internally supplied array
-     * such as from an eloquent database query
-     * @param $setValues array
-     */
-    public function fromStorageArray($setValues)
-    {
-        // TODO: Implement fromStorageArray() method.
-    }
-
     public function isValid()
     {
         return
@@ -93,9 +83,9 @@ class StandingOrder extends DomainModel
      */
     public function toStorageArray()
     {
-        $oldConverter = $this->setCurrencyConverter(new NullCurrencyConverter());
+        $oldConverterCode = $this->setCurrencyCode("XXX_pence");
         $array = $this->toArray();
-        $this->setCurrencyConverter($oldConverter);
+        $this->setCurrencyCode($oldConverterCode);
         return $array;
     }
 

@@ -4,12 +4,17 @@ use Mockery\CountValidator\Exception;
 
 abstract class Currency implements CurrencyConverterInterface
 {
-    public static function defaultMain() {
+    public static function defaultMainCurrencyCode() {
         return "GBP";
     }
 
-    public static function defaultSub() {
+    public static function defaultSubCurrencyCode() {
         return "GBP_pence";
+    }
+
+    public static function equal($a, $b)
+    {
+        return abs($a-$b) < 0.00001;
     }
 
     public static function createConverter($fromCurrencyCode, $toCurrencyCode)
@@ -30,12 +35,12 @@ abstract class Currency implements CurrencyConverterInterface
     }
 
     public static function createSubConverter($currencyCode) {
-        $currencyCode = $currencyCode ?: Currency::defaultMain();
+        $currencyCode = $currencyCode ?: Currency::defaultMainCurrencyCode();
         return Currency::createConverter($currencyCode, Currency::get_sub_unit($currencyCode));
     }
 
     public static function createMainConverter($currencyCode) {
-        $currencyCode = $currencyCode ?: Currency::defaultSub();
+        $currencyCode = $currencyCode ?: Currency::defaultSubCurrencyCode();
         return Currency::createConverter($currencyCode, Currency::get_main_unit($currencyCode));
     }
 
@@ -65,13 +70,13 @@ abstract class Currency implements CurrencyConverterInterface
 
     public static function get_sub_unit($currencyCode)
     {
-        $currencyCode = $currencyCode ?: Currency::defaultSub();
+        $currencyCode = $currencyCode ?: Currency::defaultSubCurrencyCode();
         return static::is_sub_unit($currencyCode) ? $currencyCode : $currencyCode . "_pence";
     }
 
     public static function get_main_unit($currencyCode)
     {
-        $currencyCode = $currencyCode ?: Currency::defaultMain();
+        $currencyCode = $currencyCode ?: Currency::defaultMainCurrencyCode();
         return substr($currencyCode, 0, 3);
     }
 

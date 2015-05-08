@@ -39,6 +39,8 @@ class StatementImporter  {
             $response = $this->repository->create($transaction->toArray());
 
             if ($response->hasErrors()) {
+                print_r($response->getErrors());
+                dd($transaction);
                 $this->addErrors($response->getErrors());
             }
         }

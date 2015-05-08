@@ -65,7 +65,6 @@ abstract class FileReaderTest extends TestCase {
 
         $statementImport = new StatementImporter($repository);
         $statementImport->importTransactionsToAccount(1, $reader);
-
         if ($statementImport->hasErrors()) {
             print_r($statementImport->getErrors());
         }

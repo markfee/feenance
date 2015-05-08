@@ -26,10 +26,21 @@ class Transaction extends DomainModel implements BankTransactionInterface {
            $this->setDate($param);
            $this->setAmount($amount);
         } else {
-           $this->setCurrencyCode($param);
-           parent::__construct();
+           if (is_string($param)) {
+               $this->setCurrencyCode($param);
+           }
+           parent::__construct($param);
         }
     }
+
+    public function isValid()
+    {
+        return
+            ($this->date instanceof Carbon) &&
+            (!empty($this->amount)) &&
+            (!empty($this->account_id));
+    }
+
 
     public function toArray()
     {
@@ -76,22 +87,9 @@ class Transaction extends DomainModel implements BankTransactionInterface {
 
     public function toStorageArray()
     {
-        $oldConverter = $this->setCurrencyConverter(new NullCurrencyConverter());
+        $oldConverterCode = $this->setCurrencyCode("XXX_pence");
         $array = $this->toArray();
-        $this->setCurrencyConverter($oldConverter);
-        return $array;
-    }
-
-    /**
-     * Create the model from an internally supplied array, such as from an eloquent database query
-     * @param $setValues array
-     * @return array
-     */
-    public function fromStorageArray($setValues)
-    {
-        $oldConverter = $this->setCurrencyConverter(new NullCurrencyConverter());
-        $array = $this->toArray();
-        $this->setCurrencyConverter($oldConverter);
+        $this->setCurrencyCode($oldConverterCode);
         return $array;
     }
 

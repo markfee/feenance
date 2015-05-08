@@ -77,6 +77,11 @@ class TransactionsTest extends TestCase {
             "bank_balance" => 100.23
         ];
 
+//        $repository = new EloquentTransactionRepository(new TransactionTransformer(), new EloquentBankStringRepository(new BankStringTransformer()));
+//        $transactionController = new TransactionsController($repository);
+//        $response = $repository->create($newTransaction);
+//        $response = $transactionController->store($newTransaction);
+//        dd($response);
         $response = $this->call('POST', $this->API_ROOT, $newTransaction, [], array('HTTP_ACCEPT' => 'application/json'));
         $this->assertNoErrors($response->getData());
         $this->assertExpectedStatus(Response::HTTP_CREATED);

@@ -13,17 +13,8 @@ trait HasCurrencyTrait {
      */
     public function getCurrencyConverter()
     {
-        return $this->currencyConverter ? : Currency::defaultMain();
-    }
-
-    /**
-     * @param CurrencyConverterInterface $currencyConverter
-     */
-    public function setCurrencyConverter($currencyConverter)
-    {
-        $old = $this->getCurrencyConverter();
-        $this->currencyConverter = $currencyConverter ?: Currency::defaultMain();;
-        return $old;
+        $this->currencyConverter = $this->currencyConverter ?: Currency::createSubConverter($this->getCurrencyCode());
+        return $this->currencyConverter;
     }
 
     public function convertToSubCurrency($amount)
@@ -42,18 +33,26 @@ trait HasCurrencyTrait {
      */
     public function getCurrencyCode()
     {
-        $this->currencyConverter = $this->currencyConverter ?: new NullCurrencyConverter();
-        return $this->currency_code  ?: Currency::defaultMain();
+        $this->currency_code = $this->currency_code  ?: Currency::defaultMainCurrencyCode();
+        return $this->currency_code;
     }
 
     /**
      * @param string $currency_code
      */
-    public function setCurrencyCode($currency_code)
+    public function setCurrencyCode($currency_code = null)
     {
-        $old_code = $this->currency_code;
-        $this->currency_code = $currency_code ?: Currency::defaultMain();
-        $this->currencyConverter = Currency::createSubConverter($this->currency_code);
-        return $old_code;
+        try {
+            if (!is_string($this->currency_code) || !is_string($currency_code) || strcmp($currency_code, $this->currency_code) != 0) {
+                $old_code = $this->currency_code;
+                $this->currencyConverter = null;
+                $this->currency_code = $currency_code ?: Currency::defaultMainCurrencyCode();
+                return $old_code;
+            }
+            return $this->currency_code;
+        } catch(Exception $ex) {
+            dd("abort");
+            dd($ex);
+        }
     }
 }

@@ -3,7 +3,7 @@
 use Feenance\models\Transaction;
 use Feenance\tests\TestCase;
 use Feenance\models\StandingOrder;
-
+use Feenance\services\Currency\Currency;
 
 class StandingOrderTest extends TestCase {
 
@@ -25,12 +25,13 @@ class StandingOrderTest extends TestCase {
 
         $this->assertTrue($standingOrder->isValid());
 
-        $this->assertTrue(dd($standingOrder->getAmount()));
+        $amount = $standingOrder->getAmount();
+        $this->assertTrue(Currency::equal($standingOrder->getAmount(), 10.45), "Standing Order amount should be 10.45 {$standingOrder->getAmount()}");
 
         $transaction = $standingOrder->getNextTransaction();
 
         $this->assertTrue($transaction instanceOf Transaction);
-        $this->assertTrue($transaction->getAmount() == 10.45, "Amount should be 10.45 {$transaction->getAmount()}");
+        $this->assertTrue(Currency::equal($transaction->getAmount(), 10.45), "Transaction amount should be 10.45 {$transaction->getAmount()}");
     }
 
 

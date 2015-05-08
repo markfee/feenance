@@ -1,5 +1,6 @@
 <?php namespace Feenance\tests\unit\models;
 
+use Carbon\Carbon;
 use Feenance\models\Transaction;
 use Feenance\tests\TestCase;
 use Feenance\models\StandingOrder;
@@ -32,7 +33,22 @@ class StandingOrderTest extends TestCase {
 
         $this->assertTrue($transaction instanceOf Transaction);
         $this->assertTrue(Currency::equal($transaction->getAmount(), 10.45), "Transaction amount should be 10.45 {$transaction->getAmount()}");
+        $this->assertTrue($transaction->isValid(), "Transaction should be valid");
+        $this->assertTrue($transaction->getDate()->diffInDays(new Carbon("2015-08-01")) == 0, "Transaction date should be 01/08/2015 {$transaction->getDate()}");
     }
 
+    public function test_I_can_get_the_iterate_a_one_off_standing_order()
+    {
+        $standingOrder = new StandingOrder([
+            "next_date" => "2015-08-01", "account_id" => 1, "amount" => 10.45
+        ]);
+        $count = 0;
+        foreach($standingOrder as $transaction) {
+            $count++;
+            $this->assertTrue($transaction instanceof Transaction);
+        }
+
+        $this->assertTrue($count == 1, "Count of 1 expected {$count}");
+    }
 
 };

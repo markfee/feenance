@@ -6,8 +6,12 @@ use \Carbon\Carbon;
 
 class MyCarbon extends Carbon
 {
+    public function earliest($date)
+    {
+        return empty($date) || ($this < $date) ? $this : clone($date);
+    }
 
-    /**
+        /**
      * @param bool $includeToday
      * TODO: exclude bank holidays
      * @return MyCarbon

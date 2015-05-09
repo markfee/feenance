@@ -20,7 +20,7 @@ class MyCarbonTest extends TestCase {
     $this->assertTrue(0 === $date->diff($expectedDate)->days);
   }
 
-  public function test_many_previous_days() {
+    public function test_many_previous_days() {
     $date = MyCarbon::create(2014, 8, 1, 0);
     for ($i=0; $i < 12; $i++) {
       $expectedDate = clone($date);
@@ -38,4 +38,18 @@ class MyCarbonTest extends TestCase {
       $date->addMonth();
     }
   }
+
+    public function test_earliest() {
+        $date1 = new MyCarbon("2015-08-01");
+        $date2 = new MyCarbon("2015-08-10");
+        $date3 = new MyCarbon("2016-08-10");
+
+        $this->assertTrue( ($date1->earliest($date2)->isSameDay($date1)), "Expected {$date1} to be the earliest") ;
+        $this->assertTrue( ($date2->earliest($date1)->isSameDay($date1)), "Expected {$date1} to be the earliest") ;
+
+        $this->assertTrue( ($date3->earliest($date2)->isSameDay($date2)), "Expected {$date2} to be the earliest") ;
+
+        $this->assertTrue( ($date3->earliest($date1)->isSameDay($date1)), "Expected {$date1} to be the earliest") ;
+
+    }
 };

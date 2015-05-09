@@ -20,7 +20,7 @@ class StandingOrderIterator implements \Iterator {
      */
     public function setFinishDate($finish_date)
     {
-        $this->finish_date = new MyCarbon($finish_date);
+        $this->finish_date = (new MyCarbon($finish_date))->earliest($this->standingOrder->getFinishDate());
         return $this;
     }
 

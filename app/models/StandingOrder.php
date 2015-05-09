@@ -20,9 +20,9 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     /*** @var MyCarbon */
     private $finish_date = null;
     /*** @var integer */
-    private $increment = null;
+    private $increment = 1;
     /*** @var string */
-    private $increment_unit = null;
+    private $increment_unit = "d"; // default 1 day
     /*** @var string */
     private $exceptions = null; // Eg months to exclude
     /*** @var integer */
@@ -440,7 +440,9 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     public function increment()
     {
         $this->previous_date = clone($this->next_date);
-        $this->next_date = $this->next_date->addDay();
+
+        $this->next_date->increment($this->getIncrement(), $this->getIncrementUnit());
+
         if ( !empty($this->finish_date) && $this->finish_date->diffInDays($this->next_date, false) > 0 ) {
             $this->next_date = null;
         }

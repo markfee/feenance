@@ -18,13 +18,11 @@ class StandingOrderIterator implements \Iterator {
      * @param MyCarbon $finish_date
      * @return StandingOrderIterator
      */
-    public function setFinishDate($finish_date)
+    public function until($finish_date)
     {
         $this->finish_date = (new MyCarbon($finish_date))->earliest($this->standingOrder->getFinishDate());
         return $this;
     }
-
-
 
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
@@ -73,10 +71,8 @@ class StandingOrderIterator implements \Iterator {
             ||  empty($this->standingOrder->getNextDate())
             ||  $this->finish_date->diffInDays($this->standingOrder->getNextDate(), false) > 0
         ) {
-//            print "\nNot Valid: FinishDate: {$this->finish_date}, NextDate: {$this->standingOrder->getNextDate()}";
             return false;
         }
-//        print "\nValid: FinishDate: {$this->finish_date}, NextDate: {$this->standingOrder->getNextDate()}";
         return true;
     }
 
@@ -85,11 +81,12 @@ class StandingOrderIterator implements \Iterator {
      * Rewind the Iterator to the first element
      * @link http://php.net/manual/en/iterator.rewind.php
      * @return void Any returned value is ignored.
+     * @throws InfiniteStandingOrderIteratorException
      */
     public function rewind()
     {
         if (empty($this->finish_date)) {
-            throw new \Feenance\models\InfiniteStandingOrderIteratorException;
+            throw new InfiniteStandingOrderIteratorException;
         }
     }
 }

@@ -189,6 +189,9 @@ class StandingOrder extends DomainModel implements IteratorAggregate
      */
     public function nextDateIs($next_date)
     {
+        if (empty($this->next_date) || empty($next_date) ) {
+            return (empty($this->next_date) && empty($next_date));
+        }
         return $this->next_date->isSameDay(new MyCarbon($next_date));
     }
 
@@ -411,28 +414,35 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     }
 
     /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Retrieve an external iterator
-     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
-     * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     * <b>Traversable</b>
+     * @param boolean $modify pass true to create an iterator that will increment the standing order.
+     * @return Traversable
      */
     public function getIterator()
     {
         return new StandingOrderIterator($this);
     }
 
+    public function getIncrementer()
+    {
+        return new StandingOrderIterator($this, true);
+    }
+
     /**
      * @param $finishDate MyCarbon
+     * @param $modify boolean flag to indicate whether the iterator should modify $this
      * @return StandingOrderIterator
      */
-    public function until($finishDate)
+    public function until($finishDate, $modify = false)
     {
-        return (new StandingOrderIterator($this))->setFinishDate($finishDate);
+        return (new StandingOrderIterator($this, $modify))->until($finishDate);
     }
 
     public function increment()
     {
+        $this->previous_date = clone($this->next_date);
         $this->next_date = $this->next_date->addDay();
+        if ( !empty($this->finish_date) && $this->finish_date->diffInDays($this->next_date, false) > 0 ) {
+            $this->next_date = null;
+        }
     }
 }

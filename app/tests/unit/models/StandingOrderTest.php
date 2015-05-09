@@ -121,8 +121,48 @@ class StandingOrderTest extends TestCase {
 
         $this->assertTrue($standingOrder->nextDateIs("2015-08-01"), "Expected Next Date not to be modified: {$standingOrder->getNextDate()}");
         $this->assertTrue($standingOrder->getFinishDate()->isSameDay(new Carbon("2015-08-31")), "Expected Finish Date not to be modified: {$standingOrder->getNextDate()}");
-
     }
+
+    public function test_increment_until_modifies_the_next_date_and_prev_date()
+    {   // If I pass in true to the until function I expect the iterator to actually modify the standing order previous and next dates.
+        $standingOrder = new StandingOrder([
+            "next_date" => "2015-08-01", "finish_date" => "2015-08-31", "account_id" => 1, "amount" => 10.45
+        ]);
+        $count = 0;
+
+        foreach($standingOrder->until("2015-08-07", true) as $transaction) {
+            $count++;
+            $this->assertTrue($transaction instanceof Transaction);
+        }
+
+        $this->assertTrue($count == 7, "Count of 7 expected {$count}");
+
+        $this->assertTrue($standingOrder->nextDateIs("2015-08-08"), "Expected Next Date to be modified: {$standingOrder->getNextDate()}");
+        $this->assertTrue($standingOrder->getPreviousDate()->isSameDay(new Carbon("2015-08-07")), "Expected Previous Date to be modified: {$standingOrder->getPreviousDate()}");
+        $this->assertTrue($standingOrder->getFinishDate()->isSameDay(new Carbon("2015-08-31")), "Expected Finish Date not to be modified: {$standingOrder->getFinishDate()}");
+    }
+
+    public function test_increment_past_finish_sets_next_date_to_null()
+    {   // If I pass in true to the until function I expect the iterator to actually modify the standing order previous and next dates.
+        $standingOrder = new StandingOrder([
+            "next_date" => "2015-08-01", "finish_date" => "2015-08-03", "account_id" => 1, "amount" => 10.45
+        ]);
+        $count = 0;
+
+        foreach($standingOrder->until("2015-08-07", true) as $transaction) {
+            $count++;
+            $this->assertTrue($transaction instanceof Transaction);
+        }
+
+        $this->assertTrue($count == 3, "Count of 7 expected {$count}");
+
+        $this->assertTrue($standingOrder->nextDateIs(null), "Expected Next Date to be null: {$standingOrder->getNextDate()}");
+        $this->assertTrue($standingOrder->getPreviousDate()->isSameDay(new Carbon("2015-08-03")), "Expected Previous Date to be 2015-08-03: {$standingOrder->getPreviousDate()}");
+        $this->assertTrue($standingOrder->getFinishDate()->isSameDay(new Carbon("2015-08-03")), "Expected Finish Date not to be 2015-08-03: {$standingOrder->getFinishDate()}");
+    }
+
+
+
 
 
 

@@ -5,6 +5,8 @@ use Feenance\models\Transaction;
 use Feenance\tests\TestCase;
 use Feenance\models\StandingOrder;
 use Feenance\services\Currency\Currency;
+use Markfee\MyCarbon;
+use Feenance\models\InfiniteStandingOrderIteratorException;
 
 class StandingOrderTest extends TestCase {
 
@@ -37,18 +39,53 @@ class StandingOrderTest extends TestCase {
         $this->assertTrue($transaction->getDate()->diffInDays(new Carbon("2015-08-01")) == 0, "Transaction date should be 01/08/2015 {$transaction->getDate()}");
     }
 
-    public function test_I_can_get_the_iterate_a_one_off_standing_order()
+    public function test_an_attempt_to_iterate_without_a_finish_will_throw_an_exception()
     {
         $standingOrder = new StandingOrder([
             "next_date" => "2015-08-01", "account_id" => 1, "amount" => 10.45
         ]);
+        try {
+            foreach ($standingOrder as $transaction) {
+            }
+        } catch (InfiniteStandingOrderIteratorException $ex) {
+            return true;
+        }
+        $this->assertTrue(false, "An InfiniteStandingOrderIteratorException was expected");
+    }
+
+
+
+    public function test_I_can_iterate_a_one_off_standing_order()
+    {
+        $standingOrder = new StandingOrder([
+            "next_date" => "2015-08-01", "finish_date" => "2015-08-01", "account_id" => 1, "amount" => 10.45
+        ]);
         $count = 0;
+
         foreach($standingOrder as $transaction) {
             $count++;
             $this->assertTrue($transaction instanceof Transaction);
         }
 
         $this->assertTrue($count == 1, "Count of 1 expected {$count}");
+
+        $this->assertTrue($standingOrder->nextDateIs("2015-08-01"), "Expected Next Date not to be modified: {$standingOrder->getNextDate()}");
+
+    }
+
+    public function test_I_can_get_the_iterate_a_standing_order_for_a_week()
+    {
+        $standingOrder = new StandingOrder([
+            "next_date" => "2015-08-01", "account_id" => 1, "amount" => 10.45
+        ]);
+        $count = 0;
+
+        foreach($standingOrder->until("2015-08-07") as $transaction) {
+            $count++;
+            $this->assertTrue($transaction instanceof Transaction);
+        }
+
+        $this->assertTrue($count == 7, "Count of {$count} expected 7");
     }
 
 };

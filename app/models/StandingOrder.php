@@ -1,6 +1,6 @@
 <?php namespace Feenance\models;
 
-use Feenance\models\eloquent\StandingOrderIterator;
+use Feenance\models\StandingOrderIterator;
 use Markfee\MyCarbon;
 use Feenance\services\Currency\NullCurrencyConverter;
 use Iterator;
@@ -43,6 +43,13 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     private $bank_string_id = null;
     /*** @var string */
     private $notes = null;
+
+    function __clone()
+    { // Make sure the dates aren't modified when cloned.
+        $this->next_date        = $this->next_date      ? clone $this->next_date        : null;
+        $this->previous_date    = $this->previous_date  ? clone $this->previous_date    : null;
+        $this->finish_date      = $this->finish_date    ? clone $this->finish_date      : null;
+    }
 
     /**
      * Create the model from an externally supplied array
@@ -175,6 +182,17 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     {
         return $this->next_date;
     }
+
+    /**
+     * @param MyCarbon $next_date
+     * @return boolean
+     */
+    public function nextDateIs($next_date)
+    {
+        return $this->next_date->isSameDay(new MyCarbon($next_date));
+    }
+
+
 
     /**
      * @param MyCarbon $next_date
@@ -392,7 +410,6 @@ class StandingOrder extends DomainModel implements IteratorAggregate
         $this->notes = $notes;
     }
 
-    public $isClone = false;
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Retrieve an external iterator
@@ -402,10 +419,16 @@ class StandingOrder extends DomainModel implements IteratorAggregate
      */
     public function getIterator()
     {
-        print "\nGetting a clone of self: IsClone={$this->isClone}";
-        $clone = clone($this);
-        $clone->isClone = true;
-        return new StandingOrderIterator($clone);
+        return new StandingOrderIterator($this);
+    }
+
+    /**
+     * @param $finishDate MyCarbon
+     * @return StandingOrderIterator
+     */
+    public function until($finishDate)
+    {
+        return (new StandingOrderIterator($this))->setFinishDate($finishDate);
     }
 
     public function increment()

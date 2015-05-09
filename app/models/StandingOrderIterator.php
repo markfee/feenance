@@ -1,14 +1,30 @@
-<?php namespace Feenance\models\eloquent;
+<?php namespace Feenance\models;
+use Markfee\MyCarbon;
 use Feenance\models\StandingOrder;
 
-class StandingOrderIterator implements \Iterator{
+class StandingOrderIterator implements \Iterator {
     /** @var  StandingOrder */
     private $standingOrder;
+    private $finish_date = null;
 
-    function __construct($standingOrder)
+    function __construct($standingOrder, $modifySource = false)
     {
-        $this->standingOrder = $standingOrder;
+        $this->standingOrder = ($modifySource) ? $standingOrder: clone($standingOrder);
+        $this->finish_date = $this->standingOrder->getFinishDate();
+//        print "\nModify: {$modifySource}, This: {$this->standingOrder->getNextDate()}\Passed: {$standingOrder->getNextDate()}\n";
     }
+
+    /**
+     * @param MyCarbon $finish_date
+     * @return StandingOrderIterator
+     */
+    public function setFinishDate($finish_date)
+    {
+        $this->finish_date = new MyCarbon($finish_date);
+        return $this;
+    }
+
+
 
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
@@ -30,7 +46,6 @@ class StandingOrderIterator implements \Iterator{
      */
     public function next()
     {
-        print "\nGetting next(): IsClone={$this->standingOrder->isClone}";
         $this->standingOrder->increment();
 
     }
@@ -43,7 +58,6 @@ class StandingOrderIterator implements \Iterator{
      */
     public function key()
     {
-        print "\nkey(): IsClone={$this->standingOrder->isClone}";
     }
 
     /**
@@ -55,14 +69,14 @@ class StandingOrderIterator implements \Iterator{
      */
     public function valid()
     {
-        print "\nvalid(): IsClone={$this->standingOrder->isClone}";
-
-        if (    empty($this->standingOrder->getFinishDate())
+        if (    empty($this->finish_date)
             ||  empty($this->standingOrder->getNextDate())
-            ||  $this->standingOrder->getFinishDate()->diffInDays($this->standingOrder->getNextDate()) > 0
+            ||  $this->finish_date->diffInDays($this->standingOrder->getNextDate(), false) > 0
         ) {
+//            print "\nNot Valid: FinishDate: {$this->finish_date}, NextDate: {$this->standingOrder->getNextDate()}";
             return false;
         }
+//        print "\nValid: FinishDate: {$this->finish_date}, NextDate: {$this->standingOrder->getNextDate()}";
         return true;
     }
 
@@ -74,10 +88,8 @@ class StandingOrderIterator implements \Iterator{
      */
     public function rewind()
     {
-        print "\nrewind(): IsClone={$this->standingOrder->isClone}";
-
-        if (empty($this->standingOrder->getFinishDate())) {
-            $this->standingOrder->setFinishDate(clone($this->standingOrder->getNextDate()));
+        if (empty($this->finish_date)) {
+            throw new \Feenance\models\InfiniteStandingOrderIteratorException;
         }
     }
 }

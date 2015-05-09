@@ -1,14 +1,15 @@
 <?php namespace Feenance\models;
 
+use Feenance\models\eloquent\StandingOrderIterator;
 use Markfee\MyCarbon;
 use Feenance\services\Currency\NullCurrencyConverter;
 use Iterator;
+use IteratorAggregate;
+use Traversable;
 
-class StandingOrder extends DomainModel implements Iterator
+class StandingOrder extends DomainModel implements IteratorAggregate
 {
     use HasCurrencyTrait;
-    /** @var StandingOrder */
-    private $selfClone = null;
 
     /*** @var string */
     private $name = null;
@@ -391,69 +392,24 @@ class StandingOrder extends DomainModel implements Iterator
         $this->notes = $notes;
     }
 
+    public $isClone = false;
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
-     * Return the current element
-     * @link http://php.net/manual/en/iterator.current.php
-     * @return mixed Can return any type.
+     * Retrieve an external iterator
+     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
+     * @return Traversable An instance of an object implementing <b>Iterator</b> or
+     * <b>Traversable</b>
      */
-    public function current()
+    public function getIterator()
     {
-        return $this->getNextTransaction();
+        print "\nGetting a clone of self: IsClone={$this->isClone}";
+        $clone = clone($this);
+        $clone->isClone = true;
+        return new StandingOrderIterator($clone);
     }
 
-
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Move forward to next element
-     * @link http://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
-     */
-    public function next()
+    public function increment()
     {
-        $this->selfClone->next_date = $this->selfClone->next_date->addDay();
-    }
-
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Return the key of the current element
-     * @link http://php.net/manual/en/iterator.key.php
-     * @return mixed scalar on success, or null on failure.
-     */
-    public function key()
-    {
-        // TODO: Implement key() method.
-    }
-
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Checks if current position is valid
-     * @link http://php.net/manual/en/iterator.valid.php
-     * @return boolean The return value will be casted to boolean and then evaluated.
-     * Returns true on success or false on failure.
-     */
-    public function valid()
-    {
-        if (    empty($this->selfClone)
-            ||  empty($this->selfClone->finish_date)
-            ||  empty($this->selfClone->next_date)
-            ||  $this->selfClone->finish_date->diffInDays($this->selfClone->next_date) > 0
-        ) {
-            $this->selfClone = null;
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Rewind the Iterator to the first element
-     * @link http://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
-     */
-    public function rewind()
-    {
-        $this->selfClone = clone($this);
-        $this->selfClone->finish_date = $this->selfClone->finish_date ?: clone($this->selfClone->next_date);
+        $this->next_date = $this->next_date->addDay();
     }
 }

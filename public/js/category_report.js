@@ -111,9 +111,9 @@ feenance.directive('categoryReport', function (CategoryReportData) {
                 scope.endYear = today.getFullYear();
                 scope.year = scope.endYear - 1;
                 scope.month = today.getMonth();
-                scope.endMonth = today.getMonth();
-
+                scope.endMonth = today.getMonth() + 1;
             }
+
             CategoryReportData.getReportData(scope.year, scope.month, scope.endYear, scope.endMonth);
         }
         , controller: "CategoryReportController"

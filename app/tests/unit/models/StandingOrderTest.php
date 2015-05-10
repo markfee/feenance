@@ -181,4 +181,24 @@ class StandingOrderTest extends TestCase {
         $this->assertTrue($standingOrder->getFinishDate() == null, "Expected Finish Date to be null: {$standingOrder->getFinishDate()}");
     }
 
+    public function test_increment_by_month_will_honour_exceptions()
+    {   // If I pass in true to the until function I expect the iterator to actually modify the standing order previous and next dates.
+        $standingOrder = new StandingOrder([
+            "next_date" => "2015-08-01", "account_id" => 1, "amount" => 10.45, "increment_unit" => "m", "exceptions" => "Feb||Mar"
+        ]);
+
+        $count = 0;
+
+        foreach($standingOrder->until("2016-08-01", true) as $transaction) {
+            $count++;
+            $this->assertTrue($transaction instanceof Transaction);
+        }
+
+        $this->assertTrue($count == 11, "Count of 11 expected - got: {$count}");
+
+        $this->assertTrue($standingOrder->nextDateIs("2016-09-01"), "Expected Next Date to be null: {$standingOrder->getNextDate()}");
+        $this->assertTrue($standingOrder->getPreviousDate()->isSameDay(new Carbon("2016-08-01")), "Expected Previous Date to be 2016-08-01: {$standingOrder->getPreviousDate()}");
+        $this->assertTrue($standingOrder->getFinishDate() == null, "Expected Finish Date to be null: {$standingOrder->getFinishDate()}");
+    }
+
 };

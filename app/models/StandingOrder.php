@@ -142,7 +142,6 @@ class StandingOrder extends DomainModel implements IteratorAggregate
         return $transaction;
     }
 
-
     /**
      * @return string
      */
@@ -194,8 +193,6 @@ class StandingOrder extends DomainModel implements IteratorAggregate
         }
         return $this->next_date->isSameDay(new MyCarbon($next_date));
     }
-
-
 
     /**
      * @param MyCarbon $next_date
@@ -437,14 +434,20 @@ class StandingOrder extends DomainModel implements IteratorAggregate
         return (new StandingOrderIterator($this, $modify))->until($finishDate);
     }
 
+    public function isException($date) {
+        return !empty($date) && !empty($this->exceptions) && $date->fuzzyMatch($this->exceptions);
+    }
+
     public function increment()
     {
         $this->previous_date = clone($this->next_date);
 
-        $this->next_date->increment($this->getIncrement(), $this->getIncrementUnit());
+        do {
+            $this->next_date->increment($this->getIncrement(), $this->getIncrementUnit());
 
-        if ( !empty($this->finish_date) && $this->finish_date->diffInDays($this->next_date, false) > 0 ) {
-            $this->next_date = null;
-        }
+            if (!empty($this->finish_date) && $this->finish_date->diffInDays($this->next_date, false) > 0) {
+                $this->next_date = null;
+            }
+        } while ($this->isException($this->next_date));
     }
 }

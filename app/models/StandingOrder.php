@@ -28,7 +28,7 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     /*** @var integer */
     private $amount = null;
     /*** @var integer */
-    private $next_bank_day = null; // skip to the previous (-1) or next (+1) valid bank day.
+    private $bank_day_offset = null; // skip to the previous (-1) or next (+1) valid bank day.
     /*** @var string */
     private $modifier = null; // eg "last day of month" -- see Carbon
     /*** @var integer */
@@ -69,7 +69,7 @@ class StandingOrder extends DomainModel implements IteratorAggregate
         $this->setIncrementUnit($values["increment_unit"]);
         $this->setExceptions($values["exceptions"]);
         $this->setAmount($values["amount"]);
-        $this->setNextBankDay($values["next_bank_day"]);
+        $this->setBankDayOffset($values["bank_day_offset"]);
         $this->setModifier($values["modifier"]);
         $this->setAccountId($values["account_id"]);
         $this->setDestinationAccountId($values["destination_account_id"]);
@@ -112,7 +112,7 @@ class StandingOrder extends DomainModel implements IteratorAggregate
             "increment_unit" => $this->getIncrementUnit(),
             "exceptions" => $this->getExceptions(),
             "amount" => $this->getAmount(),
-            "next_bank_day" => $this->getNextBankDay(),
+            "bank_day_offset" => $this->getBankDayOffset(),
             "modifier" => $this->getModifier(),
             "account_id" => $this->getAccountId(),
             "destination_account_id" => $this->getDestinationAccountId(),
@@ -137,7 +137,7 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     {
         $transaction = new Transaction($this->getCurrencyCode());
         $transaction->setAmount($this->getAmount());
-        $transaction->setDate($this->getNextDate());
+        $transaction->setDate($this->modify($this->getNextDate()));
         $transaction->setAccountId($this->getAccountId());
         return $transaction;
     }
@@ -179,7 +179,7 @@ class StandingOrder extends DomainModel implements IteratorAggregate
      */
     public function getNextDate()
     {
-        return $this->next_date;
+        return $this->next_date ? $this->modify($this->next_date) : null;
     }
 
     /**
@@ -191,7 +191,7 @@ class StandingOrder extends DomainModel implements IteratorAggregate
         if (empty($this->next_date) || empty($next_date) ) {
             return (empty($this->next_date) && empty($next_date));
         }
-        return $this->next_date->isSameDay(new MyCarbon($next_date));
+        return $this->getNextDate()->isSameDay(new MyCarbon($next_date));
     }
 
     /**
@@ -285,17 +285,17 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     /**
      * @return int
      */
-    public function getNextBankDay()
+    public function getBankDayOffset()
     {
-        return $this->next_bank_day;
+        return $this->bank_day_offset;
     }
 
     /**
-     * @param int $next_bank_day
+     * @param int $bank_day_offset
      */
-    public function setNextBankDay($next_bank_day)
+    public function setBankDayOffset($bank_day_offset)
     {
-        $this->next_bank_day = $next_bank_day;
+        $this->bank_day_offset = $bank_day_offset;
     }
 
     /**
@@ -305,6 +305,34 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     {
         return $this->modifier;
     }
+
+    /**
+     * @return string
+     */
+    public function hasModifier()
+    {
+        return !(empty($this->modifier));
+    }
+
+    /**
+     * @param MyCarbon $date
+     * @return string
+     */
+    public function modify($constdate)
+    {
+        $date = new MyCarbon($constdate);
+        if ($this->hasModifier()) {
+            $date->modify($this->getModifier());
+        }
+        if ($this->getBankDayOffset() < 0) {
+            $date->previousWorkingDay(true);
+        } else if ($this->getBankDayOffset() > 0) {
+            $date->nextWorkingDay(true);
+        }
+        return $date;
+    }
+
+
 
     /**
      * @param string $modifier
@@ -411,7 +439,6 @@ class StandingOrder extends DomainModel implements IteratorAggregate
     }
 
     /**
-     * @param boolean $modify pass true to create an iterator that will increment the standing order.
      * @return Traversable
      */
     public function getIterator()
@@ -440,11 +467,10 @@ class StandingOrder extends DomainModel implements IteratorAggregate
 
     public function increment()
     {
-        $this->previous_date = clone($this->next_date);
+        $this->previous_date = $this->getNextDate();
 
         do {
             $this->next_date->increment($this->getIncrement(), $this->getIncrementUnit());
-
             if (!empty($this->finish_date) && $this->finish_date->diffInDays($this->next_date, false) > 0) {
                 $this->next_date = null;
             }

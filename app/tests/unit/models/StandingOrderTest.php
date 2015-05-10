@@ -201,4 +201,58 @@ class StandingOrderTest extends TestCase {
         $this->assertTrue($standingOrder->getFinishDate() == null, "Expected Finish Date to be null: {$standingOrder->getFinishDate()}");
     }
 
+    public function test_increment_by_month_will_honour_modifications()
+    {   // If I pass in true to the until function I expect the iterator to actually modify the standing order previous and next dates.
+        $standingOrder = new StandingOrder([
+            "next_date" => "2015-08-01", "account_id" => 1, "amount" => 10.45, "increment_unit" => "m", "modifier" => "last day of this month"
+        ]);
+
+        $count = 0;
+
+        foreach($standingOrder->until("2016-08-01", true) as $transaction) {
+            $count++;
+            /** @var $transaction  Transaction*/
+            $this->assertTrue($transaction instanceof Transaction);
+            $string = "\nExpected a date at the end of the month, but got {$transaction->getDate()}";
+            $this->assertTrue($transaction->getDate()->day > 27, $string);
+//            print $string;
+        }
+
+        $this->assertTrue($count == 12, "Count of 12 expected - got: {$count}");
+
+        $this->assertTrue($standingOrder->nextDateIs("2016-08-31"), "Expected Next Date to be 2016-08-31: {$standingOrder->getNextDate()}");
+        $this->assertTrue($standingOrder->getPreviousDate()->isSameDay(new Carbon("2016-07-31")), "Expected Previous Date to be 2016-07-31: {$standingOrder->getPreviousDate()}");
+        $this->assertTrue($standingOrder->getFinishDate() == null, "Expected Finish Date to be null: {$standingOrder->getFinishDate()}");
+    }
+
+    public function test_increment_by_month_with_modifications_previous_working_day()
+    {
+        $standingOrder = new StandingOrder([
+            "next_date" => "2015-01-01", "account_id" => 1, "amount" => 10.45, "increment_unit" => "m", "modifier" => "last day of this month", "bank_day_offset" => -1
+        ]);
+        $expectedLastDays = [30, 27, 31, 30, 29, 30, 31, 31, 30, 30, 30, 31];
+        $count = 0;
+
+        foreach($standingOrder->until("2016-01-01", true) as $transaction) {
+            /** @var $transaction  Transaction*/
+            $this->assertTrue($transaction instanceof Transaction);
+            $string = "\nExpected {$expectedLastDays[$count]} of the month, got {$transaction->getDate()->day}";
+            $this->assertTrue($transaction->getDate()->day == $expectedLastDays[$count], $string);
+            $count++;
+        }
+
+        $this->assertTrue($count == 12, "Count of 12 expected - got: {$count}");
+
+        $this->assertTrue($standingOrder->getFinishDate() == null, "Expected Finish Date to be null: {$standingOrder->getFinishDate()}");
+    }
+
+
+
+
+
+
+
+
+
+
 };

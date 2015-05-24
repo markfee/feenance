@@ -24,6 +24,10 @@ Route::get('/login', function () {
     return View::make('login');
 });
 
+Route::get('/test', function () {
+    return "It Works";
+});
+
 Route::post('/login', 'Feenance\controllers\AdminController@login');
 
 Route::group(['before' => ''], function () {

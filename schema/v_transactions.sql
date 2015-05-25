@@ -13,11 +13,15 @@ CREATE VIEW v_transactions AS
     if((transaction.amount <= 0),NULL,(+0.01 * transaction.amount)) AS `credit`,
     if((transaction.amount >= 0),NULL,(-0.01 * transaction.amount)) AS `debit`,
     0.01 * transaction.amount movement,
-    0.01 * balance.balance balance
+    0.01 * balance.balance balance,
+    account_type.is_loan,
+    account_type.is_asset
   FROM
     transactions transaction
     LEFT JOIN balances balance
       ON transaction.id = balance.transaction_id
     LEFT JOIN accounts account
       ON transaction.account_id = account.id
+    LEFT JOIN account_types account_type
+      ON account.account_type_id = account_type.id
   ORDER BY transaction.date DESC;

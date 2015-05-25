@@ -3,10 +3,12 @@ use feenance;
 DROP VIEW IF EXISTS v_non_transfers;
 
 CREATE VIEW v_non_transfers AS
-  SELECT v_transactions.*
-  FROM v_transactions
-    LEFT JOIN transfers
-      ON (    transfers.source        = v_transactions.id
-              OR  transfers.destination   = v_transactions.id
-      )
-  WHERE transfers.id IS NULL
+  SELECT  transaction.*
+  FROM    v_transactions transaction
+    LEFT JOIN v_transfers transfer
+      ON
+        (
+          (transfer.source_id        = transaction.id AND from_loan = 0)
+          OR  (transfer.destination_id   = transaction.id AND to_loan = 0)
+        )
+  WHERE transfer.id IS NULL;

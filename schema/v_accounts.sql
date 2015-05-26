@@ -11,7 +11,8 @@ CREATE VIEW v_accounts AS
     account.opening_balance * 0.01 opening_balance,
     account_type.name account_type,
     account_type.is_asset,
-    account_type.is_loan
+    account_type.is_loan,
+    account.category_id
   FROM accounts account
   JOIN account_types account_type
   ON account.account_type_id = account_type.id

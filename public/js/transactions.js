@@ -10,9 +10,15 @@ feenance.controller('TransactionsController', function ($scope, TransactionColle
     $scope.currentPage = 0;
     $scope.pageSize = 20;
 
+    $scope.getCurrentPage = function ()
+    {
+        return $scope.offsetPage(0);
+    }
+
     $scope.offsetPage = function (offset)
     {
         $scope.currentPage =  Math.min(Math.max($scope.currentPage + offset, 0), $scope.numberOfPages() - 1);
+        return $scope.currentPage;
     }
 
     $scope.numberOfPages = function ()

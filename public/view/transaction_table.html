@@ -23,16 +23,16 @@
   </button>
 
   <span class="paginator">
-    <button ng-disabled="currentPage == 0" ng-click="offsetPage(-1)">
+    <button ng-disabled="getCurrentPage() == 0" ng-click="offsetPage(-1)">
       Previous
     </button>
 
     <span>
-      Page {{currentPage+1}} of {{numberOfPages()}}.
+      Page {{getCurrentPage()+1}} of {{numberOfPages()}}.
       Records: {{firstRecordToDisplay()+1}} to {{lastRecordToDisplay()}} of {{filteredRecordCount()}}
     </span>
 
-    <button ng-disabled="currentPage >= numberOfPages()-1" ng-click="offsetPage(1)">
+    <button ng-disabled="getCurrentPage() >= numberOfPages()-1" ng-click="offsetPage(1)">
       Next
     </button>
   </span>

@@ -14,7 +14,7 @@
   },
   "require": {
     "laravel/framework": "4.2.*",
-    "markfee/responder": "dev-master",
+    "markfee/responder": "dev-plant-health-api",
     "ddeboer/data-import": "0.17.*"
   },
   "require-dev": {

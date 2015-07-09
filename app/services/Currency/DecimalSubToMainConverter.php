@@ -10,6 +10,6 @@ class DecimalSubToMainConverter extends BaseCurrencyConverter {
 
     public function convertBack($amount)
     {
-        return is_null($amount) ? $amount : (integer) ($amount * 100);
+        return is_null($amount) ? $amount : (int) round($amount * 100, 0);
     }
 }

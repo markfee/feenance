@@ -20,6 +20,7 @@ class AccountsTransformer extends Transformer implements TransformerInterface {
             "bank" => $record->bank,
             "sort_code" => $record->acc_number,
             "acc_number" => $record->acc_number,
+            "account_type_id" => $record->account_type_id,
             "open" => (boolean)$record->open,
             "opening_balance" => 0.01 * $record->opening_balance,
             "notes" => $record->notes ?: null,

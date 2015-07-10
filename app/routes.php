@@ -25,7 +25,14 @@ Route::get('/login', function () {
 });
 
 Route::get('/test', function () {
-    return "It Works";
+    $amount = 9.78;
+    print "<pre>";
+    print "\n \$amount = 9.78                : " . $amount;
+    print "\n \$amount * 100                 : " . $amount * 100;
+    print "\n (int) (\$amount * 100)         : " . (int) ($amount * 100) . " BAD!";
+    print "\n (int) round(\$amount * 100, 0) : " . (int) round($amount * 100, 0) . " GOOD!";
+    print "</pre>";
+    return;
 });
 
 Route::post('/login', 'Feenance\controllers\AdminController@login');

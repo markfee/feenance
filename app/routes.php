@@ -141,6 +141,8 @@ Route::group(['before' => ''], function () {
         Route::resource('standing_orders', $NAMESPACE . 'StandingOrdersController');
         Route::resource('transaction_statuses', $NAMESPACE . 'TransactionStatusesController');
 
+        Route::resource('account_types', $NAMESPACE . 'AccountTypeController');
+
         /*
           // Generate transactions for a specific standing_order for a period (default == the next month)
           Route::get('standing_orders/{id}/transactions/{period}',  $NAMESPACE.'StandingOrdersController@generate');

@@ -43,7 +43,7 @@ class TransactionReportsController extends BaseController {
   private $query;
 
   private function resetQuery() {
-    $this->query = DB::table("v_non_transfers");
+    $this->query = DB::table("v_non_transfers_with_loans");
     $this->get   = [
       TransactionReportsController::TRANSACTION_COUNT(),
 //      TransactionReportsController::RECONCILED_COUNT(),

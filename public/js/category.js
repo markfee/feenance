@@ -38,14 +38,14 @@ feenance.factory('Categories', function (Notifier, $http, Paginator) {
 
 feenance.controller('CategoryController', function ($scope, $http, CategoriesApi) {
     // Set the default for the Form!
-    var init = function() {
+    $scope.init = function() {
         $scope.selected = undefined;
         $scope.selected_id = null;
         $scope.category_id = null;
         $scope.editing = false;
     }
 
-    init();
+    $scope.init();
 
     $scope.select = function ($id) {
         var record = CategoriesApi.get({id: $id}, function () {
@@ -128,7 +128,7 @@ feenance.controller('CategoryController', function ($scope, $http, CategoriesApi
                 if (!isSelected(new_val))
                     $scope.select(new_val);
             } else if (new_val == undefined) {
-                init();
+                $scope.init();
             }
         }
     );
@@ -166,7 +166,7 @@ feenance.directive('categoryIdSelector', function () {
             if (scope.category_id) {
                 scope.select(scope.category_id);
             } else {
-                init();
+                scope.init();
             }
         }
         , controller: "CategoryController"

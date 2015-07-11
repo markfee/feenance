@@ -8,7 +8,17 @@
         </th>
 
     </tr>
+
+    <tr>
+        <th class="left"> Total movement</th>
+        <th> {{ data.net_total | currency: "£" }}</th>
+        <th ng-repeat="month in data.months">
+            {{ month.net_total | currency: "£" }}
+        </th>
+
+    </tr>
     </thead>
+
 
     <tbody>
         <tr ng-repeat="category in categories | filter: creditFilter | orderBy:fullName">
@@ -29,14 +39,14 @@
     </tbody>
 
     <thead>
-        <tr>
-            <th class="left"> Total credit</th>
-            <th> {{ data.credit_total | currency: "£" }}</th>
-            <th ng-repeat="month in data.months">
-                {{ month.credit_total | currency: "£" }}
-            </th>
+    <tr>
+        <th class="left"> Total credit</th>
+        <th> {{ data.credit_total | currency: "£" }}</th>
+        <th ng-repeat="month in data.months">
+            {{ month.credit_total | currency: "£" }}
+        </th>
 
-        </tr>
+    </tr>
     </thead>
 
 

@@ -35,8 +35,8 @@ class TransactionReportsController extends BaseController {
   static function TOTAL_NET()     { return DB::raw('SUM(movement) net_total'); }
 //    static function YEAR()          { return DB::raw('YEAR(date) year'); }
 //    static function MONTH()         { return DB::raw('DATE_FORMAT(date,"%Y-%m") month'); }
-    static function YEAR()          { return DB::raw('FN_MY_YEAR(date) year'); }
-//    static function MONTH()         { return DB::raw('CONCAT(FN_MY_YEAR(date), '-', FN_MY_MONTH(date)) month'); }
+    static function YEAR()          { return DB::raw('fn_my_year(date) year'); }
+//    static function MONTH()         { return DB::raw('CONCAT(fn_my_year(date), '-', FN_MY_MONTH(date)) month'); }
     static function MONTH()         { return DB::raw('fn_my_year_month(date) month'); }
   static function CATEGORY_ID()   { return DB::raw("COALESCE(category_id, 'UNKNOWN') category_id"); }
   /** @var \Illuminate\Database\Query\Builder $query */
@@ -79,23 +79,22 @@ class TransactionReportsController extends BaseController {
     }
 
     if (empty($endYear)) {
-      $this->query->where(DB::raw("YEAR(date)"), $year);
+      $this->query->where(DB::raw("year(date)"), $year);
       if (! empty($month)) {
-        $this->query->where(DB::raw("MONTH(date)"), $month);
+        $this->query->where(DB::raw("month(date)"), $month);
       }
       return $this;
     }
-
+//      $endMonth;
     if ($endMonth == 12) {
       $endMonth = 1;
       $endYear++;
     } else {
       $endMonth++;
     }
-    $startDate = Carbon::create($year, $month, 01, 0);
-    $endDate   = Carbon::create($endYear, $endMonth, 01, 0);
-
-    $this->query->where("date", ">=", $startDate)->where("date", "<", $endDate);
+    $startDate = Carbon::create($year, $month, 23, 0);
+    $endDate   = Carbon::create($endYear, $endMonth, 23, 0);
+    $this->query->where("date", ">=", $startDate->format("Y-m-d"))->where("date", "<", $endDate->format("Y-m-d"));
     return $this;
   }
 

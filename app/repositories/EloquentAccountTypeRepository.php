@@ -17,7 +17,8 @@ class EloquentAccountTypeRepository extends BaseRepository {
 
     public function paginate($perPage = 15, $columns = array('*'))
     {
-        return $this->all($columns); // TODO: Implement paginate() method.
+        // Implementing paginate() method is probably uneeded as this will always be a small list
+        return $this->all($columns);
 
     }
 

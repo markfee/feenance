@@ -32,12 +32,13 @@
 
         <div class="account_editor" ng-show="editing">
             <text-input ng-model="selected.name"            label="Account Name" ></text-input>
+            <account-type-selector ng-model="selected.account_type_id">ACCOUNT SELECTOR HERE</account-type-selector>
             <text-input ng-model="selected.opening_balance" label="Opening Balance" ></text-input>
             <text-input ng-model="selected.sort_code"       label="Sort Code" ></text-input>
             <text-input ng-model="selected.acc_number"      label="Account Number"></text-input>
             <text-input ng-model="selected.notes"           label="Notes"></text-input>
             <checkbox-input ng-model="selected.open"        label="Open"></checkbox-input>
-            <category-id-selector ng-model="selected.category_id" >CATEGORY SELECTOR HERE  </category-id-selector>
+            <category-id-selector ng-model="selected.category_id" >CATEGORY SELECTOR HERE       </category-id-selector>
         </div>
 
         <json-view ng-model="selected" title="account"></json-view>

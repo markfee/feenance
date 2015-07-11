@@ -28,11 +28,11 @@ feenance.factory('PayeesApi', function($resource) {
 });
 
 feenance.factory('CategoriesApi', function($resource) {
-  return $resource(   $API_ROOT + "categories/:id",   {id:"@id"}
-    ,   {
-      'update':   { method:'PUT'                    }
-    }
-  );
+    return $resource(   $API_ROOT + "categories/:id",   {id:"@id"}
+        ,   {
+            'update':   { method:'PUT'                    }
+        }
+    );
 });
 
 feenance.factory('TransactionsApi', function($resource) {
@@ -54,3 +54,10 @@ feenance.factory('BankStringsApi', function($resource) {
   );
 });
 
+feenance.factory('AccountTypesApi', function($resource) {
+    return $resource(   $API_ROOT + "account_types/:id",   {id:"@id"}
+        ,   {
+            'update':   { method:'PUT'                    }
+        }
+    );
+});

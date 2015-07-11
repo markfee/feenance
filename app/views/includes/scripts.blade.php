@@ -27,6 +27,7 @@
 {{ HTML::script('js/payee.js') }}
 {{ HTML::script('js/category.js') }}
 {{ HTML::script('js/account.js') }}
+{{ HTML::script('js/account_type.js') }}
 {{ HTML::script('js/transaction.js') }}
 {{ HTML::script('js/account_transactions.js') }}
 {{ HTML::script('js/map.js') }}

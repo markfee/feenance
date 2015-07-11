@@ -109,4 +109,3 @@ feenance.directive('checkboxInput', function() {
         template: '<div class="checkbox"> <label><input type="checkbox" ng-model="ngModel"/>{{label}}</label>      </div>'
     }
 });
-

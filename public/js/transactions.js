@@ -12,18 +12,24 @@ feenance.controller('TransactionsController', function ($scope, TransactionColle
 
     $scope.getCurrentPage = function ()
     {
-        return $scope.offsetPage(0);
+        try {
+            return $scope.offsetPage(0);
+        } catch(e) { }
+        return 0;
     }
 
     $scope.offsetPage = function (offset)
     {
-        $scope.currentPage =  Math.min(Math.max($scope.currentPage + offset, 0), $scope.numberOfPages() - 1);
+        $scope.currentPage =  Math.max( Math.min($scope.currentPage + offset, $scope.numberOfPages() - 1), 0) ;
         return $scope.currentPage;
     }
 
     $scope.numberOfPages = function ()
     {
-        return Math.ceil($scope.filteredRecordCount() / $scope.pageSize);
+        try {
+            return Math.ceil($scope.filteredRecordCount() / $scope.pageSize);
+        } catch(e) { }
+        return 0;
     };
 
     $scope.firstRecordToDisplay = function ()
@@ -43,11 +49,14 @@ feenance.controller('TransactionsController', function ($scope, TransactionColle
 
     $scope.transactionFilter = function (transaction)
     {
-        if ($scope.account_id && transaction.account_id != $scope.account_id)
-        {
-            return false;
-        }
-        return $scope.reconciled_filter(transaction);
+        try {
+            if ($scope.account_id && transaction.account_id != $scope.account_id)
+            {
+                return false;
+            }
+            return $scope.reconciled_filter && $scope.reconciled_filter(transaction);
+        } catch(e) { }
+        return true;
     };
 });
 
